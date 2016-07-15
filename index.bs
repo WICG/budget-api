@@ -1,0 +1,16 @@
+<pre class='metadata'>
+Title: Web Budget API
+Shortname: budget-api
+Level: 1
+Status: DREAM
+Group: wicg
+URL: https://beverloo.github.io/budget-api/
+Editor: Peter Beverloo, Google, peter@chromium.org
+Abstract: This specification describes an API that can be used to retrieve the available budget an origin has available for resource-intensive operations, as well as the cost associated with doing such an operation.
+Repository: beverloo/budget-api
+</pre>
+
+<section>
+  <h2 id="introduction">Introduction</h2>
+  <em>This section is non-normative.</em>
+</section>
