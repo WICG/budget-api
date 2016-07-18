@@ -1162,35 +1162,6 @@ Possible extra rowspan handling
             [data-md] > :last-child {
                 margin-bottom: 0;
             }</style>
-<style>/* style-counters */
-
-            body {
-                counter-reset: example figure issue;
-            }
-            .issue {
-                counter-increment: issue;
-            }
-            .issue:not(.no-marker)::before {
-                content: "Issue " counter(issue);
-            }
-
-            .example {
-                counter-increment: example;
-            }
-            .example:not(.no-marker)::before {
-                content: "Example " counter(example);
-            }
-            .invalid.example:not(.no-marker)::before,
-            .illegal.example:not(.no-marker)::before {
-                content: "Invalid Example" counter(example);
-            }
-
-            figcaption {
-                counter-increment: figure;
-            }
-            figcaption:not(.no-marker)::before {
-                content: "Figure " counter(figure);
-            }</style>
 <style>/* style-selflinks */
 
             .heading, .issue, .note, .example, li, dt {
@@ -1237,6 +1208,35 @@ Possible extra rowspan handling
             a.self-link::before            { content: "¶"; }
             .heading > a.self-link::before { content: "§"; }
             dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* style-counters */
+
+            body {
+                counter-reset: example figure issue;
+            }
+            .issue {
+                counter-increment: issue;
+            }
+            .issue:not(.no-marker)::before {
+                content: "Issue " counter(issue);
+            }
+
+            .example {
+                counter-increment: example;
+            }
+            .example:not(.no-marker)::before {
+                content: "Example " counter(example);
+            }
+            .invalid.example:not(.no-marker)::before,
+            .illegal.example:not(.no-marker)::before {
+                content: "Invalid Example" counter(example);
+            }
+
+            figcaption {
+                counter-increment: figure;
+            }
+            figcaption:not(.no-marker)::before {
+                content: "Figure " counter(figure);
+            }</style>
 <style>/* style-autolinks */
 
             .css.css, .property.property, .descriptor.descriptor {
@@ -1299,17 +1299,113 @@ Possible extra rowspan handling
             [data-link-type=biblio] {
                 white-space: pre;
             }</style>
+<style>/* style-dfn-panel */
+
+        .dfn-panel {
+            position: absolute;
+            z-index: 35;
+            height: auto;
+            width: -webkit-fit-content;
+            width: fit-content;
+            max-width: 300px;
+            max-height: 500px;
+            overflow: auto;
+            padding: 0.5em 0.75em;
+            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+            background: #DDDDDD;
+            color: black;
+            border: outset 0.2em;
+        }
+        .dfn-panel:not(.on) { display: none; }
+        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+        .dfn-panel > b { display: block; }
+        .dfn-panel a { color: black; }
+        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+        .dfn-panel > b + b { margin-top: 0.25em; }
+        .dfn-panel ul { padding: 0; }
+        .dfn-panel li { list-style: inside; }
+        .dfn-panel.activated {
+            display: inline-block;
+            position: fixed;
+            left: .5em;
+            bottom: 2em;
+            margin: 0 auto;
+            max-width: calc(100vw - 1.5em - .4em - .5em);
+            max-height: 30vh;
+        }
+
+        .dfn-paneled { cursor: pointer; }
+        </style>
+<style>/* style-syntax-highlighting */
+
+        .highlight:not(.idl) { background: hsl(24, 20%, 95%); }
+        code.highlight { padding: .1em; border-radius: .3em; }
+        pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+        .highlight .c { color: #708090 } /* Comment */
+        .highlight .k { color: #990055 } /* Keyword */
+        .highlight .l { color: #000000 } /* Literal */
+        .highlight .n { color: #0077aa } /* Name */
+        .highlight .o { color: #999999 } /* Operator */
+        .highlight .p { color: #999999 } /* Punctuation */
+        .highlight .cm { color: #708090 } /* Comment.Multiline */
+        .highlight .cp { color: #708090 } /* Comment.Preproc */
+        .highlight .c1 { color: #708090 } /* Comment.Single */
+        .highlight .cs { color: #708090 } /* Comment.Special */
+        .highlight .kc { color: #990055 } /* Keyword.Constant */
+        .highlight .kd { color: #990055 } /* Keyword.Declaration */
+        .highlight .kn { color: #990055 } /* Keyword.Namespace */
+        .highlight .kp { color: #990055 } /* Keyword.Pseudo */
+        .highlight .kr { color: #990055 } /* Keyword.Reserved */
+        .highlight .kt { color: #990055 } /* Keyword.Type */
+        .highlight .ld { color: #000000 } /* Literal.Date */
+        .highlight .m { color: #000000 } /* Literal.Number */
+        .highlight .s { color: #a67f59 } /* Literal.String */
+        .highlight .na { color: #0077aa } /* Name.Attribute */
+        .highlight .nc { color: #0077aa } /* Name.Class */
+        .highlight .no { color: #0077aa } /* Name.Constant */
+        .highlight .nd { color: #0077aa } /* Name.Decorator */
+        .highlight .ni { color: #0077aa } /* Name.Entity */
+        .highlight .ne { color: #0077aa } /* Name.Exception */
+        .highlight .nf { color: #0077aa } /* Name.Function */
+        .highlight .nl { color: #0077aa } /* Name.Label */
+        .highlight .nn { color: #0077aa } /* Name.Namespace */
+        .highlight .py { color: #0077aa } /* Name.Property */
+        .highlight .nt { color: #669900 } /* Name.Tag */
+        .highlight .nv { color: #222222 } /* Name.Variable */
+        .highlight .ow { color: #999999 } /* Operator.Word */
+        .highlight .mb { color: #000000 } /* Literal.Number.Bin */
+        .highlight .mf { color: #000000 } /* Literal.Number.Float */
+        .highlight .mh { color: #000000 } /* Literal.Number.Hex */
+        .highlight .mi { color: #000000 } /* Literal.Number.Integer */
+        .highlight .mo { color: #000000 } /* Literal.Number.Oct */
+        .highlight .sb { color: #a67f59 } /* Literal.String.Backtick */
+        .highlight .sc { color: #a67f59 } /* Literal.String.Char */
+        .highlight .sd { color: #a67f59 } /* Literal.String.Doc */
+        .highlight .s2 { color: #a67f59 } /* Literal.String.Double */
+        .highlight .se { color: #a67f59 } /* Literal.String.Escape */
+        .highlight .sh { color: #a67f59 } /* Literal.String.Heredoc */
+        .highlight .si { color: #a67f59 } /* Literal.String.Interpol */
+        .highlight .sx { color: #a67f59 } /* Literal.String.Other */
+        .highlight .sr { color: #a67f59 } /* Literal.String.Regex */
+        .highlight .s1 { color: #a67f59 } /* Literal.String.Single */
+        .highlight .ss { color: #a67f59 } /* Literal.String.Symbol */
+        .highlight .vc { color: #0077aa } /* Name.Variable.Class */
+        .highlight .vg { color: #0077aa } /* Name.Variable.Global */
+        .highlight .vi { color: #0077aa } /* Name.Variable.Instance */
+        .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
+        </style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-15">15 July 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-18">18 July 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://beverloo.github.io/budget-api/">https://beverloo.github.io/budget-api/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/beverloo/budget-api/issues/">GitHub</a>
+     <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:peter@chromium.org">Peter Beverloo</a> (<span class="p-org org">Google</span>)
     </dl>
@@ -1321,7 +1417,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This specification describes an API that can be used to retrieve the available budget an origin has available for resource-intensive operations, as well as the cost associated with doing such an operation.</p>
+   <p>This specification describes an API that can be used to retrieve the available budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
@@ -1339,18 +1435,101 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li><a href="#terminology"><span class="secno">2</span> <span class="content">Terminology</span></a>
+    <li>
+     <a href="#privacy-considerations"><span class="secno">3</span> <span class="content">Privacy Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#applicability"><span class="secno">3.1</span> <span class="content">Applicability</span></a>
+      <li><a href="#permissions"><span class="secno">3.2</span> <span class="content">Permissions</span></a>
+     </ol>
+    <li><a href="#api"><span class="secno">4</span> <span class="content">API</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
     <li>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
-   <section>
+   <section class="non-normative">
     <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
      <em>This section is non-normative.</em> 
+    <p> Web Applications have conventionally been able to execute code, make network requests and
+    interact with the user by means of established interaction, usually through a browser tab. This
+    has allowed users to associate the presence of a browser tab with the Web Application’s ability
+    ability to do work on their behalf. </p>
+    <p> Following the introduction of the Push API <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> and Web Background Synchronization <a data-link-type="biblio" href="#biblio-web-background-sync">[WEB-BACKGROUND-SYNC]</a>, this assumption no longer stands. Web Applications are now able to both
+    trigger and schedule execution of code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, outside of the user’s control. </p>
+    <p> In an effort to mitigate risk to the user, user agents have implemented restrictions such as
+    time limits on executing code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, or a requirement for the Web Application
+    to use the Web Notification API <a data-link-type="biblio" href="#biblio-notifications">[NOTIFICATIONS]</a> to inform the user of the work they’ve done.
+    These restrictions are often unspecified and left up to the discretion of the user agent. In
+    some cases, user agents will choose to not enforce these restrictions depending on the intensity
+    of the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-1">user’s engagement</a> with the Web Application. </p>
+    <p> This specification describes an API that exposes a budget that can be used by authors to
+    determine their available budget for resource intensive background operations, as well as the
+    cost associated with doing a certain action <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>. </p>
+    <section class="example" id="example-c30d9e17">
+     <a class="self-link" href="#example-c30d9e17"></a> 
+     <p> Determine whether a user visible interaction is required in response to a <a data-link-type="dfn" href="https://w3c.github.io/push-api/#push-message">push message</a>: </p>
+<pre class="lang-js highlight"><span></span><span class="nx">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'push'</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=></span> <span class="p">{</span>
+  <span class="c1">// Execute the application-specific logic depending on the contents of the</span>
+  <span class="c1">// received push message, for example by caching the latest content.</span>
+
+  <span class="nx">event</span><span class="p">.</span><span class="nx">waitUntil</span><span class="p">(</span>
+      <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">getCost</span><span class="p">(</span><span class="s1">'push-message'</span><span class="p">),</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">getBudget</span><span class="p">()</span> <span class="p">])</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(([</span><span class="nx">cost</span><span class="p">,</span> <span class="nx">budget</span><span class="p">])</span> <span class="o">=></span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">budget</span> <span class="o">>=</span> <span class="nx">cost</span><span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>  <span class="c1">// No need to show a notification.</span>
+
+            <span class="c1">// Not enough budget is available, must show a notification.</span>
+            <span class="k">return</span> <span class="nx">registration</span><span class="p">.</span><span class="nx">showNotification</span><span class="p">(...);</span>
+        <span class="p">})</span>
+    <span class="p">);</span>
+<span class="p">});</span>
+</pre>
+    </section>
+    <p class="issue" id="issue-664b6915"><a class="self-link" href="#issue-664b6915"></a> Add an example that demonstrates a non-Push API use-case. </p>
+    <p class="issue" id="issue-0533871f"><a class="self-link" href="#issue-0533871f"></a> Add an example that demonstrates a <code>getBudgetDetails()</code> use-case. </p>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="2" id="terminology"><span class="secno">2. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h2>
+    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="user-engagement">user engagement</dfn> with an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is defined by the intensity of their
+    interaction with the application by means of navigation, interaction and retention signals. </p>
+    <p> A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation">background operation</dfn> is the ability for an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> to execute potentially
+    resource intensive code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>. </p>
+    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation-cost">background operation cost</dfn> is a positive number that describes the cost of
+    executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-1">background operation</a> on the user’s device. </p>
+    <p> The <dfn data-dfn-type="dfn" data-noexport="" id="available-budget">available budget<a class="self-link" href="#available-budget"></a></dfn> is a positive number derived from the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-2">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operations</a> an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is able to do, depending
+    on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-1">background operation costs</a>. </p>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="3" id="privacy-considerations"><span class="secno">3. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a></h2>
+    <section>
+     <h3 class="heading settled" data-level="3.1" id="applicability"><span class="secno">3.1. </span><span class="content">Applicability</span><a class="self-link" href="#applicability"></a></h3>
+     <p class="issue" id="issue-71abf424"><a class="self-link" href="#issue-71abf424"></a> Define that the intention is for this to be used for resource-sensitive operations (e.g.
+      the Push API), not privacy-sensitive operations (e.g. Geolocation). </p>
+    </section>
+    <section>
+     <h3 class="heading settled" data-level="3.2" id="permissions"><span class="secno">3.2. </span><span class="content">Permissions</span><a class="self-link" href="#permissions"></a></h3>
+     <p class="issue" id="issue-482aea76"><a class="self-link" href="#issue-482aea76"></a> Define that user agents may (1) offer the user means to override the budget available to a Web
+      Application, and (2) the background operations themselves may be guarded behind additional
+      permissions. </p>
+    </section>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="4" id="api"><span class="secno">4. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
+    <p> Foo. </p>
+    <p class="issue" id="issue-bf5ff956"><a class="self-link" href="#issue-bf5ff956"></a> Should these methods be exposed as part of a <code>navigator.budget</code> object? </p>
    </section>
   </main>
   <div data-fill-with="conformance">
@@ -1499,9 +1678,133 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 
 })();
 </script>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#available-budget">available budget</a><span>, in §2</span>
+   <li><a href="#background-operation">background operation</a><span>, in §2</span>
+   <li><a href="#background-operation-cost">background operation cost</a><span>, in §2</span>
+   <li><a href="#user-engagement">user engagement</a><span>, in §2</span>
+  </ul>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[HTML]</a> defines the following terms:
+    <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[PUSH-API]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/push-api/#push-message">push message</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEB-BACKGROUND-SYNC]</a> defines the following terms:
+    <ul>
+     <li><a href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>
+    </ul>
+  </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-html">[HTML]
+   <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-web-background-sync">[WEB-BACKGROUND-SYNC]
+   <dd><a href="https://wicg.github.io/BackgroundSync/spec/">Web Background Synchronization specification draft</a>. Living Standard. URL: <a href="https://wicg.github.io/BackgroundSync/spec/">https://wicg.github.io/BackgroundSync/spec/</a>
   </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-notifications">[NOTIFICATIONS]
+   <dd>Anne van Kesteren. <a href="https://notifications.spec.whatwg.org/">Notifications API Standard</a>. Living Standard. URL: <a href="https://notifications.spec.whatwg.org/">https://notifications.spec.whatwg.org/</a>
+   <dt id="biblio-push-api">[PUSH-API]
+   <dd>Michael van Ouwerkerk; et al. <a href="https://w3c.github.io/push-api/">Push API</a>. 15 December 2015. WD. URL: <a href="https://w3c.github.io/push-api/">https://w3c.github.io/push-api/</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> Add an example that demonstrates a non-Push API use-case. <a href="#issue-664b6915"> ↵ </a></div>
+   <div class="issue"> Add an example that demonstrates a <code>getBudgetDetails()</code> use-case. <a href="#issue-0533871f"> ↵ </a></div>
+   <div class="issue"> Define that the intention is for this to be used for resource-sensitive operations (e.g.
+      the Push API), not privacy-sensitive operations (e.g. Geolocation). <a href="#issue-71abf424"> ↵ </a></div>
+   <div class="issue"> Define that user agents may (1) offer the user means to override the budget available to a Web
+      Application, and (2) the background operations themselves may be guarded behind additional
+      permissions. <a href="#issue-482aea76"> ↵ </a></div>
+   <div class="issue"> Should these methods be exposed as part of a <code>navigator.budget</code> object? <a href="#issue-bf5ff956"> ↵ </a></div>
+  </div>
+  <aside class="dfn-panel" data-for="user-engagement">
+   <b><a href="#user-engagement">#user-engagement</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-user-engagement-1">1. Introduction</a>
+    <li><a href="#ref-for-user-engagement-2">2. Terminology</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="background-operation">
+   <b><a href="#background-operation">#background-operation</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-background-operation-1">2. Terminology</a> <a href="#ref-for-background-operation-2">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="background-operation-cost">
+   <b><a href="#background-operation-cost">#background-operation-cost</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-background-operation-cost-1">2. Terminology</a>
+   </ul>
+  </aside>
+<script>/* script-dfn-panel */
+
+        document.body.addEventListener("click", function(e) {
+            var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+            // Find the dfn element or panel, if any, that was clicked on.
+            var el = e.target;
+            var target;
+            var hitALink = false;
+            while(el.parentElement) {
+                if(el.tagName == "A") {
+                    // Clicking on a link in a <dfn> shouldn't summon the panel
+                    hitALink = true;
+                }
+                if(el.classList.contains("dfn-paneled")) {
+                    target = "dfn";
+                    break;
+                }
+                if(el.classList.contains("dfn-panel")) {
+                    target = "dfn-panel";
+                    break;
+                }
+                el = el.parentElement;
+            }
+            if(target != "dfn-panel") {
+                // Turn off any currently "on" or "activated" panels.
+                queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+                    el.classList.remove("on");
+                    el.classList.remove("activated");
+                });
+            }
+            if(target == "dfn" && !hitALink) {
+                // open the panel
+                var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+                if(dfnPanel) {
+                    console.log(dfnPanel);
+                    dfnPanel.classList.add("on");
+                    var rect = el.getBoundingClientRect();
+                    dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+                    dfnPanel.style.top = window.scrollY + rect.top + "px";
+                    var panelRect = dfnPanel.getBoundingClientRect();
+                    var panelWidth = panelRect.right - panelRect.left;
+                    if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                        // Reposition, because the panel is overflowing
+                        dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+                    }
+                } else {
+                    console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+                }
+            } else if(target == "dfn-panel") {
+                // Switch it to "activated" state, which pins it.
+                el.classList.add("activated");
+                el.style.left = null;
+                el.style.top = null;
+            }
+
+        });
+        </script>

@@ -6,11 +6,130 @@ Status: DREAM
 Group: wicg
 URL: https://beverloo.github.io/budget-api/
 Editor: Peter Beverloo, Google, peter@chromium.org
-Abstract: This specification describes an API that can be used to retrieve the available budget an origin has available for resource-intensive operations, as well as the cost associated with doing such an operation.
+Abstract: This specification describes an API that can be used to retrieve the available budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.
 Repository: beverloo/budget-api
 </pre>
 
-<section>
+<pre class="anchors">
+spec: web-background-sync; urlPrefix: https://wicg.github.io/BackgroundSync/spec/
+    type: dfn
+        text: in the background; url: in-the-background
+spec: push-api; urlPrefix: https://w3c.github.io/push-api/
+    type: dfn
+        text: push message; url: push-message
+spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/browsers.html
+    type: dfn
+        text: origin; url: concept-origin
+</pre>
+
+<section class="non-normative">
   <h2 id="introduction">Introduction</h2>
   <em>This section is non-normative.</em>
+  <p>
+    Web Applications have conventionally been able to execute code, make network requests and
+    interact with the user by means of established interaction, usually through a browser tab. This
+    has allowed users to associate the presence of a browser tab with the Web Application's ability
+    ability to do work on their behalf.
+  </p>
+  <p>
+    Following the introduction of the Push API [[PUSH-API]] and Web Background Synchronization
+    [[WEB-BACKGROUND-SYNC]], this assumption no longer stands. Web Applications are now able to both
+    trigger and schedule execution of code <a>in the background</a>, outside of the user’s control.
+  </p>
+  <p>
+    In an effort to mitigate risk to the user, user agents have implemented restrictions such as
+    time limits on executing code <a>in the background</a>, or a requirement for the Web Application
+    to use the Web Notification API [[NOTIFICATIONS]] to inform the user of the work they've done.
+    These restrictions are often unspecified and left up to the discretion of the user agent. In
+    some cases, user agents will choose to not enforce these restrictions depending on the intensity
+    of the <a lt="user engagement">user's engagement</a> with the Web Application.
+  </p>
+  <p>
+    This specification describes an API that exposes a budget that can be used by authors to
+    determine their available budget for resource intensive background operations, as well as the
+    cost associated with doing a certain action <a>in the background</a>.
+  </p>
+
+  <section class="example">
+    <p>
+      Determine whether a user visible interaction is required in response to a <a>push message</a>:
+    </p>
+    <pre class="lang-js">
+      self.addEventListener('push', event => {
+        // Execute the application-specific logic depending on the contents of the
+        // received push message, for example by caching the latest content.
+
+        event.waitUntil(
+            Promise.all([ navigator.getCost('push-message'), navigator.getBudget() ])
+              .then(([cost, budget]) => {
+                  if (budget >= cost)
+                      return;  // No need to show a notification.
+
+                  // Not enough budget is available, must show a notification.
+                  return registration.showNotification(...);
+              })
+          );
+      });
+    </pre>
+  </section>
+  <p class="issue">
+    Add an example that demonstrates a non-Push API use-case.
+  </p>
+  <p class="issue">
+    Add an example that demonstrates a <code>getBudgetDetails()</code> use-case.
+  </p>
+</section>
+
+<section>
+  <h2 id="terminology">Terminology</h2>
+  <p>
+    The <dfn>user engagement</dfn> with an <a>origin</a> is defined by the intensity of their
+    interaction with the application by means of navigation, interaction and retention signals.
+  </p>
+  <p>
+    A <dfn>background operation</dfn> is the ability for an <a>origin</a> to execute potentially
+    resource intensive code <a>in the background</a>.
+  </p>
+  <p>
+    The <dfn>background operation cost</dfn> is a positive number that describes the cost of
+    executing a <a>background operation</a> on the user's device.
+  </p>
+  <p>
+    The <dfn>available budget</dfn> is a positive number derived from the <a>user engagement</a>
+    that describes how many <a>background operations</a> an <a>origin</a> is able to do, depending
+    on the associated <a>background operation costs</a>.
+  </p>
+
+</section>
+
+<section>
+  <h2 id="privacy-considerations">Privacy Considerations</h2>
+
+  <section>
+    <h3 id="applicability">Applicability</h3>
+    <p class="issue">
+      Define that the intention is for this to be used for resource-sensitive operations (e.g.
+      the Push API), not privacy-sensitive operations (e.g. Geolocation).
+    </p>
+  </section>
+
+  <section>
+    <h3 id="permissions">Permissions</h3>
+    <p class="issue">
+      Define that user agents may (1) offer the user means to override the budget available to a Web
+      Application, and (2) the background operations themselves may be guarded behind additional
+      permissions.
+    </p>
+  </section>
+</section>
+
+<section>
+  <h2 id="api">API</h2>
+  <p>
+    Foo.
+  </p>
+
+  <p class="issue">
+    Should these methods be exposed as part of a <code>navigator.budget</code> object?
+  </p>
 </section>
