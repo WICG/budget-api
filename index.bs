@@ -75,6 +75,13 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     a privilege, functionality provided by this API is only available in a <a>secure context</a>.
   </p>
 
+  <p class="note">
+    This specification does not define how user agents establish or store the amount of available
+    <a>budget</a>. It aims to define an API that exposes sufficient information to make the
+    <a>budget</a> useful for authors, while not restricting the implementation details and
+    heuristics specific to a user agent.
+  </p>
+
   <section>
     <h3 id="immediate-budget">Immediate budget</h3>
     <p>
@@ -142,17 +149,18 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <p>
       The API defines a <code>{{NavigatorBudget/getBudgetDetails()}}</code> method that can be used
       with <code>{{NavigatorBudget/getCost()}}</code> to satisfy these use-cases, in unison with
-      other APIs they depend on. 
+      other APIs they depend on.
+    </p>
+
+    <p class="note">
+      User agents that do not store predictive budget would return a single
+      <code>{{BudgetPrediction}}</code> entry with an expiration date in the very near future.
     </p>
 
     <p class="issue">
       Add an example that demonstrates a <code>getBudgetDetails()</code> use-case.
     </p>
   </section>
-
-  <p class="issue">
-    Add an example that demonstrates a non-Push API use-case.
-  </p>
 </section>
 
 <section>
