@@ -70,34 +70,88 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     determine their available budget for resource intensive background operations, as well as the
     cost associated with doing a certain action <a>in the background</a>.
   </p>
+  <p>
+    Because this API relates to the ability to do work <a>in the background</a>, which is considered
+    a privilege, functionality provided by this API is only available in a <a>secure context</a>.
+  </p>
 
-  <section class="example">
+  <section>
+    <h3 id="immediate-budget">Immediate budget</h3>
     <p>
-      Determine whether a user visible interaction is required in response to a <a>push message</a>:
+      There are various use-cases for needing to know the immediately available <a>budget</a>:
     </p>
-    <pre class="lang-js">
-      self.addEventListener('push', event => {
-        // Execute the application-specific logic depending on the contents of the
-        // received push message, for example by caching the latest content.
+    <ul>
+      <li>
+        Use-case #1.
+      </li>
+      <li>
+        Use-case #2.
+      </li>
+      <li>
+        Use-case #3.
+      </li>
+    </ul>
 
-        event.waitUntil(
-            Promise.all([ navigator.getCost('push-message'), navigator.getBudget() ])
-              .then(([cost, budget]) => {
-                  if (budget >= cost)
-                      return;  // No need to show a notification.
+    <p>
+      The API defines a <code>{{NavigatorBudget/getBudget()}}</code> method that can be used with
+      <code>{{NavigatorBudget/getCost()}}</code> to satisfy these use-cases, in unison with other
+      APIs they depend on. 
+    </p>
 
-                  // Not enough budget is available, must show a notification.
-                  return registration.showNotification(...);
-              })
-          );
-      });
-    </pre>
+    <section class="example">
+      <p>
+        Determine whether a user visible interaction is required in response to a <a>push message</a>:
+      </p>
+      <pre class="lang-js">
+        self.addEventListener('push', event => {
+            // Execute the application-specific logic depending on the contents of the
+            // received push message, for example by caching the latest content.
+
+            event.waitUntil(
+              Promise.all([ navigator.getCost('push'), navigator.getBudget() ])
+                .then(([cost, budget]) => {
+                    if (budget >= cost)
+                        return;  // No need to show a notification.
+
+                    // Not enough budget is available, must show a notification.
+                    return registration.showNotification(...);
+                })
+            );
+        });
+      </pre>
+    </section>
   </section>
+
+  <section>
+    <h3 id="predictive-budget">Predictive budget</h3>
+    <p>
+      There are various use-cases for needing to know the <a>budget</a> in advance:
+    </p>
+    <ul>
+      <li>
+        Use-case #1.
+      </li>
+      <li>
+        Use-case #2.
+      </li>
+      <li>
+        Use-case #3.
+      </li>
+    </ul>
+
+    <p>
+      The API defines a <code>{{NavigatorBudget/getBudgetDetails()}}</code> method that can be used
+      with <code>{{NavigatorBudget/getCost()}}</code> to satisfy these use-cases, in unison with
+      other APIs they depend on. 
+    </p>
+
+    <p class="issue">
+      Add an example that demonstrates a <code>getBudgetDetails()</code> use-case.
+    </p>
+  </section>
+
   <p class="issue">
     Add an example that demonstrates a non-Push API use-case.
-  </p>
-  <p class="issue">
-    Add an example that demonstrates a <code>getBudgetDetails()</code> use-case.
   </p>
 </section>
 
@@ -215,11 +269,6 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </code> method returns a promise that will be resolved with a sequence of {{BudgetPrediction}}
       objects sharing the immediately available and predictive <a>budget</a>.
     </p>
-    <p class="issue">
-      This is significantly underspecified, as it ties in to the concept of <em>how</em> a user
-      agent maintains budget. Additionally, the term <em>predictive</em> is not firm enough: the
-      values given by the promise should be guaranteed minimums.
-    </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
       steps <a>in parallel</a>:
@@ -262,17 +311,23 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
   <section>
     <h3 id="budget-prediction-interface">The {{BudgetPrediction}} interface</h3>
+    <p>
+      The {{BudgetPrediction}} interface represents the known minimum amount of <a>budget</a>
+      available at a specific point in the future. This enables authors to make near-term decisions
+      about how to spend their <a>budget</a>.
+    </p>
+
     <pre class="idl">
       [Exposed=(Window,Worker)]
       interface BudgetPrediction {
         readonly attribute double budget;
-        readonly attribute DOMTimeStamp expiration;
+        readonly attribute DOMTimeStamp expirationTime;
       };
     </pre>
 
     <p>
       The <dfn attribute dfn-for="BudgetPrediction"><code>budget</code></dfn> attribute's getter
-      must return the <a>budget</a> at the associated {{expiration}} time.
+      must return the <a>budget</a> at the associated <code>{{BudgetPrediction/expiration}}</code> time.
     </p>
 
     <p>
@@ -284,26 +339,32 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
   <section>
     <h3 id="action-type-enum">The {{ActionType}} enum</h3>
+    <p>
+      The <code>{{ActionType}}</code> enumeration describes the known set of <a>background
+      operations</a> that the Web Budget API caters for. Authors can use this in combination with
+      {{NavigatorBudget/getCost()}} to interpret their available <a>budget</a> as a quantifiable set
+      of <a>background operations</a> it can be used for.
+    </p>
+
     <pre class="idl">
-      enum ActionType { "push-message" };
+      enum ActionType {
+        "push"
+      };
     </pre>
 
     <p>
-      The {{ActionType}} enumeration describes the known set of <a>background operations</a> that
-      the Web Budget API is applicable for.
+      The following <code>{{ActionType}}</code> values are defined:
     </p>
     <ul>
       <li>
-        The <code><dfn for="ActionType">push-message</dfn></code> value represents a <a>background
+        The <code><dfn for="ActionType">push</dfn></code> value represents a <a>background
         operation</a> in response to an incoming push message through the Push API. [[!PUSH-API]]
       </li>
     </ul>
 
-    <p class="issue">
-      Should we strive for consistency with the Permissions API [[PERMISSIONS]] for these values?
-    </p>
     <p class="note">
       Specifications are encouraged to extend the {{ActionType}} enumeration with their own values.
+      Naming consistency with the Permission API [[PERMISSIONS]], when applicable, is recommended.
     </p>
   </section>
   
