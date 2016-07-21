@@ -154,7 +154,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p class="note">
       User agents that do not store predictive budget would return a single
-      <code>{{BudgetPrediction}}</code> entry with an expiration date set to the current time.
+      <code>{{BudgetState}}</code> entry with an expiration date set to the current time.
     </p>
 
     <p class="issue">
@@ -223,7 +223,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       interface NavigatorBudget {
         Promise&lt;double&gt; getCost(ActionType type);
         Promise&lt;double&gt; getBudget();
-        Promise&lt;sequence&lt;BudgetPrediction&gt;&gt; getBudgetDetails();
+        Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudgetDetails();
       };
 
       Navigator implements NavigatorBudget;
@@ -274,7 +274,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p>
       The <code><dfn method for="NavigatorBudget" title="getBudgetDetails()">getBudgetDetails()</dfn>
-      </code> method returns a promise that will be resolved with a sequence of {{BudgetPrediction}}
+      </code> method returns a promise that will be resolved with a sequence of {{BudgetState}}
       objects sharing the immediately available and predictive <a>budget</a>.
     </p>
     <p>
@@ -290,58 +290,58 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         with an {{SecurityError}} and terminate these steps.
       </li>
       <li>
-        Let <var>predictions</var> be a new {{sequence}}.
+        Let <var>details</var> be a new {{sequence}}.
       </li>
       <li>
         For each <a>budget</a> entry in <var>origin</var>'s <a>list of budget predictions</a>:
         <ol>
           <li>
-            Let <var>prediction</var> be a new {{BudgetPrediction}} instance.
+            Let <var>state</var> be a new {{BudgetState}} instance.
           </li>
           <li>
-            Set <var>prediction</var>'s {{budget}} attribute to the <a>budget</a> value.
+            Set <var>state</var>'s {{budget}} attribute to the <a>budget</a> value.
           </li>
           <li>
-            Set <var>prediction</var>'s {{expiration}} attribute to the DOMTimeStamp representing
+            Set <var>state</var>'s {{expiration}} attribute to the DOMTimeStamp representing
             the final date of the validity of the <a>budget</a>.
           </li>
           <li>
-            Add <var>prediction</var> to the <var>predictions</var> {{sequence}}.
+            Add <var>state</var> to the <var>details</var> {{sequence}}.
           </li>
         </ol>
       </li>
       <li>
-        Resolve the <var>promise</var> with <var>predictions</var>.
+        Resolve the <var>promise</var> with <var>details</var>.
       </li>
     </ol>
 
   </section>
 
   <section>
-    <h3 id="budget-prediction-interface">The {{BudgetPrediction}} interface</h3>
+    <h3 id="budget-state-interface">The {{BudgetState}} interface</h3>
     <p>
-      The {{BudgetPrediction}} interface represents the known minimum amount of <a>budget</a>
-      available at a specific point in the future. This enables authors to make near-term decisions
-      about how to spend their <a>budget</a>.
+      The {{BudgetState}} interface represents the known minimum amount of <a>budget</a> available
+      at a specific point in the future. This enables authors to make near-term decisions about how
+      to spend their <a>budget</a>.
     </p>
 
     <pre class="idl">
       [Exposed=(Window,Worker)]
-      interface BudgetPrediction {
+      interface BudgetState {
         readonly attribute double budget;
         readonly attribute DOMTimeStamp expirationTime;
       };
     </pre>
 
     <p>
-      The <dfn attribute dfn-for="BudgetPrediction"><code>budget</code></dfn> attribute's getter
-      must return the <a>budget</a> at the associated <code>{{BudgetPrediction/expiration}}</code> time.
+      The <dfn attribute dfn-for="BudgetState"><code>budget</code></dfn> attribute's getter must
+      return the <a>budget</a> at the associated <code>{{BudgetState/expiration}}</code> time.
     </p>
 
     <p>
-      The <dfn attribute dfn-for="BudgetPrediction"><code>expiration</code></dfn> attribute's getter
-      must return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1
-      January 1970, of the time the <a>budget</a> will expire.
+      The <dfn attribute dfn-for="BudgetState"><code>expiration</code></dfn> attribute's getter must
+      return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1 January
+      1970, of the time the <a>budget</a> will expire.
     </p>
   </section>
 
