@@ -89,13 +89,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
     <ul>
       <li>
-        Use-case #1.
+        Deciding to <em>not</em> show a notification in response to a low priority push message
+        whose primary purpose was to synchronize data.
       </li>
       <li>
-        Use-case #2.
-      </li>
-      <li>
-        Use-case #3.
+        Deciding whether the <a>origin</a> can schedule a precise timer using a hypothetical Job
+        Scheduler API.
       </li>
     </ul>
 
@@ -136,13 +135,15 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
     <ul>
       <li>
-        Use-case #1.
+        Deciding on the frequency of server-initiated cache updates of synchronized data.
       </li>
       <li>
-        Use-case #2.
+        Deciding whether there is sufficient <a>budget</a> available to hide previously shown
+        notifications when the user dismissed them on other devices.
       </li>
       <li>
-        Use-case #3.
+        Deciding to temporarily limit <a>background operations</a> if the <a>budget</a> could be
+        used during an upcoming sporting event instead. 
       </li>
     </ul>
 
@@ -314,7 +315,6 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Resolve the <var>promise</var> with <var>details</var>.
       </li>
     </ol>
-
   </section>
 
   <section>
