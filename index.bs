@@ -129,7 +129,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </section>
 
   <section>
-    <h3 id="predictive-budget">Predictive budget</h3>
+    <h3 id="expected-budget">Expected budget</h3>
     <p>
       There are various use-cases for needing to know the <a>budget</a> in advance:
     </p>
@@ -154,7 +154,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
 
     <p class="note">
-      User agents that do not store predictive budget would return a single
+      User agents that do not store expected budget would return a single
       <code>{{BudgetState}}</code> entry with an expiration date set to the current time.
     </p>
 
