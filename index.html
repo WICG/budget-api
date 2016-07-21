@@ -1398,7 +1398,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-19">19 July 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-21">21 July 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1417,7 +1417,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This specification describes an API that can be used to retrieve the available budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.</p>
+   <p>This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
@@ -1451,7 +1451,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <a href="#api"><span class="secno">4</span> <span class="content">API</span></a>
      <ol class="toc">
       <li><a href="#navigator-budget-interface"><span class="secno">4.1</span> <span class="content">The <code class="idl"><span>NavigatorBudget</span></code> interface</span></a>
-      <li><a href="#budget-prediction-interface"><span class="secno">4.2</span> <span class="content">The <code class="idl"><span>BudgetPrediction</span></code> interface</span></a>
+      <li><a href="#budget-state-interface"><span class="secno">4.2</span> <span class="content">The <code class="idl"><span>BudgetState</span></code> interface</span></a>
       <li><a href="#action-type-enum"><span class="secno">4.3</span> <span class="content">The <code class="idl"><span>ActionType</span></code> enum</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -1536,7 +1536,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <p> The API defines a <code><code class="idl"><a data-link-type="idl" href="#dom-navigatorbudget-getbudgetdetails" id="ref-for-dom-navigatorbudget-getbudgetdetails-1">getBudgetDetails()</a></code></code> method that can be used
       with <code><code class="idl"><a data-link-type="idl" href="#dom-navigatorbudget-getcost" id="ref-for-dom-navigatorbudget-getcost-2">getCost()</a></code></code> to satisfy these use-cases, in unison with
       other APIs they depend on. </p>
-     <p class="note" role="note"> User agents that do not store predictive budget would return a single <code><code class="idl"><a data-link-type="idl" href="#budgetprediction" id="ref-for-budgetprediction-1">BudgetPrediction</a></code></code> entry with an expiration date in the very near future. </p>
+     <p class="note" role="note"> User agents that do not store predictive budget would return a single <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-1">BudgetState</a></code></code> entry with an expiration date set to the current time. </p>
      <p class="issue" id="issue-0533871f"><a class="self-link" href="#issue-0533871f"></a> Add an example that demonstrates a <code>getBudgetDetails()</code> use-case. </p>
     </section>
    </section>
@@ -1550,7 +1550,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-1">background operation</a> on the user’s device. </p>
     <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="budget">budget</dfn>, which is a positive number derived from
     the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-2">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operations</a> the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is able to do, depending on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-1">background operation costs</a>. </p>
-    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> may have an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="list-of-budget-predictions">list of budget predictions</dfn>. These are <a data-link-type="dfn" href="#budget" id="ref-for-budget-5">budget</a> entries with a known expiration time that lies in the future. </p>
+    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> may have an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="list-of-budget-expectations">list of budget expectations</dfn>. These are the
+    expected <a data-link-type="dfn" href="#budget" id="ref-for-budget-5">budget</a> values at given moments in time in the future. </p>
    </section>
    <section>
     <h2 class="heading settled" data-level="3" id="privacy-considerations"><span class="secno">3. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a></h2>
@@ -1576,7 +1577,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="navigatorbudget">NavigatorBudget</dfn> {
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost" id="ref-for-dom-navigatorbudget-getcost-3">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-1">ActionType</a> <dfn class="nv idl-code" data-dfn-for="NavigatorBudget/getCost(type)" data-dfn-type="argument" data-export="" id="dom-navigatorbudget-getcost-type-type">type<a class="self-link" href="#dom-navigatorbudget-getcost-type-type"></a></dfn>);
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudget" id="ref-for-dom-navigatorbudget-getbudget-2">getBudget</a>();
-  <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetprediction" id="ref-for-budgetprediction-2">BudgetPrediction</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails" id="ref-for-dom-navigatorbudget-getbudgetdetails-2">getBudgetDetails</a>();
+  <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate-2">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails" id="ref-for-dom-navigatorbudget-getbudgetdetails-2">getBudgetDetails</a>();
 };
 
 <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> <span class="kt">implements</span> <a class="n" data-link-type="idl-name" href="#navigatorbudget" id="ref-for-navigatorbudget-2">NavigatorBudget</a>;
@@ -1602,40 +1603,41 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li> Resolve the <var>promise</var> with <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-7">budget</a> when set, or zero
         otherwise. 
      </ol>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="NavigatorBudget" data-dfn-type="method" data-export="" id="dom-navigatorbudget-getbudgetdetails" title="getBudgetDetails()">getBudgetDetails()</dfn> </code> method returns a promise that will be resolved with a sequence of <code class="idl"><a data-link-type="idl" href="#budgetprediction" id="ref-for-budgetprediction-3">BudgetPrediction</a></code> objects sharing the immediately available and predictive <a data-link-type="dfn" href="#budget" id="ref-for-budget-8">budget</a>. </p>
+     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="NavigatorBudget" data-dfn-type="method" data-export="" id="dom-navigatorbudget-getbudgetdetails" title="getBudgetDetails()">getBudgetDetails()</dfn> </code> method returns a promise that will be resolved with a sequence of <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-3">BudgetState</a></code> objects sharing the immediately available and predictive <a data-link-type="dfn" href="#budget" id="ref-for-budget-8">budget</a>. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
      <ol>
       <li> Let <var>origin be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. </var>
       <li> If the scheme of the <var>origin</var> is not <code>https</code>, reject <var>promise</var> with an <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code> and terminate these steps. 
-      <li> Let <var>predictions</var> be a new <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence">sequence</a></code>. 
+      <li> Let <var>details</var> be a new <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence">sequence</a></code>. 
       <li>
-        For each <a data-link-type="dfn" href="#budget" id="ref-for-budget-9">budget</a> entry in <var>origin</var>’s <a data-link-type="dfn" href="#list-of-budget-predictions" id="ref-for-list-of-budget-predictions-1">list of budget predictions</a>: 
+        For each <a data-link-type="dfn" href="#budget" id="ref-for-budget-9">budget</a> entry in <var>origin</var>’s <a data-link-type="dfn" href="#list-of-budget-expectations" id="ref-for-list-of-budget-expectations-1">list of budget expectations</a>: 
        <ol>
-        <li> Let <var>prediction</var> be a new <code class="idl"><a data-link-type="idl" href="#budgetprediction" id="ref-for-budgetprediction-4">BudgetPrediction</a></code> instance. 
-        <li> Set <var>prediction</var>’s <code class="idl"><a data-link-type="idl" href="#dom-budgetprediction-budget" id="ref-for-dom-budgetprediction-budget-1">budget</a></code> attribute to the <a data-link-type="dfn" href="#budget" id="ref-for-budget-10">budget</a> value. 
-        <li> Set <var>prediction</var>’s <code class="idl"><a data-link-type="idl" href="#dom-budgetprediction-expiration" id="ref-for-dom-budgetprediction-expiration-1">expiration</a></code> attribute to the DOMTimeStamp representing
+        <li> Let <var>state</var> be a new <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-4">BudgetState</a></code> instance. 
+        <li> Set <var>state</var>’s <code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budget" id="ref-for-dom-budgetstate-budget-1">budget</a></code> attribute to the <a data-link-type="dfn" href="#budget" id="ref-for-budget-10">budget</a> value. 
+        <li> Set <var>state</var>’s <code class="idl"><a data-link-type="idl" href="#dom-budgetstate-expiration" id="ref-for-dom-budgetstate-expiration-1">expiration</a></code> attribute to the DOMTimeStamp representing
             the final date of the validity of the <a data-link-type="dfn" href="#budget" id="ref-for-budget-11">budget</a>. 
-        <li> Add <var>prediction</var> to the <var>predictions</var> <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence">sequence</a></code>. 
+        <li> Add <var>state</var> to the <var>details</var> <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence">sequence</a></code>. 
        </ol>
-      <li> Resolve the <var>promise</var> with <var>predictions</var>. 
+      <li> Resolve the <var>promise</var> with <var>details</var>. 
      </ol>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.2" id="budget-prediction-interface"><span class="secno">4.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetprediction" id="ref-for-budgetprediction-5">BudgetPrediction</a></code> interface</span><a class="self-link" href="#budget-prediction-interface"></a></h3>
-     <p> The <code class="idl"><a data-link-type="idl" href="#budgetprediction" id="ref-for-budgetprediction-6">BudgetPrediction</a></code> interface represents the known minimum amount of <a data-link-type="dfn" href="#budget" id="ref-for-budget-12">budget</a> available at a specific point in the future. This enables authors to make near-term decisions
-      about how to spend their <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a>. </p>
+     <h3 class="heading settled" data-level="4.2" id="budget-state-interface"><span class="secno">4.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-5">BudgetState</a></code> interface</span><a class="self-link" href="#budget-state-interface"></a></h3>
+     <p> The <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-6">BudgetState</a></code> interface represents the known minimum amount of <a data-link-type="dfn" href="#budget" id="ref-for-budget-12">budget</a> available
+      at a specific point in the future. This enables authors to make near-term decisions about how
+      to spend their <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a>. </p>
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="budgetprediction">BudgetPrediction</dfn> {
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetprediction-budget" id="ref-for-dom-budgetprediction-budget-2">budget</a>;
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <dfn class="nv idl-code" data-dfn-for="BudgetPrediction" data-dfn-type="attribute" data-export="" data-readonly="" data-type="DOMTimeStamp" id="dom-budgetprediction-expirationtime">expirationTime<a class="self-link" href="#dom-budgetprediction-expirationtime"></a></dfn>;
+<span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="budgetstate">BudgetState</dfn> {
+  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetstate-budget" id="ref-for-dom-budgetstate-budget-2">budget</a>;
+  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <dfn class="nv idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export="" data-readonly="" data-type="DOMTimeStamp" id="dom-budgetstate-expirationtime">expirationTime<a class="self-link" href="#dom-budgetstate-expirationtime"></a></dfn>;
 };
 </pre>
-     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetPrediction" data-dfn-type="attribute" data-export="" id="dom-budgetprediction-budget"><code>budget</code></dfn> attribute’s getter
-      must return the <a data-link-type="dfn" href="#budget" id="ref-for-budget-14">budget</a> at the associated <code><code class="idl"><a data-link-type="idl" href="#dom-budgetprediction-expiration" id="ref-for-dom-budgetprediction-expiration-2">expiration</a></code></code> time. </p>
-     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetPrediction" data-dfn-type="attribute" data-export="" id="dom-budgetprediction-expiration"><code>expiration</code></dfn> attribute’s getter
-      must return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1
-      January 1970, of the time the <a data-link-type="dfn" href="#budget" id="ref-for-budget-15">budget</a> will expire. </p>
+     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export="" id="dom-budgetstate-budget"><code>budget</code></dfn> attribute’s getter must
+      return the <a data-link-type="dfn" href="#budget" id="ref-for-budget-14">budget</a> at the associated <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-expiration" id="ref-for-dom-budgetstate-expiration-2">expiration</a></code></code> time. </p>
+     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export="" id="dom-budgetstate-expiration"><code>expiration</code></dfn> attribute’s getter must
+      return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1 January
+      1970, of the time the <a data-link-type="dfn" href="#budget" id="ref-for-budget-15">budget</a> will expire. </p>
     </section>
     <section>
      <h3 class="heading settled" data-level="4.3" id="action-type-enum"><span class="secno">4.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-2">ActionType</a></code> enum</span><a class="self-link" href="#action-type-enum"></a></h3>
@@ -1812,15 +1814,15 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     budget
     <ul>
      <li><a href="#budget">definition of</a><span>, in §2</span>
-     <li><a href="#dom-budgetprediction-budget">attribute for BudgetPrediction</a><span>, in §4.2</span>
+     <li><a href="#dom-budgetstate-budget">attribute for BudgetState</a><span>, in §4.2</span>
     </ul>
-   <li><a href="#budgetprediction">BudgetPrediction</a><span>, in §4.2</span>
-   <li><a href="#dom-budgetprediction-expiration">expiration</a><span>, in §4.2</span>
-   <li><a href="#dom-budgetprediction-expirationtime">expirationTime</a><span>, in §4.2</span>
+   <li><a href="#budgetstate">BudgetState</a><span>, in §4.2</span>
+   <li><a href="#dom-budgetstate-expiration">expiration</a><span>, in §4.2</span>
+   <li><a href="#dom-budgetstate-expirationtime">expirationTime</a><span>, in §4.2</span>
    <li><a href="#dom-navigatorbudget-getbudget">getBudget()</a><span>, in §4.1</span>
    <li><a href="#dom-navigatorbudget-getbudgetdetails">getBudgetDetails()</a><span>, in §4.1</span>
    <li><a href="#dom-navigatorbudget-getcost">getCost(type)</a><span>, in §4.1</span>
-   <li><a href="#list-of-budget-predictions">list of budget predictions</a><span>, in §2</span>
+   <li><a href="#list-of-budget-expectations">list of budget expectations</a><span>, in §2</span>
    <li><a href="#navigatorbudget">NavigatorBudget</a><span>, in §4.1</span>
    <li>
     push
@@ -1901,16 +1903,16 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <span class="kt">interface</span> <a class="nv" href="#navigatorbudget">NavigatorBudget</a> {
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-actiontype">ActionType</a> <a class="nv" href="#dom-navigatorbudget-getcost-type-type">type</a>);
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudget">getBudget</a>();
-  <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetprediction">BudgetPrediction</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails">getBudgetDetails</a>();
+  <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails">getBudgetDetails</a>();
 };
 
 <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> <span class="kt">implements</span> <a class="n" data-link-type="idl-name" href="#navigatorbudget">NavigatorBudget</a>;
 <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator">WorkerNavigator</a> <span class="kt">implements</span> <a class="n" data-link-type="idl-name" href="#navigatorbudget">NavigatorBudget</a>;
 
 [<a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <a class="nv" href="#budgetprediction">BudgetPrediction</a> {
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetprediction-budget">budget</a>;
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <a class="nv" data-readonly="" data-type="DOMTimeStamp" href="#dom-budgetprediction-expirationtime">expirationTime</a>;
+<span class="kt">interface</span> <a class="nv" href="#budgetstate">BudgetState</a> {
+  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetstate-budget">budget</a>;
+  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <a class="nv" data-readonly="" data-type="DOMTimeStamp" href="#dom-budgetstate-expirationtime">expirationTime</a>;
 };
 
 <span class="kt">enum</span> <a class="nv" href="#enumdef-actiontype">ActionType</a> {
@@ -1958,14 +1960,14 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-budget-4">1.2. Predictive budget</a>
     <li><a href="#ref-for-budget-5">2. Concepts</a>
     <li><a href="#ref-for-budget-6">4.1. The NavigatorBudget interface</a> <a href="#ref-for-budget-7">(2)</a> <a href="#ref-for-budget-8">(3)</a> <a href="#ref-for-budget-9">(4)</a> <a href="#ref-for-budget-10">(5)</a> <a href="#ref-for-budget-11">(6)</a>
-    <li><a href="#ref-for-budget-12">4.2. The BudgetPrediction interface</a> <a href="#ref-for-budget-13">(2)</a> <a href="#ref-for-budget-14">(3)</a> <a href="#ref-for-budget-15">(4)</a>
+    <li><a href="#ref-for-budget-12">4.2. The BudgetState interface</a> <a href="#ref-for-budget-13">(2)</a> <a href="#ref-for-budget-14">(3)</a> <a href="#ref-for-budget-15">(4)</a>
     <li><a href="#ref-for-budget-16">4.3. The ActionType enum</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="list-of-budget-predictions">
-   <b><a href="#list-of-budget-predictions">#list-of-budget-predictions</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="list-of-budget-expectations">
+   <b><a href="#list-of-budget-expectations">#list-of-budget-expectations</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-of-budget-predictions-1">4.1. The NavigatorBudget interface</a>
+    <li><a href="#ref-for-list-of-budget-expectations-1">4.1. The NavigatorBudget interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="navigatorbudget">
@@ -1997,26 +1999,26 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-navigatorbudget-getbudgetdetails-2">4.1. The NavigatorBudget interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="budgetprediction">
-   <b><a href="#budgetprediction">#budgetprediction</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="budgetstate">
+   <b><a href="#budgetstate">#budgetstate</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-budgetprediction-1">1.2. Predictive budget</a>
-    <li><a href="#ref-for-budgetprediction-2">4.1. The NavigatorBudget interface</a> <a href="#ref-for-budgetprediction-3">(2)</a> <a href="#ref-for-budgetprediction-4">(3)</a>
-    <li><a href="#ref-for-budgetprediction-5">4.2. The BudgetPrediction interface</a> <a href="#ref-for-budgetprediction-6">(2)</a>
+    <li><a href="#ref-for-budgetstate-1">1.2. Predictive budget</a>
+    <li><a href="#ref-for-budgetstate-2">4.1. The NavigatorBudget interface</a> <a href="#ref-for-budgetstate-3">(2)</a> <a href="#ref-for-budgetstate-4">(3)</a>
+    <li><a href="#ref-for-budgetstate-5">4.2. The BudgetState interface</a> <a href="#ref-for-budgetstate-6">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-budgetprediction-budget">
-   <b><a href="#dom-budgetprediction-budget">#dom-budgetprediction-budget</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-budgetstate-budget">
+   <b><a href="#dom-budgetstate-budget">#dom-budgetstate-budget</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetprediction-budget-1">4.1. The NavigatorBudget interface</a>
-    <li><a href="#ref-for-dom-budgetprediction-budget-2">4.2. The BudgetPrediction interface</a>
+    <li><a href="#ref-for-dom-budgetstate-budget-1">4.1. The NavigatorBudget interface</a>
+    <li><a href="#ref-for-dom-budgetstate-budget-2">4.2. The BudgetState interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-budgetprediction-expiration">
-   <b><a href="#dom-budgetprediction-expiration">#dom-budgetprediction-expiration</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-budgetstate-expiration">
+   <b><a href="#dom-budgetstate-expiration">#dom-budgetstate-expiration</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetprediction-expiration-1">4.1. The NavigatorBudget interface</a>
-    <li><a href="#ref-for-dom-budgetprediction-expiration-2">4.2. The BudgetPrediction interface</a>
+    <li><a href="#ref-for-dom-budgetstate-expiration-1">4.1. The NavigatorBudget interface</a>
+    <li><a href="#ref-for-dom-budgetstate-expiration-2">4.2. The BudgetState interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="enumdef-actiontype">

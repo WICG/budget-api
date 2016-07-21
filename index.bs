@@ -183,8 +183,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <a>origin</a> is able to do, depending on the associated <a>background operation costs</a>.
   </p>
   <p>
-    An <a>origin</a> may have an associated <dfn>list of budget predictions</dfn>. These are
-    <a>budget</a> entries with a known expiration time that lies in the future.
+    An <a>origin</a> may have an associated <dfn>list of budget expectations</dfn>. These are the
+    expected <a>budget</a> values at given moments in time in the future.
   </p>
 </section>
 
@@ -293,7 +293,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Let <var>details</var> be a new {{sequence}}.
       </li>
       <li>
-        For each <a>budget</a> entry in <var>origin</var>'s <a>list of budget predictions</a>:
+        For each <a>budget</a> entry in <var>origin</var>'s <a>list of budget expectations</a>:
         <ol>
           <li>
             Let <var>state</var> be a new {{BudgetState}} instance.
