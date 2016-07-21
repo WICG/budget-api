@@ -275,7 +275,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <p>
       The <code><dfn method for="NavigatorBudget" title="getBudgetDetails()">getBudgetDetails()</dfn>
       </code> method returns a promise that will be resolved with a sequence of {{BudgetState}}
-      objects sharing the immediately available and predictive <a>budget</a>.
+      objects indicating the expected state of the budget at a given time in the future.
     </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
