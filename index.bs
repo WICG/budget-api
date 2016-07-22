@@ -190,6 +190,15 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     An <a>origin</a> may have an associated <dfn>list of budget expectations</dfn>. These are the
     expected <a>budget</a> values at given moments in time in the future.
   </p>
+  <p>
+    Part of an <a>origin</a>'s available <a>budget</a> can be <dfn lt="claim budget">claimed</dfn>.
+    This reduces the <a>origin</a>'s available <a>budget</a> by the given <var>cost</var>.
+  </p>
+  <p class="note">
+    The claimed cost of a certain <a>background operations</a> could be less than the cost
+    indicated by <code>{{BudgetService/getCost()}}</code> when the user's device is in favorable
+    conditions, for example because it's not on battery power.
+  </p>
 </section>
 
 <section>
@@ -248,6 +257,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       interface BudgetService {
           Promise&lt;double&gt; getCost(OperationType operation);
           Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudget();
+
+          Promise&lt;boolean&gt; request(OperationType operation);
       };
     </pre>
 
@@ -262,8 +273,15 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
     <ol>
       <li>
+        Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
+      </li>
+      <li>
+        If the <var>origin</var> is not a <a>secure context</a>, reject <var>promise</var> with a
+        <code>{{SecurityError}}</code> and terminate these steps.
+      </li>
+      <li>
         Resolve the <var>promise</var> with the worst-case <a>background operation cost</a>
-        associated with the given <code>operation</code>.
+        associated with the given <var>operation</var>.
       </li>
     </ol>
 
@@ -332,16 +350,39 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </li>
     </ol>
 
-
-    <!-- ------------------------------------- -->
-
-    <p class="note">
-      The claimed cost of a certain <a>background operations</a> could be less than the cost
-      indicated by <code>{{BudgetService/getCost()}}</code> when the user's device is in favorable
-      conditions, for example because it's not on battery power.
+    <p>
+      The <code><dfn method for="BudgetService" title="request()">request()</dfn></code> method
+      returns a promise that will be resolved with a boolean indicating whether the requested
+      budget for <var>operation</var> could be <a lt="claim budget">claimed</a>.
     </p>
-
-    <!-- ------------------------------------- -->
+    <p>
+      When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
+      steps <a>in parallel</a>:
+    </p>
+    <ol>
+      <li>
+        Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
+      </li>
+      <li>
+        If the <var>origin</var> is not a <a>secure context</a>, reject <var>promise</var> with a
+        <code>{{SecurityError}}</code> and terminate these steps.
+      </li>
+      <li>
+        Let <var>budget</var> be the amount of budget available to <var>origin</var>.
+      </li>
+      <li>
+        Let <var>cost</var> be the <a>background operation cost</a> associated with
+        <var>operation</var>.
+      </li>
+      <li>
+        If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
+        the boolean <code>false</code> and abort these steps.
+      </li>
+      <li>
+        <a lt="claim budget">Claim</a> the <var>cost</var> from <var>origin</var>'s <a>budget</a>
+        and resolve the <var>promise</var> with the boolean <code>true</code>.
+      </li>
+    </ol>
   </section>
 
   <section>
