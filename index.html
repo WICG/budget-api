@@ -1398,7 +1398,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-21">21 July 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-22">22 July 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1417,7 +1417,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.</p>
+   <p>This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource consuming background operations, as well as the cost associated with doing such an operation.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
@@ -1452,7 +1452,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <ol class="toc">
       <li><a href="#navigator-budget-interface"><span class="secno">4.1</span> <span class="content">The <code class="idl"><span>NavigatorBudget</span></code> interface</span></a>
       <li><a href="#budget-state-interface"><span class="secno">4.2</span> <span class="content">The <code class="idl"><span>BudgetState</span></code> interface</span></a>
-      <li><a href="#action-type-enum"><span class="secno">4.3</span> <span class="content">The <code class="idl"><span>ActionType</span></code> enum</span></a>
+      <li><a href="#oepration-type-enum"><span class="secno">4.3</span> <span class="content">The <code class="idl"><span>OperationType</span></code> enum</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1489,7 +1489,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     of the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-1">user’s engagement</a> with the Web Application. </p>
     <p> This specification describes an API that exposes a budget that can be used by authors to
     determine their available budget for resource intensive background operations, as well as the
-    cost associated with doing a certain action <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>. </p>
+    cost associated with doing a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-1">background operation</a>. </p>
     <p> Because this API relates to the ability to do work <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, which is considered
     a privilege, functionality provided by this API is only available in a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>. </p>
     <p class="note" role="note"> This specification does not define how user agents establish or store the amount of available <a data-link-type="dfn" href="#budget" id="ref-for-budget-1">budget</a>. It aims to define an API that exposes sufficient information to make the <a data-link-type="dfn" href="#budget" id="ref-for-budget-2">budget</a> useful for authors, while not restricting the implementation details and
@@ -1533,7 +1533,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li> Deciding on the frequency of server-initiated cache updates of synchronized data. 
       <li> Deciding whether there is sufficient <a data-link-type="dfn" href="#budget" id="ref-for-budget-5">budget</a> available to hide previously shown
         notifications when the user dismissed them on other devices. 
-      <li> Deciding to temporarily limit <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-1">background operations</a> if the <a data-link-type="dfn" href="#budget" id="ref-for-budget-6">budget</a> could be
+      <li> Deciding to temporarily limit <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operations</a> if the <a data-link-type="dfn" href="#budget" id="ref-for-budget-6">budget</a> could be
         used during an upcoming sporting event instead. 
      </ul>
      <p> The API defines a <code><code class="idl"><a data-link-type="idl" href="#dom-navigatorbudget-getbudgetdetails" id="ref-for-dom-navigatorbudget-getbudgetdetails-1">getBudgetDetails()</a></code></code> method that can be used
@@ -1550,9 +1550,9 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <p> A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation">background operation</dfn> is the ability for an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> to execute potentially
     resource intensive code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>. </p>
     <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation-cost">background operation cost</dfn> is a positive number that describes the cost of
-    executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operation</a> on the user’s device. </p>
+    executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-3">background operation</a> on the user’s device. </p>
     <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="budget">budget</dfn>, which is a positive number derived from
-    the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-2">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-3">background operations</a> the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is able to do, depending on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-1">background operation costs</a>. </p>
+    the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-2">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-4">background operations</a> the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is able to do, depending on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-1">background operation costs</a>. </p>
     <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> may have an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="list-of-budget-expectations">list of budget expectations</dfn>. These are the
     expected <a data-link-type="dfn" href="#budget" id="ref-for-budget-7">budget</a> values at given moments in time in the future. </p>
    </section>
@@ -1578,7 +1578,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute">NoInterfaceObject</a>,
  <a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="navigatorbudget">NavigatorBudget</dfn> {
-  <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost" id="ref-for-dom-navigatorbudget-getcost-3">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-1">ActionType</a> <dfn class="nv idl-code" data-dfn-for="NavigatorBudget/getCost(type)" data-dfn-type="argument" data-export="" id="dom-navigatorbudget-getcost-type-type">type<a class="self-link" href="#dom-navigatorbudget-getcost-type-type"></a></dfn>);
+  <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost" id="ref-for-dom-navigatorbudget-getcost-3">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-1">OperationType</a> <dfn class="nv idl-code" data-dfn-for="NavigatorBudget/getCost(type)" data-dfn-type="argument" data-export="" id="dom-navigatorbudget-getcost-type-type">type<a class="self-link" href="#dom-navigatorbudget-getcost-type-type"></a></dfn>);
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudget" id="ref-for-dom-navigatorbudget-getbudget-2">getBudget</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate-2">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails" id="ref-for-dom-navigatorbudget-getbudgetdetails-2">getBudgetDetails</a>();
 };
@@ -1588,8 +1588,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 </pre>
      <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="NavigatorBudget" data-dfn-type="method" data-export="" data-lt="getCost(type)" id="dom-navigatorbudget-getcost" title="getCost()">getCost()</dfn></code> method
       returns a promise that will be resolved with the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of the
-      indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-4">background operation</a>. </p>
-     <p class="note" role="note"> A user agent could lower the cost of certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-5">background operations</a> if the user has
+      indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-5">background operation</a>. </p>
+     <p class="note" role="note"> A user agent could lower the cost of certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> if the user has
       established a trust relationship with the Web Application. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
@@ -1643,21 +1643,22 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       1970, of the time the <a data-link-type="dfn" href="#budget" id="ref-for-budget-16">budget</a> will expire. </p>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.3" id="action-type-enum"><span class="secno">4.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-2">ActionType</a></code> enum</span><a class="self-link" href="#action-type-enum"></a></h3>
-     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-3">ActionType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background
+     <h3 class="heading settled" data-level="4.3" id="oepration-type-enum"><span class="secno">4.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-2">OperationType</a></code> enum</span><a class="self-link" href="#oepration-type-enum"></a></h3>
+     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with <code class="idl"><a data-link-type="idl" href="#dom-navigatorbudget-getcost" id="ref-for-dom-navigatorbudget-getcost-4">getCost()</a></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a quantifiable set
-      of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operations</a> it can be used for. </p>
-<pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-actiontype">ActionType</dfn> {
-  <dfn class="s idl-code" data-dfn-for="ActionType" data-dfn-type="enum-value" data-export="" data-lt="&quot;push&quot;|push" id="dom-actiontype-push">"push"<a class="self-link" href="#dom-actiontype-push"></a></dfn>
+      of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background operations</a> it can be used for. </p>
+<pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-operationtype">OperationType</dfn> {
+  <dfn class="s idl-code" data-dfn-for="OperationType" data-dfn-type="enum-value" data-export="" data-lt="&quot;push&quot;|push" id="dom-operationtype-push">"push"<a class="self-link" href="#dom-operationtype-push"></a></dfn>
 };
 </pre>
-     <p> The following <code><code class="idl"><a data-link-type="idl" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-4">ActionType</a></code></code> values are defined: </p>
+     <p> The following <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-4">OperationType</a></code></code> values are defined: </p>
      <ul>
-      <li> The <code><dfn data-dfn-for="ActionType" data-dfn-type="dfn" data-noexport="" id="actiontype-push">push<a class="self-link" href="#actiontype-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background
+      <li> The <code><dfn data-dfn-for="OperationType" data-dfn-type="dfn" data-noexport="" id="operationtype-push">push<a class="self-link" href="#operationtype-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-9">background
         operation</a> in response to an incoming push message through the Push API. <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> 
      </ul>
-     <p class="note" role="note"> Specifications are encouraged to extend the <code class="idl"><a data-link-type="idl" href="#enumdef-actiontype" id="ref-for-enumdef-actiontype-5">ActionType</a></code> enumeration with their own values.
-      Naming consistency with the Permission API <a data-link-type="biblio" href="#biblio-permissions">[PERMISSIONS]</a>, when applicable, is recommended. </p>
+     <p class="note" role="note"> Specifications are encouraged to extend the <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-5">OperationType</a></code> enumeration with their own
+      values. Naming consistency with the Permission API <a data-link-type="biblio" href="#biblio-permissions">[PERMISSIONS]</a>, when applicable, is
+      recommended. </p>
     </section>
    </section>
   </main>
@@ -1810,7 +1811,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#enumdef-actiontype">ActionType</a><span>, in §4.3</span>
    <li><a href="#background-operation">background operation</a><span>, in §2</span>
    <li><a href="#background-operation-cost">background operation cost</a><span>, in §2</span>
    <li>
@@ -1827,13 +1827,14 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <li><a href="#dom-navigatorbudget-getcost">getCost(type)</a><span>, in §4.1</span>
    <li><a href="#list-of-budget-expectations">list of budget expectations</a><span>, in §2</span>
    <li><a href="#navigatorbudget">NavigatorBudget</a><span>, in §4.1</span>
+   <li><a href="#enumdef-operationtype">OperationType</a><span>, in §4.3</span>
    <li>
     push
     <ul>
-     <li><a href="#dom-actiontype-push">enum-value for ActionType</a><span>, in §4.3</span>
-     <li><a href="#actiontype-push">dfn for ActionType</a><span>, in §4.3</span>
+     <li><a href="#dom-operationtype-push">enum-value for OperationType</a><span>, in §4.3</span>
+     <li><a href="#operationtype-push">dfn for OperationType</a><span>, in §4.3</span>
     </ul>
-   <li><a href="#dom-actiontype-push">"push"</a><span>, in §4.3</span>
+   <li><a href="#dom-operationtype-push">"push"</a><span>, in §4.3</span>
    <li><a href="#user-engagement">user engagement</a><span>, in §2</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1904,7 +1905,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="idl def">[<a class="nv idl-code" data-link-type="extended-attribute">NoInterfaceObject</a>,
  <a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <a class="nv" href="#navigatorbudget">NavigatorBudget</a> {
-  <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-actiontype">ActionType</a> <a class="nv" href="#dom-navigatorbudget-getcost-type-type">type</a>);
+  <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-navigatorbudget-getcost-type-type">type</a>);
   <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudget">getBudget</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-navigatorbudget-getbudgetdetails">getBudgetDetails</a>();
 };
@@ -1918,8 +1919,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <a class="nv" data-readonly="" data-type="DOMTimeStamp" href="#dom-budgetstate-expirationtime">expirationTime</a>;
 };
 
-<span class="kt">enum</span> <a class="nv" href="#enumdef-actiontype">ActionType</a> {
-  <a class="s" href="#dom-actiontype-push">"push"</a>
+<span class="kt">enum</span> <a class="nv" href="#enumdef-operationtype">OperationType</a> {
+  <a class="s" href="#dom-operationtype-push">"push"</a>
 };
 
 </pre>
@@ -1943,10 +1944,11 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <aside class="dfn-panel" data-for="background-operation">
    <b><a href="#background-operation">#background-operation</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-background-operation-1">1.2. Expected budget</a>
-    <li><a href="#ref-for-background-operation-2">2. Concepts</a> <a href="#ref-for-background-operation-3">(2)</a>
-    <li><a href="#ref-for-background-operation-4">4.1. The NavigatorBudget interface</a> <a href="#ref-for-background-operation-5">(2)</a>
-    <li><a href="#ref-for-background-operation-6">4.3. The ActionType enum</a> <a href="#ref-for-background-operation-7">(2)</a> <a href="#ref-for-background-operation-8">(3)</a>
+    <li><a href="#ref-for-background-operation-1">1. Introduction</a>
+    <li><a href="#ref-for-background-operation-2">1.2. Expected budget</a>
+    <li><a href="#ref-for-background-operation-3">2. Concepts</a> <a href="#ref-for-background-operation-4">(2)</a>
+    <li><a href="#ref-for-background-operation-5">4.1. The NavigatorBudget interface</a> <a href="#ref-for-background-operation-6">(2)</a>
+    <li><a href="#ref-for-background-operation-7">4.3. The OperationType enum</a> <a href="#ref-for-background-operation-8">(2)</a> <a href="#ref-for-background-operation-9">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="background-operation-cost">
@@ -1965,7 +1967,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-budget-7">2. Concepts</a>
     <li><a href="#ref-for-budget-8">4.1. The NavigatorBudget interface</a> <a href="#ref-for-budget-9">(2)</a> <a href="#ref-for-budget-10">(3)</a> <a href="#ref-for-budget-11">(4)</a> <a href="#ref-for-budget-12">(5)</a>
     <li><a href="#ref-for-budget-13">4.2. The BudgetState interface</a> <a href="#ref-for-budget-14">(2)</a> <a href="#ref-for-budget-15">(3)</a> <a href="#ref-for-budget-16">(4)</a>
-    <li><a href="#ref-for-budget-17">4.3. The ActionType enum</a>
+    <li><a href="#ref-for-budget-17">4.3. The OperationType enum</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="list-of-budget-expectations">
@@ -1986,7 +1988,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-navigatorbudget-getcost-1">1.1. Immediate budget</a>
     <li><a href="#ref-for-dom-navigatorbudget-getcost-2">1.2. Expected budget</a>
     <li><a href="#ref-for-dom-navigatorbudget-getcost-3">4.1. The NavigatorBudget interface</a>
-    <li><a href="#ref-for-dom-navigatorbudget-getcost-4">4.3. The ActionType enum</a>
+    <li><a href="#ref-for-dom-navigatorbudget-getcost-4">4.3. The OperationType enum</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-navigatorbudget-getbudget">
@@ -2025,11 +2027,11 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-budgetstate-expiration-2">4.2. The BudgetState interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="enumdef-actiontype">
-   <b><a href="#enumdef-actiontype">#enumdef-actiontype</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="enumdef-operationtype">
+   <b><a href="#enumdef-operationtype">#enumdef-operationtype</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-enumdef-actiontype-1">4.1. The NavigatorBudget interface</a>
-    <li><a href="#ref-for-enumdef-actiontype-2">4.3. The ActionType enum</a> <a href="#ref-for-enumdef-actiontype-3">(2)</a> <a href="#ref-for-enumdef-actiontype-4">(3)</a> <a href="#ref-for-enumdef-actiontype-5">(4)</a>
+    <li><a href="#ref-for-enumdef-operationtype-1">4.1. The NavigatorBudget interface</a>
+    <li><a href="#ref-for-enumdef-operationtype-2">4.3. The OperationType enum</a> <a href="#ref-for-enumdef-operationtype-3">(2)</a> <a href="#ref-for-enumdef-operationtype-4">(3)</a> <a href="#ref-for-enumdef-operationtype-5">(4)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

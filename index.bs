@@ -6,7 +6,7 @@ Status: DREAM
 Group: wicg
 URL: https://beverloo.github.io/budget-api/
 Editor: Peter Beverloo, Google, peter@chromium.org
-Abstract: This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource intensive operations, as well as the cost associated with doing such an operation.
+Abstract: This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource consuming background operations, as well as the cost associated with doing such an operation.
 Repository: beverloo/budget-api
 </pre>
 
@@ -68,7 +68,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   <p>
     This specification describes an API that exposes a budget that can be used by authors to
     determine their available budget for resource intensive background operations, as well as the
-    cost associated with doing a certain action <a>in the background</a>.
+    cost associated with doing a certain <a>background operation</a>.
   </p>
   <p>
     Because this API relates to the ability to do work <a>in the background</a>, which is considered
@@ -222,7 +222,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       [NoInterfaceObject,
        Exposed=(Window,Worker)]
       interface NavigatorBudget {
-        Promise&lt;double&gt; getCost(ActionType type);
+        Promise&lt;double&gt; getCost(OperationType type);
         Promise&lt;double&gt; getBudget();
         Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudgetDetails();
       };
@@ -346,33 +346,34 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </section>
 
   <section>
-    <h3 id="action-type-enum">The {{ActionType}} enum</h3>
+    <h3 id="oepration-type-enum">The {{OperationType}} enum</h3>
     <p>
-      The <code>{{ActionType}}</code> enumeration describes the known set of <a>background
+      The <code>{{OperationType}}</code> enumeration describes the known set of <a>background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with
       {{NavigatorBudget/getCost()}} to interpret their available <a>budget</a> as a quantifiable set
       of <a>background operations</a> it can be used for.
     </p>
 
     <pre class="idl">
-      enum ActionType {
+      enum OperationType {
         "push"
       };
     </pre>
 
     <p>
-      The following <code>{{ActionType}}</code> values are defined:
+      The following <code>{{OperationType}}</code> values are defined:
     </p>
     <ul>
       <li>
-        The <code><dfn for="ActionType">push</dfn></code> value represents a <a>background
+        The <code><dfn for="OperationType">push</dfn></code> value represents a <a>background
         operation</a> in response to an incoming push message through the Push API. [[!PUSH-API]]
       </li>
     </ul>
 
     <p class="note">
-      Specifications are encouraged to extend the {{ActionType}} enumeration with their own values.
-      Naming consistency with the Permission API [[PERMISSIONS]], when applicable, is recommended.
+      Specifications are encouraged to extend the {{OperationType}} enumeration with their own
+      values. Naming consistency with the Permission API [[PERMISSIONS]], when applicable, is
+      recommended.
     </p>
   </section>
   
