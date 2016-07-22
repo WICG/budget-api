@@ -72,8 +72,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
   <p>
     This specification describes an API that exposes a budget that can be used by authors to
-    determine their available budget for resource intensive background operations, as well as the
-    cost associated with doing a certain <a>background operation</a>.
+    determine their available budget for resource consuming <a>background operations</a>, as well as
+    the cost associated with doing a certain <a>background operation</a>.
   </p>
   <p>
     Because this API relates to the ability to do work <a>in the background</a>, which is considered
@@ -175,7 +175,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
   <p>
     A <dfn>background operation</dfn> is the ability for an <a>origin</a> to execute potentially
-    resource intensive code <a>in the background</a>.
+    resource consuming code <a>in the background</a>.
   </p>
   <p>
     The <dfn>background operation cost</dfn> is a positive number that describes the cost of
