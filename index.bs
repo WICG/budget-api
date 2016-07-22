@@ -286,8 +286,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
       </li>
       <li>
-        If the scheme of the <var>origin</var> is not <code>https</code>, reject <var>promise</var>
-        with an {{SecurityError}} and terminate these steps.
+        If the <var>origin</var> is not a <a>secure context</a>, reject <var>promise</var> with a
+        {{SecurityError}} and terminate these steps.
       </li>
       <li>
         Let <var>details</var> be a new {{sequence}}.
