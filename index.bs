@@ -248,7 +248,9 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <pre class="idl">
       [Exposed=(Window,Worker)]
       interface BudgetService {
-          Promise&lt;double&gt; getCost(OperationType type);
+          Promise&lt;double&gt; getCost(OperationType operation);
+
+          
           Promise&lt;double&gt; getBudget();
           Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudgetDetails();
       };
@@ -256,12 +258,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p>
       The <code><dfn method for="BudgetService" title="getCost()">getCost()</dfn></code> method
-      returns a promise that will be resolved with the <a>background operation cost</a> of the
-      indicated <a>background operation</a>.
-    </p>
-    <p class="note">
-      A user agent could lower the cost of certain <a>background operations</a> if the user has
-      established a trust relationship with the Web Application.
+      returns a promise that will be resolved with the worst-case <a>background operation cost</a>
+      of the indicated <a>background operation</a>.
     </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
@@ -269,10 +267,20 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
     <ol>
       <li>
-        Resolve the <var>promise</var> with the <a>background operation cost</a> associated with
-        the given <code>type</code>.
+        Resolve the <var>promise</var> with the worst-case <a>background operation cost</a>
+        associated with the given <code>operation</code>.
       </li>
     </ol>
+
+    <!-- ------------------------------------- -->
+
+    <p class="note">
+      The claimed cost of a certain <a>background operations</a> could be less than the cost
+      indicated by {{BudgetService/getCost()}} when the user's device is in favorable conditions,
+      for example because it's not on battery power.
+    </p>
+
+    <!-- ------------------------------------- -->
 
     <p>
       The <code><dfn method for="BudgetService" title="getBudget()">getBudget()</dfn></code>

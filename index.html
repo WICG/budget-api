@@ -1593,22 +1593,23 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       budget service. It is available in both <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#document-environment">document</a> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment">worker environments</a>. </p>
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="budgetservice">BudgetService</dfn> {
-    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-3">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-1">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/getCost(type)" data-dfn-type="argument" data-export="" id="dom-budgetservice-getcost-type-type">type<a class="self-link" href="#dom-budgetservice-getcost-type-type"></a></dfn>);
+    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-3">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-1">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/getCost(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-getcost-operation-operation">operation<a class="self-link" href="#dom-budgetservice-getcost-operation-operation"></a></dfn>);
+
+          
     <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget" id="ref-for-dom-budgetservice-getbudget-2">getBudget</a>();
     <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate-2">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudgetdetails" id="ref-for-dom-budgetservice-getbudgetdetails-2">getBudgetDetails</a>();
 };
 </pre>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="getCost(type)" id="dom-budgetservice-getcost" title="getCost()">getCost()</dfn></code> method
-      returns a promise that will be resolved with the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of the
-      indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-5">background operation</a>. </p>
-     <p class="note" role="note"> A user agent could lower the cost of certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> if the user has
-      established a trust relationship with the Web Application. </p>
+     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="getCost(operation)" id="dom-budgetservice-getcost" title="getCost()">getCost()</dfn></code> method
+      returns a promise that will be resolved with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of the indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-5">background operation</a>. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
      <ol>
-      <li> Resolve the <var>promise</var> with the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-3">background operation cost</a> associated with
-        the given <code>type</code>. 
+      <li> Resolve the <var>promise</var> with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-3">background operation cost</a> associated with the given <code>operation</code>. 
      </ol>
+     <p class="note" role="note"> The claimed cost of a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> could be less than the cost
+      indicated by <code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-4">getCost()</a></code> when the user’s device is in favorable conditions,
+      for example because it’s not on battery power. </p>
      <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" id="dom-budgetservice-getbudget" title="getBudget()">getBudget()</dfn></code> method returns a promise that will be resolved with the immediately available <a data-link-type="dfn" href="#budget" id="ref-for-budget-8">budget</a>. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
@@ -1657,7 +1658,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <section>
      <h3 class="heading settled" data-level="4.4" id="oepration-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-2">OperationType</a></code> enum</span><a class="self-link" href="#oepration-type-enum"></a></h3>
      <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background
-      operations</a> that the Web Budget API caters for. Authors can use this in combination with <code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-4">getCost()</a></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a quantifiable set
+      operations</a> that the Web Budget API caters for. Authors can use this in combination with <code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-5">getCost()</a></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a quantifiable set
       of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background operations</a> it can be used for. </p>
 <pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-operationtype">OperationType</dfn> {
   <dfn class="s idl-code" data-dfn-for="OperationType" data-dfn-type="enum-value" data-export="" data-lt="&quot;push&quot;|push" id="dom-operationtype-push">"push"<a class="self-link" href="#dom-operationtype-push"></a></dfn>
@@ -1838,7 +1839,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <li><a href="#dom-budgetstate-expirationtime">expirationTime</a><span>, in §4.3</span>
    <li><a href="#dom-budgetservice-getbudget">getBudget()</a><span>, in §4.2</span>
    <li><a href="#dom-budgetservice-getbudgetdetails">getBudgetDetails()</a><span>, in §4.2</span>
-   <li><a href="#dom-budgetservice-getcost">getCost(type)</a><span>, in §4.2</span>
+   <li><a href="#dom-budgetservice-getcost">getCost(operation)</a><span>, in §4.2</span>
    <li><a href="#list-of-budget-expectations">list of budget expectations</a><span>, in §2</span>
    <li><a href="#navigatorbudget">NavigatorBudget</a><span>, in §4.1</span>
    <li><a href="#enumdef-operationtype">OperationType</a><span>, in §4.4</span>
@@ -1929,7 +1930,9 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 
 [<a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <a class="nv" href="#budgetservice">BudgetService</a> {
-    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-getcost-type-type">type</a>);
+    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-getcost-operation-operation">operation</a>);
+
+          
     <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget">getBudget</a>();
     <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudgetdetails">getBudgetDetails</a>();
 };
@@ -2020,8 +2023,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <ul>
     <li><a href="#ref-for-dom-budgetservice-getcost-1">1.1. Immediate budget</a>
     <li><a href="#ref-for-dom-budgetservice-getcost-2">1.2. Expected budget</a>
-    <li><a href="#ref-for-dom-budgetservice-getcost-3">4.2. The BudgetService interface</a>
-    <li><a href="#ref-for-dom-budgetservice-getcost-4">4.4. The OperationType enum</a>
+    <li><a href="#ref-for-dom-budgetservice-getcost-3">4.2. The BudgetService interface</a> <a href="#ref-for-dom-budgetservice-getcost-4">(2)</a>
+    <li><a href="#ref-for-dom-budgetservice-getcost-5">4.4. The OperationType enum</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-budgetservice-getbudget">
