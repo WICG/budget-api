@@ -293,20 +293,41 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Let <var>details</var> be a new {{sequence}}.
       </li>
       <li>
-        For each <a>budget</a> entry in <var>origin</var>'s <a>list of budget expectations</a>:
+        If there are entries in <var>origin</var>'s <a>list of budget expectations</a>, for each
+        <var>entry</var>:
+
         <ol>
           <li>
             Let <var>state</var> be a new {{BudgetState}} instance.
           </li>
           <li>
-            Set <var>state</var>'s {{BudgetState/budget}} attribute to the <a>budget</a> value.
+            Set <var>state</var>'s {{BudgetState/budget}} attribute to <var>entry</var>'s
+            <a>budget</a> value.
           </li>
           <li>
-            Set <var>state</var>'s {{expiration}} attribute to the DOMTimeStamp representing
-            the final date of the validity of the <a>budget</a>.
+            Set <var>state</var>'s {{expiration}} attribute to the <code>{{DOMTimeStamp}}</code>
+            representing the final date of <var>entry</var>'s validity in milliseconds since
+            00:00:00 UTC on 1 January 1970.
           </li>
           <li>
-            Add <var>state</var> to the <var>details</var> {{sequence}}.
+            Add the <var>state</var> to <var>details</var>.
+          </li>
+        </ol>
+
+        Otherwise:
+        <ol>
+          <li>
+            Let <var>state</var> be a new {{BudgetState}} instance.
+          </li>
+          <li>
+            Set <var>state</var>'s {{BudgetState/budget}} attribute to <em>0</em>.
+          </li>
+          <li>
+            Set <var>state</var>'s {{expiration}} attribute to the <code>{{DOMTimeStamp}}</code>
+            representing the current time in milliseconds since 00:00:00 UTC on 1 January 1970.
+          </li>
+          <li>
+            Add the <var>state</var> to <var>details</var>.
           </li>
         </ol>
       </li>
