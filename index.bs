@@ -88,9 +88,9 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
 
   <section>
-    <h3 id="immediate-budget">Immediate budget</h3>
+    <h3 id="available-budget">Available budget</h3>
     <p>
-      There are various use-cases for needing to know the immediately available <a>budget</a>:
+      There are various use-cases for needing to know the currently available <a>budget</a>:
     </p>
     <ul>
       <li>
@@ -171,13 +171,13 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <a>origin</a> is able to do, depending on the associated <a>background operation costs</a>.
   </p>
   <p>
-    An <a>origin</a> has an associated <dfn>list of budget expectations</dfn>. This leads with the
-    <a>origin</a>'s currently available <a>budget</a>, followed zero or more entries indicating the
-    minimum amount of available <a>budget</a> at known points in the future.
+    An <a>origin</a> has an associated <dfn>list of budget expectations</dfn>. This starts with the
+    <a>origin</a>'s currently available <a>budget</a>, followed by zero or more entries indicating
+    the lower bound of available <a>budget</a> at known points in the future.
   </p>
   <p class="note">
     User agents are not required to maintain future-bound budget expectations, but doing so enables
-    various more <a href="#expected-budget">use-cases</a> for authors.
+    more <a href="#expected-budget">use-cases</a> for authors.
   </p>
   <p>
     Part of an <a>origin</a>'s available <a>budget</a> can be <dfn lt="claim budget">claimed</dfn>.
@@ -229,7 +229,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p>
       The <dfn attribute dfn-for="NavigatorBudget"><code>budget</code></dfn> attribute's getter must
-      return a {{BudgetService}} scoped to the <a>entry settings object</a>'s <var>origin</var>.
+      return a <code>{{BudgetService}}</code> scoped to the <a>entry settings object</a>'s
+      <var>origin</var>.
     </p>
   </section>
 
@@ -277,7 +278,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <p>
       The <code><dfn method for="BudgetService" title="getBudget()">getBudget()</dfn></code> method
       returns a promise that will be resolved with a sequence of <code>{{BudgetState}}</code>
-      objects indicating the expected state of the budget at given times in the future.
+      objects indicating the expected state of the <a>budget</a> at given times in the future.
     </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
@@ -312,7 +313,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
             in milliseconds since 00:00:00 UTC on 1 January 1970.
           </li>
           <li>
-            Add the <var>state</var> to <var>details</var>.
+            Add <var>state</var> to <var>details</var>.
           </li>
         </ol>
 
@@ -330,7 +331,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
             00:00:00 UTC on 1 January 1970.
           </li>
           <li>
-            Add the <var>state</var> to <var>details</var>.
+            Add <var>state</var> to <var>details</var>.
           </li>
         </ol>
       </li>
@@ -413,7 +414,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <pre class="idl">
       enum OperationType {
-        "push"
+        "silent-push"
       };
     </pre>
 
@@ -422,8 +423,9 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </p>
     <ul>
       <li>
-        The <code><dfn for="OperationType">push</dfn></code> value represents a <a>background
-        operation</a> in response to an incoming push message through the Push API. [[!PUSH-API]]
+        The <code><dfn for="OperationType">silent-push</dfn></code> value represents a <a>background
+        operation</a> in response to an incoming push message through the Push API that does not
+        result in a user visible action. [[!PUSH-API]]
       </li>
     </ul>
 
