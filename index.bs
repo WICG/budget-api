@@ -23,13 +23,18 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
             text: origin; url: concept-origin
     urlPrefix: infrastructure.html
         type: dfn
+            text: document; url: document
             text: in parallel; url: in-parallel
     urlPrefix: webappapis.html
         type: dfn
+            text: document environment; url: document-environment
             text: entry settings object; url: entry-settings-object
+            text: worker environment; url: worker-environment
         type: interface
             text: Navigator; url: navigator
     urlPrefix: workers.html
+        type: dfn
+            text: worker; url: worker
         type: interface
             text: WorkerNavigator; url: workernavigator
 spec: promises-guide; urlPrefix: https://www.w3.org/2001/tag/doc/promises-guide#
@@ -99,8 +104,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ul>
 
     <p>
-      The API defines a <code>{{NavigatorBudget/getBudget()}}</code> method that can be used with
-      <code>{{NavigatorBudget/getCost()}}</code> to satisfy these use-cases, in unison with other
+      The API defines a <code>{{BudgetService/getBudget()}}</code> method that can be used with
+      <code>{{BudgetService/getCost()}}</code> to satisfy these use-cases, in unison with other
       APIs they depend on. 
     </p>
 
@@ -148,8 +153,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ul>
 
     <p>
-      The API defines a <code>{{NavigatorBudget/getBudgetDetails()}}</code> method that can be used
-      with <code>{{NavigatorBudget/getCost()}}</code> to satisfy these use-cases, in unison with
+      The API defines a <code>{{BudgetService/getBudgetDetails()}}</code> method that can be used
+      with <code>{{BudgetService/getCost()}}</code> to satisfy these use-cases, in unison with
       other APIs they depend on.
     </p>
 
@@ -215,16 +220,11 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
   <section>
     <h3 id="navigator-budget-interface">The {{NavigatorBudget}} interface</h3>
-    <p class="issue">
-      Should these methods be exposed as part of a <code>navigator.budget</code> object?
-    </p>
     <pre class="idl">
       [NoInterfaceObject,
        Exposed=(Window,Worker)]
       interface NavigatorBudget {
-        Promise&lt;double&gt; getCost(OperationType type);
-        Promise&lt;double&gt; getBudget();
-        Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudgetDetails();
+          readonly attribute BudgetService budget;
       };
 
       Navigator implements NavigatorBudget;
@@ -232,7 +232,30 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </pre>
 
     <p>
-      The <code><dfn method for="NavigatorBudget" title="getCost()">getCost()</dfn></code> method
+      The <dfn attribute dfn-for="NavigatorBudget"><code>budget</code></dfn> attribute's getter must
+      return a {{BudgetService}} scoped to the <a>entry settings object</a>'s <var>origin</var>.
+    </p>
+  </section>
+
+  <section>
+    <h3 id="budget-service-interface">The {{BudgetService}} interface</h3>
+    <p>
+      The {{BudgetService}} interface represents the programmatic interface to the user agent's
+      budget service. It is available in both <a lt="document environment">document</a> and
+      <a>worker environments</a>.
+    </p>
+
+    <pre class="idl">
+      [Exposed=(Window,Worker)]
+      interface BudgetService {
+          Promise&lt;double&gt; getCost(OperationType type);
+          Promise&lt;double&gt; getBudget();
+          Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudgetDetails();
+      };
+    </pre>
+
+    <p>
+      The <code><dfn method for="BudgetService" title="getCost()">getCost()</dfn></code> method
       returns a promise that will be resolved with the <a>background operation cost</a> of the
       indicated <a>background operation</a>.
     </p>
@@ -252,7 +275,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ol>
 
     <p>
-      The <code><dfn method for="NavigatorBudget" title="getBudget()">getBudget()</dfn></code>
+      The <code><dfn method for="BudgetService" title="getBudget()">getBudget()</dfn></code>
       method returns a promise that will be resolved with the immediately available <a>budget</a>.
     </p>
     <p>
@@ -274,7 +297,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ol>
 
     <p>
-      The <code><dfn method for="NavigatorBudget" title="getBudgetDetails()">getBudgetDetails()</dfn>
+      The <code><dfn method for="BudgetService" title="getBudgetDetails()">getBudgetDetails()</dfn>
       </code> method returns a promise that will be resolved with a sequence of {{BudgetState}}
       objects indicating the expected state of the budget at a given time in the future.
     </p>
@@ -300,7 +323,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
             Let <var>state</var> be a new {{BudgetState}} instance.
           </li>
           <li>
-            Set <var>state</var>'s {{budget}} attribute to the <a>budget</a> value.
+            Set <var>state</var>'s {{BudgetState/budget}} attribute to the <a>budget</a> value.
           </li>
           <li>
             Set <var>state</var>'s {{expiration}} attribute to the DOMTimeStamp representing
@@ -350,7 +373,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <p>
       The <code>{{OperationType}}</code> enumeration describes the known set of <a>background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with
-      {{NavigatorBudget/getCost()}} to interpret their available <a>budget</a> as a quantifiable set
+      {{BudgetService/getCost()}} to interpret their available <a>budget</a> as a quantifiable set
       of <a>background operations</a> it can be used for.
     </p>
 
