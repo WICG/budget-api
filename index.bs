@@ -103,12 +103,6 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </li>
     </ul>
 
-    <p>
-      The API defines a <code>{{BudgetService/getBudget()}}</code> method that can be used with
-      <code>{{BudgetService/getCost()}}</code> to satisfy these use-cases, in unison with other
-      APIs they depend on. 
-    </p>
-
     <section class="example">
       <p>
         Determine whether a user visible interaction is required in response to a <a>push message</a>:
@@ -119,9 +113,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
             // received push message, for example by caching the latest content.
 
             event.waitUntil(
-              Promise.all([ navigator.getCost('push'), navigator.getBudget() ])
-                .then(([cost, budget]) => {
-                    if (budget >= cost)
+                navigator.budget.request('silent-push').then(granted => {
+                    if (granted)
                         return;  // No need to show a notification.
 
                     // Not enough budget is available, must show a notification.
@@ -152,17 +145,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </li>
     </ul>
 
-    <p>
-      The API defines a <code>{{BudgetService/getBudget()}}</code> method that can be used
-      with <code>{{BudgetService/getCost()}}</code> to satisfy these use-cases, in unison with
-      other APIs they depend on.
-    </p>
-
     <p class="issue">
-      Add an example that demonstrates a <code>getBudget()</code> use-case.
-    </p>
-    <p class="issue">
-      Update the introduction following yesterday's discussion.
+      Add an example that demonstrates a one of these use-cases.
     </p>
   </section>
 </section>
@@ -187,8 +171,13 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <a>origin</a> is able to do, depending on the associated <a>background operation costs</a>.
   </p>
   <p>
-    An <a>origin</a> may have an associated <dfn>list of budget expectations</dfn>. These are the
-    expected <a>budget</a> values at given moments in time in the future.
+    An <a>origin</a> has an associated <dfn>list of budget expectations</dfn>. This leads with the
+    <a>origin</a>'s currently available <a>budget</a>, followed zero or more entries indicating the
+    minimum amount of available <a>budget</a> at known points in the future.
+  </p>
+  <p class="note">
+    User agents are not required to maintain future-bound budget expectations, but doing so enables
+    various more <a href="#expected-budget">use-cases</a> for authors.
   </p>
   <p>
     Part of an <a>origin</a>'s available <a>budget</a> can be <dfn lt="claim budget">claimed</dfn>.
