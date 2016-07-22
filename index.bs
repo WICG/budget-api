@@ -158,11 +158,6 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       other APIs they depend on.
     </p>
 
-    <p class="note">
-      User agents that do not store expected budget would return a single
-      <code>{{BudgetState}}</code> entry with an expiration date set to the current time.
-    </p>
-
     <p class="issue">
       Add an example that demonstrates a <code>getBudget()</code> use-case.
     </p>
@@ -243,8 +238,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   <section>
     <h3 id="budget-service-interface">The {{BudgetService}} interface</h3>
     <p>
-      The {{BudgetService}} interface represents the programmatic interface to the user agent's
-      budget service. It is available in both <a lt="document environment">document</a> and
+      The <code>{{BudgetService}}</code> interface represents the programmatic interface to the user
+      agent's budget service. It is available in both <a lt="document environment">document</a> and
       <a>worker environments</a>.
     </p>
 
@@ -274,8 +269,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p>
       The <code><dfn method for="BudgetService" title="getBudget()">getBudget()</dfn></code> method
-      returns a promise that will be resolved with a sequence of {{BudgetState}} objects indicating
-      the expected state of the budget at given times in the future.
+      returns a promise that will be resolved with a sequence of <code>{{BudgetState}}</code>
+      objects indicating the expected state of the budget at given times in the future.
     </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
@@ -287,10 +282,10 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </li>
       <li>
         If the <var>origin</var> is not a <a>secure context</a>, reject <var>promise</var> with a
-        {{SecurityError}} and terminate these steps.
+        <code>{{SecurityError}}</code> and terminate these steps.
       </li>
       <li>
-        Let <var>details</var> be a new {{sequence}}.
+        Let <var>details</var> be a new <code>{{sequence}}</code>.
       </li>
       <li>
         If there are entries in <var>origin</var>'s <a>list of budget expectations</a>, for each
@@ -298,16 +293,16 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
         <ol>
           <li>
-            Let <var>state</var> be a new {{BudgetState}} instance.
+            Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
           </li>
           <li>
-            Set <var>state</var>'s {{BudgetState/budget}} attribute to <var>entry</var>'s
-            <a>budget</a> value.
+            Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to
+            <var>entry</var>'s <a>budget</a> value.
           </li>
           <li>
-            Set <var>state</var>'s {{expiration}} attribute to the <code>{{DOMTimeStamp}}</code>
-            representing the final date of <var>entry</var>'s validity in milliseconds since
-            00:00:00 UTC on 1 January 1970.
+            Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
+            <code>{{DOMTimeStamp}}</code> representing the final date of <var>entry</var>'s validity
+            in milliseconds since 00:00:00 UTC on 1 January 1970.
           </li>
           <li>
             Add the <var>state</var> to <var>details</var>.
@@ -317,14 +312,15 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Otherwise:
         <ol>
           <li>
-            Let <var>state</var> be a new {{BudgetState}} instance.
+            Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
           </li>
           <li>
-            Set <var>state</var>'s {{BudgetState/budget}} attribute to <em>0</em>.
+            Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to <em>0</em>.
           </li>
           <li>
-            Set <var>state</var>'s {{expiration}} attribute to the <code>{{DOMTimeStamp}}</code>
-            representing the current time in milliseconds since 00:00:00 UTC on 1 January 1970.
+            Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
+            <code>{{DOMTimeStamp}}</code> representing the current time in milliseconds since
+            00:00:00 UTC on 1 January 1970.
           </li>
           <li>
             Add the <var>state</var> to <var>details</var>.
@@ -341,8 +337,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p class="note">
       The claimed cost of a certain <a>background operations</a> could be less than the cost
-      indicated by {{BudgetService/getCost()}} when the user's device is in favorable conditions,
-      for example because it's not on battery power.
+      indicated by <code>{{BudgetService/getCost()}}</code> when the user's device is in favorable
+      conditions, for example because it's not on battery power.
     </p>
 
     <!-- ------------------------------------- -->
@@ -351,28 +347,28 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   <section>
     <h3 id="budget-state-interface">The {{BudgetState}} interface</h3>
     <p>
-      The {{BudgetState}} interface represents the known minimum amount of <a>budget</a> available
-      at a specific point in the future. This enables authors to make near-term decisions about how
-      to spend their <a>budget</a>.
+      The <code>{{BudgetState}}</code> interface represents the amount of <a>budget</a> available at
+      a specific point in time. This enables authors to make near-term decisions about how to spend
+      their <a>budget</a>.
     </p>
 
     <pre class="idl">
       [Exposed=(Window,Worker)]
       interface BudgetState {
-        readonly attribute double budget;
-        readonly attribute DOMTimeStamp expirationTime;
+        readonly attribute double budgetAt;
+        readonly attribute DOMTimeStamp time;
       };
     </pre>
 
     <p>
-      The <dfn attribute dfn-for="BudgetState"><code>budget</code></dfn> attribute's getter must
-      return the <a>budget</a> at the associated <code>{{BudgetState/expiration}}</code> time.
+      The <dfn attribute dfn-for="BudgetState"><code>budgetAt</code></dfn> attribute's getter must
+      return the <a>budget</a> at the associated <code>{{BudgetState/time}}</code>.
     </p>
 
     <p>
-      The <dfn attribute dfn-for="BudgetState"><code>expiration</code></dfn> attribute's getter must
+      The <dfn attribute dfn-for="BudgetState"><code>time</code></dfn> attribute's getter must
       return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1 January
-      1970, of the time the <a>budget</a> will expire.
+      1970, at which the <code>{{BudgetState/budgetAt}}</code> will be valid.
     </p>
   </section>
 
@@ -381,8 +377,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <p>
       The <code>{{OperationType}}</code> enumeration describes the known set of <a>background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with
-      {{BudgetService/getCost()}} to interpret their available <a>budget</a> as a quantifiable set
-      of <a>background operations</a> it can be used for.
+      <code>{{BudgetService/getCost()}}</code> to interpret their available <a>budget</a> as a
+      quantifiable set of <a>background operations</a> it can be used for.
     </p>
 
     <pre class="idl">
@@ -402,9 +398,9 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ul>
 
     <p class="note">
-      Specifications are encouraged to extend the {{OperationType}} enumeration with their own
-      values. Naming consistency with the Permission API [[PERMISSIONS]], when applicable, is
-      recommended.
+      Specifications are encouraged to extend the <code>{{OperationType}}</code> enumeration with
+      their own values. Naming consistency with the Permission API [[PERMISSIONS]], when applicable,
+      is recommended.
     </p>
   </section>
   
