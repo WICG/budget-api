@@ -113,8 +113,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
             // received push message, for example by caching the latest content.
 
             event.waitUntil(
-                navigator.budget.request('silent-push').then(granted => {
-                    if (granted)
+                navigator.budget.reserve('silent-push').then(reserved => {
+                    if (reserved)
                         return;  // No need to show a notification.
 
                     // Not enough budget is available, must show a notification.
@@ -180,11 +180,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     more <a href="#expected-budget">use-cases</a> for authors.
   </p>
   <p>
-    Part of an <a>origin</a>'s available <a>budget</a> can be <dfn lt="claim budget">claimed</dfn>.
-    This reduces the <a>origin</a>'s available <a>budget</a> by the given <var>cost</var>.
+    Part of an <a>origin</a>'s available <a>budget</a> can be
+    <dfn lt="reserve budget">reserved</dfn>. This reduces the <a>origin</a>'s available
+    <a>budget</a> by the given <var>cost</var>.
   </p>
   <p class="note">
-    The claimed cost of a certain <a>background operations</a> could be less than the cost
+    The reserved cost of a certain <a>background operations</a> could be less than the cost
     indicated by <code>{{BudgetService/getCost()}}</code> when the user's device is in favorable
     conditions, for example because it's not on battery power.
   </p>
@@ -248,7 +249,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
           Promise&lt;double&gt; getCost(OperationType operation);
           Promise&lt;sequence&lt;BudgetState&gt;&gt; getBudget();
 
-          Promise&lt;boolean&gt; request(OperationType operation);
+          Promise&lt;boolean&gt; reserve(OperationType operation);
       };
     </pre>
 
@@ -341,9 +342,9 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     </ol>
 
     <p>
-      The <code><dfn method for="BudgetService" title="request()">request()</dfn></code> method
+      The <code><dfn method for="BudgetService" title="reserve()">reserve()</dfn></code> method
       returns a promise that will be resolved with a boolean indicating whether the requested
-      budget for <var>operation</var> could be <a lt="claim budget">claimed</a>.
+      budget for <var>operation</var> could be <a lt="reserve budget">reserved</a>.
     </p>
     <p>
       When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
@@ -369,8 +370,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         the boolean <code>false</code> and abort these steps.
       </li>
       <li>
-        <a lt="claim budget">Claim</a> the <var>cost</var> from <var>origin</var>'s <a>budget</a>
-        and resolve the <var>promise</var> with the boolean <code>true</code>.
+        <a lt="reserve budget">Reserve</a> the <var>cost</var> from <var>origin</var>'s
+        <a>budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>.
       </li>
     </ol>
   </section>

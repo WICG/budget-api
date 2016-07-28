@@ -1398,7 +1398,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-22">22 July 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-28">28 July 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1504,16 +1504,16 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li> Deciding whether the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> can schedule a precise timer using a hypothetical Job
         Scheduler API. 
      </ul>
-     <section class="example" id="example-92a20c1c">
-      <a class="self-link" href="#example-92a20c1c"></a> 
+     <section class="example" id="example-13845911">
+      <a class="self-link" href="#example-13845911"></a> 
       <p> Determine whether a user visible interaction is required in response to a <a data-link-type="dfn" href="https://w3c.github.io/push-api/#push-message">push message</a>: </p>
 <pre class="lang-js highlight"><span></span><span class="nx">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'push'</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=></span> <span class="p">{</span>
     <span class="c1">// Execute the application-specific logic depending on the contents of the</span>
     <span class="c1">// received push message, for example by caching the latest content.</span>
 
     <span class="nx">event</span><span class="p">.</span><span class="nx">waitUntil</span><span class="p">(</span>
-        <span class="nx">navigator</span><span class="p">.</span><span class="nx">budget</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="s1">'silent-push'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">granted</span> <span class="o">=></span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">granted</span><span class="p">)</span>
+        <span class="nx">navigator</span><span class="p">.</span><span class="nx">budget</span><span class="p">.</span><span class="nx">reserve</span><span class="p">(</span><span class="s1">'silent-push'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">reserved</span> <span class="o">=></span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">reserved</span><span class="p">)</span>
                 <span class="k">return</span><span class="p">;</span>  <span class="c1">// No need to show a notification.</span>
 
             <span class="c1">// Not enough budget is available, must show a notification.</span>
@@ -1551,9 +1551,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     the lower bound of available <a data-link-type="dfn" href="#budget" id="ref-for-budget-8">budget</a> at known points in the future. </p>
     <p class="note" role="note"> User agents are not required to maintain future-bound budget expectations, but doing so enables
     more <a href="#expected-budget">use-cases</a> for authors. </p>
-    <p> Part of an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget-9">budget</a> can be <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="claim budget" data-noexport="" id="claim-budget">claimed</dfn>.
-    This reduces the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget-10">budget</a> by the given <var>cost</var>. </p>
-    <p class="note" role="note"> The claimed cost of a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> could be less than the cost
+    <p> Part of an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget-9">budget</a> can be <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="reserve budget" data-noexport="" id="reserve-budget">reserved</dfn>. This reduces the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget-10">budget</a> by the given <var>cost</var>. </p>
+    <p class="note" role="note"> The reserved cost of a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> could be less than the cost
     indicated by <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-1">getCost()</a></code></code> when the user’s device is in favorable
     conditions, for example because it’s not on battery power. </p>
    </section>
@@ -1596,7 +1595,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-2">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-1">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/getCost(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-getcost-operation-operation">operation<a class="self-link" href="#dom-budgetservice-getcost-operation-operation"></a></dfn>);
     <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate-1">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget" id="ref-for-dom-budgetservice-getbudget-1">getBudget</a>();
 
-    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-request" id="ref-for-dom-budgetservice-request-1">request</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-2">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/request(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-request-operation-operation">operation<a class="self-link" href="#dom-budgetservice-request-operation-operation"></a></dfn>);
+    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-reserve" id="ref-for-dom-budgetservice-reserve-1">reserve</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-2">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/reserve(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-reserve-operation-operation">operation<a class="self-link" href="#dom-budgetservice-reserve-operation-operation"></a></dfn>);
 };
 </pre>
      <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="getCost(operation)" id="dom-budgetservice-getcost" title="getCost()">getCost()</dfn></code> method
@@ -1635,9 +1634,9 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
        </ol>
       <li> Resolve the <var>promise</var> with <var>details</var>. 
      </ol>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="request(operation)" id="dom-budgetservice-request" title="request()">request()</dfn></code> method
+     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="reserve(operation)" id="dom-budgetservice-reserve" title="reserve()">reserve()</dfn></code> method
       returns a promise that will be resolved with a boolean indicating whether the requested
-      budget for <var>operation</var> could be <a data-link-type="dfn" href="#claim-budget" id="ref-for-claim-budget-1">claimed</a>. </p>
+      budget for <var>operation</var> could be <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget-1">reserved</a>. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
      <ol>
@@ -1647,7 +1646,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li> Let <var>cost</var> be the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-4">background operation cost</a> associated with <var>operation</var>. 
       <li> If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
         the boolean <code>false</code> and abort these steps. 
-      <li> <a data-link-type="dfn" href="#claim-budget" id="ref-for-claim-budget-2">Claim</a> the <var>cost</var> from <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>. 
+      <li> <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget-2">Reserve</a> the <var>cost</var> from <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>. 
      </ol>
     </section>
     <section>
@@ -1848,20 +1847,20 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <li><a href="#dom-budgetstate-budgetat">budgetAt</a><span>, in §4.3</span>
    <li><a href="#budgetservice">BudgetService</a><span>, in §4.2</span>
    <li><a href="#budgetstate">BudgetState</a><span>, in §4.3</span>
-   <li><a href="#claim-budget">claim budget</a><span>, in §2</span>
    <li><a href="#dom-budgetservice-getbudget">getBudget()</a><span>, in §4.2</span>
    <li><a href="#dom-budgetservice-getcost">getCost(operation)</a><span>, in §4.2</span>
    <li><a href="#list-of-budget-expectations">list of budget expectations</a><span>, in §2</span>
    <li><a href="#navigatorbudget">NavigatorBudget</a><span>, in §4.1</span>
    <li><a href="#enumdef-operationtype">OperationType</a><span>, in §4.4</span>
-   <li><a href="#dom-budgetservice-request">request(operation)</a><span>, in §4.2</span>
-   <li><a href="#dom-operationtype-silent-push">"silent-push"</a><span>, in §4.4</span>
+   <li><a href="#reserve-budget">reserve budget</a><span>, in §2</span>
+   <li><a href="#dom-budgetservice-reserve">reserve(operation)</a><span>, in §4.2</span>
    <li>
     silent-push
     <ul>
      <li><a href="#dom-operationtype-silent-push">enum-value for OperationType</a><span>, in §4.4</span>
      <li><a href="#operationtype-silent-push">dfn for OperationType</a><span>, in §4.4</span>
     </ul>
+   <li><a href="#dom-operationtype-silent-push">"silent-push"</a><span>, in §4.4</span>
    <li><a href="#dom-budgetstate-time">time</a><span>, in §4.3</span>
    <li><a href="#user-engagement">user engagement</a><span>, in §2</span>
   </ul>
@@ -1946,7 +1945,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-getcost-operation-operation">operation</a>);
     <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget">getBudget</a>();
 
-    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-request">request</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-request-operation-operation">operation</a>);
+    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-reserve">reserve</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-reserve-operation-operation">operation</a>);
 };
 
 [<a class="nv idl-code" data-link-type="extended-attribute">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
@@ -2011,10 +2010,10 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-list-of-budget-expectations-1">4.2. The BudgetService interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="claim-budget">
-   <b><a href="#claim-budget">#claim-budget</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="reserve-budget">
+   <b><a href="#reserve-budget">#reserve-budget</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-claim-budget-1">4.2. The BudgetService interface</a> <a href="#ref-for-claim-budget-2">(2)</a>
+    <li><a href="#ref-for-reserve-budget-1">4.2. The BudgetService interface</a> <a href="#ref-for-reserve-budget-2">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="navigatorbudget">
@@ -2050,10 +2049,10 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-dom-budgetservice-getbudget-1">4.2. The BudgetService interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-budgetservice-request">
-   <b><a href="#dom-budgetservice-request">#dom-budgetservice-request</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-budgetservice-reserve">
+   <b><a href="#dom-budgetservice-reserve">#dom-budgetservice-reserve</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetservice-request-1">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-dom-budgetservice-reserve-1">4.2. The BudgetService interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="budgetstate">
