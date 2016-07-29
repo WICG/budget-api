@@ -3,8 +3,8 @@
 
 Web Applications have conventionally been able to execute code, make network requests and interact
 with the user by means of established interaction, usually through a browser tab. This has allowed
-users to associate the presence of a browser tab with the Web Application's ability ability to do
-work on their behalf.
+users to associate the presence of a browser tab with the Web Application's ability to do work on
+their behalf.
 
 Following the introduction of the [Push API](https://w3c.github.io/push-api/) and
 [Background Synchronization](https://wicg.github.io/BackgroundSync/spec/), this assumption no longer
@@ -13,7 +13,7 @@ background, outside of the user’s control.
 
 In order to protect the user, Chrome has historically required developers to
 [display a notification](https://notifications.spec.whatwg.org/) in response a message. Firefox
-developers a [budget](https://docs.google.com/document/d/1yYUB4nn9Hu6vPHKp_eN_kXOG47gjteEv8QIf_l18q4w/view)
+grants developers a [budget](https://docs.google.com/document/d/1yYUB4nn9Hu6vPHKp_eN_kXOG47gjteEv8QIf_l18q4w/view)
 based on the level of engagement a user has with a website, which is a model that Chrome, with the
 release of Chrome 52, has moved to as well.
 
@@ -23,11 +23,11 @@ eliminates a lot of potential use-cases for the Push API. The
 a way that provides good value for developers, while not locking user agents into any particular
 implementation.
 
-Indeed, today the Budget API focuses on the Push API, but we chose to generalize the concept in
-order to _(1)_ be able to provide both immediate and expected values, enabling developers to do
-near-term resource planning, _(2)_ be able to extend existing APIs such as Background Sync both to
-alleviate the restrictions and to enable developers to request more retries, and _(3)_ enable future
-resource consuming APIs such as a Job Scheduler to use the same mechanism.
+Today the Budget API focuses on the Push API, but we chose to generalize the concept in order to
+_(1)_ be able to provide both immediate and expected values, enabling developers to do near-term
+resource planning, _(2)_ be able to extend existing APIs such as Background Sync both to alleviate
+the restrictions and to enable developers to request more retries, and _(3)_ enable future resource
+consuming APIs such as a Job Scheduler to use the same mechanism.
 
 This API solely focuses on resource consuming APIs.
 
@@ -59,4 +59,25 @@ self.addEventListener('push', event => {
         })
     );
 });
+```
+
+### 2. Calculate the number of precise timers that can be used at some point in the future.
+```javascript
+function getPreciseTimersAvailableAt(time) {
+    return Promise.all([
+        navigator.budget.getCost('precise-timer'),
+        navigator.budget.getBudget()
+    ]).then(([cost, budget]) => {
+        for (const state of budget) {
+            if (state.time <= time)
+                continue;
+
+            // The |state| occurs after |time|, so return the budget.
+            return state.budgetAt / cost;
+        }
+
+        // No budget after |time| is known, so we can't guarantee anything.
+        return 0;
+    });
+}
 ```

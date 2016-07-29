@@ -55,7 +55,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     Web Applications have conventionally been able to execute code, make network requests and
     interact with the user by means of established interaction, usually through a browser tab. This
     has allowed users to associate the presence of a browser tab with the Web Application's ability
-    ability to do work on their behalf.
+    to do work on their behalf.
   </p>
   <p>
     Following the introduction of the Push API [[PUSH-API]] and Web Background Synchronization
