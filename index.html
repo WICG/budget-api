@@ -1398,7 +1398,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-07-29">29 July 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-08-01">1 August 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1442,9 +1442,13 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      </ol>
     <li><a href="#concepts"><span class="secno">2</span> <span class="content">Concepts</span></a>
     <li>
-     <a href="#privacy-considerations"><span class="secno">3</span> <span class="content">Privacy Considerations</span></a>
+     <a href="#security-and-privacy-considerations"><span class="secno">3</span> <span class="content">Security and Privacy Considerations</span></a>
      <ol class="toc">
-      <li><a href="#applicability"><span class="secno">3.1</span> <span class="content">Applicability</span></a>
+      <li>
+       <a href="#applicability"><span class="secno">3.1</span> <span class="content">Applicability</span></a>
+       <ol class="toc">
+        <li><a href="#location-tracking"><span class="secno">3.1.1</span> <span class="content">Location Tracking</span></a>
+       </ol>
       <li><a href="#permissions"><span class="secno">3.2</span> <span class="content">Permissions</span></a>
      </ol>
     <li>
@@ -1479,7 +1483,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <p> Web Applications have conventionally been able to execute code, make network requests and
     interact with the user by means of established interaction, usually through a browser tab. This
     has allowed users to associate the presence of a browser tab with the Web Application’s ability
-    ability to do work on their behalf. </p>
+    to do work on their behalf. </p>
     <p> Following the introduction of the Push API <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> and Web Background Synchronization <a data-link-type="biblio" href="#biblio-web-background-sync">[WEB-BACKGROUND-SYNC]</a>, this assumption no longer stands. Web Applications are now able to both
     trigger and schedule execution of code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, outside of the user’s control. </p>
     <p> In an effort to mitigate risk to the user, user agents have implemented restrictions such as
@@ -1557,17 +1561,34 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     conditions, for example because it’s not on battery power. </p>
    </section>
    <section>
-    <h2 class="heading settled" data-level="3" id="privacy-considerations"><span class="secno">3. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a></h2>
+    <h2 class="heading settled" data-level="3" id="security-and-privacy-considerations"><span class="secno">3. </span><span class="content">Security and Privacy Considerations</span><a class="self-link" href="#security-and-privacy-considerations"></a></h2>
     <section>
      <h3 class="heading settled" data-level="3.1" id="applicability"><span class="secno">3.1. </span><span class="content">Applicability</span><a class="self-link" href="#applicability"></a></h3>
-     <p class="issue" id="issue-71abf424"><a class="self-link" href="#issue-71abf424"></a> Define that the intention is for this to be used for resource-sensitive operations (e.g.
-      the Push API), not privacy-sensitive operations (e.g. Geolocation). </p>
+     <p> Applicability of the Budget API is limited to potentially resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operations</a>— operations that are not sufficiently privacy sensitive to need
+      express user permission for basic usage. </p>
+     <p> User agents MUST NOT use the Budget API as an alternative to obtaining express user permission
+      for privacy-sensitive operations such as accurate location access <a data-link-type="biblio" href="#biblio-geolocation-api">[GEOLOCATION-API]</a> and
+      access to the user’s camera and/or microphone <a data-link-type="biblio" href="#biblio-webrtc">[WEBRTC]</a>. </p>
+     <p class="note" role="note"> Examples include Web Background Sync <a data-link-type="biblio" href="#biblio-web-background-sync">[WEB-BACKGROUND-SYNC]</a>, which may have execution time
+      and retry limitations applied by the user agent, and the Push API <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> in situations
+      where the effects of a push message are not immediately visible to the user. </p>
+     <section>
+      <h4 class="heading settled" data-level="3.1.1" id="location-tracking"><span class="secno">3.1.1. </span><span class="content">Location Tracking</span><a class="self-link" href="#location-tracking"></a></h4>
+      <p> Fetch requests within <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background operations</a> may reveal the client’s IP address to the
+        server after the user left the page. The user agent SHOULD limit tracking by capping the
+        duration of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-9">background operations</a>. </p>
+     </section>
     </section>
     <section>
      <h3 class="heading settled" data-level="3.2" id="permissions"><span class="secno">3.2. </span><span class="content">Permissions</span><a class="self-link" href="#permissions"></a></h3>
-     <p class="issue" id="issue-069f7d7e"><a class="self-link" href="#issue-069f7d7e"></a> Define that user agents may <em>(1)</em> offer the user means to override the budget available
-      to a Web Application, and <em>(2)</em> the background operations themselves may be guarded
-      behind additional permissions. </p>
+     <p> The Budget API provides an alternative to obtaining express user permission where the user
+      agent believes it can appropriately protect the user for strictly resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-10">background operations</a>. </p>
+     <p> Both the APIs described in this document, as well as the specifications that depend on this
+      document, MUST NOT limit the user agent’s ability to require express user permission in
+      addition to budget requirements. </p>
+     <p class="note" role="note"> User agents that require express user permission for certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-11">background operations</a> MAY
+      lower or eliminate the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of such an operation, because the user
+      has explicitly allowed the Web Application to engage on their behalf. </p>
     </section>
    </section>
    <section>
@@ -1599,13 +1620,13 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 };
 </pre>
      <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="getCost(operation)" id="dom-budgetservice-getcost" title="getCost()">getCost()</dfn></code> method
-      returns a promise that will be resolved with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of the indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operation</a>. </p>
+      returns a promise that will be resolved with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-3">background operation cost</a> of the indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-12">background operation</a>. </p>
      <p> When invoked, it MUST return <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a> <var>promise</var> and run the following
       steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: </p>
      <ol>
       <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. 
       <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code></code> and terminate these steps. 
-      <li> Resolve the <var>promise</var> with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-3">background operation cost</a> associated with the given <var>operation</var>. 
+      <li> Resolve the <var>promise</var> with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-4">background operation cost</a> associated with the given <var>operation</var>. 
      </ol>
      <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" id="dom-budgetservice-getbudget" title="getBudget()">getBudget()</dfn></code> method
       returns a promise that will be resolved with a sequence of <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-2">BudgetState</a></code></code> objects indicating the expected state of the <a data-link-type="dfn" href="#budget" id="ref-for-budget-11">budget</a> at given times in the future. </p>
@@ -1643,7 +1664,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. 
       <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code></code> and terminate these steps. 
       <li> Let <var>budget</var> be the amount of budget available to <var>origin</var>. 
-      <li> Let <var>cost</var> be the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-4">background operation cost</a> associated with <var>operation</var>. 
+      <li> Let <var>cost</var> be the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-5">background operation cost</a> associated with <var>operation</var>. 
       <li> If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
         the boolean <code>false</code> and abort these steps. 
       <li> <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget-2">Reserve</a> the <var>cost</var> from <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>. 
@@ -1668,16 +1689,16 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     </section>
     <section>
      <h3 class="heading settled" data-level="4.4" id="oepration-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code> enum</span><a class="self-link" href="#oepration-type-enum"></a></h3>
-     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-4">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background
+     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-4">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-13">background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-3">getCost()</a></code></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a
-      quantifiable set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-9">background operations</a> it can be used for. </p>
+      quantifiable set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-14">background operations</a> it can be used for. </p>
 <pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-operationtype">OperationType</dfn> {
   <dfn class="s idl-code" data-dfn-for="OperationType" data-dfn-type="enum-value" data-export="" data-lt="&quot;silent-push&quot;|silent-push" id="dom-operationtype-silent-push">"silent-push"<a class="self-link" href="#dom-operationtype-silent-push"></a></dfn>
 };
 </pre>
      <p> The following <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-5">OperationType</a></code></code> values are defined: </p>
      <ul>
-      <li> The <code><dfn data-dfn-for="OperationType" data-dfn-type="dfn" data-noexport="" id="operationtype-silent-push">silent-push<a class="self-link" href="#operationtype-silent-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-10">background
+      <li> The <code><dfn data-dfn-for="OperationType" data-dfn-type="dfn" data-noexport="" id="operationtype-silent-push">silent-push<a class="self-link" href="#operationtype-silent-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-15">background
         operation</a> in response to an incoming push message through the Push API that does not
         result in a user visible action. <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> 
      </ul>
@@ -1925,10 +1946,14 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-geolocation-api">[GEOLOCATION-API]
+   <dd>Andrei Popescu. <a href="http://dev.w3.org/geo/api/spec-source.html">Geolocation API Specification</a>. 28 May 2015. PER. URL: <a href="http://dev.w3.org/geo/api/spec-source.html">http://dev.w3.org/geo/api/spec-source.html</a>
    <dt id="biblio-notifications">[NOTIFICATIONS]
    <dd>Anne van Kesteren. <a href="https://notifications.spec.whatwg.org/">Notifications API Standard</a>. Living Standard. URL: <a href="https://notifications.spec.whatwg.org/">https://notifications.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
    <dd>Mounir Lamouri; Marcos Caceres. <a href="https://w3c.github.io/permissions/">The Permissions API</a>. 7 April 2015. WD. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
+   <dt id="biblio-webrtc">[WEBRTC]
+   <dd>Adam Bergkvist; et al. <a href="https://w3c.github.io/webrtc-pc/">WebRTC 1.0: Real-time Communication Between Browsers</a>. 31 May 2016. WD. URL: <a href="https://w3c.github.io/webrtc-pc/">https://w3c.github.io/webrtc-pc/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl def">[<a class="nv idl-code" data-link-type="extended-attribute">NoInterfaceObject</a>,
@@ -1962,11 +1987,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Add an example that demonstrates a one of these use-cases. <a href="#issue-1e981ea2"> ↵ </a></div>
-   <div class="issue"> Define that the intention is for this to be used for resource-sensitive operations (e.g.
-      the Push API), not privacy-sensitive operations (e.g. Geolocation). <a href="#issue-71abf424"> ↵ </a></div>
-   <div class="issue"> Define that user agents may <em>(1)</em> offer the user means to override the budget available
-      to a Web Application, and <em>(2)</em> the background operations themselves may be guarded
-      behind additional permissions. <a href="#issue-069f7d7e"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="user-engagement">
    <b><a href="#user-engagement">#user-engagement</a></b><b>Referenced in:</b>
@@ -1981,15 +2001,19 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li><a href="#ref-for-background-operation-1">1. Introduction</a> <a href="#ref-for-background-operation-2">(2)</a>
     <li><a href="#ref-for-background-operation-3">1.2. Expected budget</a>
     <li><a href="#ref-for-background-operation-4">2. Concepts</a> <a href="#ref-for-background-operation-5">(2)</a> <a href="#ref-for-background-operation-6">(3)</a>
-    <li><a href="#ref-for-background-operation-7">4.2. The BudgetService interface</a>
-    <li><a href="#ref-for-background-operation-8">4.4. The OperationType enum</a> <a href="#ref-for-background-operation-9">(2)</a> <a href="#ref-for-background-operation-10">(3)</a>
+    <li><a href="#ref-for-background-operation-7">3.1. Applicability</a>
+    <li><a href="#ref-for-background-operation-8">3.1.1. Location Tracking</a> <a href="#ref-for-background-operation-9">(2)</a>
+    <li><a href="#ref-for-background-operation-10">3.2. Permissions</a> <a href="#ref-for-background-operation-11">(2)</a>
+    <li><a href="#ref-for-background-operation-12">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-background-operation-13">4.4. The OperationType enum</a> <a href="#ref-for-background-operation-14">(2)</a> <a href="#ref-for-background-operation-15">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="background-operation-cost">
    <b><a href="#background-operation-cost">#background-operation-cost</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-background-operation-cost-1">2. Concepts</a>
-    <li><a href="#ref-for-background-operation-cost-2">4.2. The BudgetService interface</a> <a href="#ref-for-background-operation-cost-3">(2)</a> <a href="#ref-for-background-operation-cost-4">(3)</a>
+    <li><a href="#ref-for-background-operation-cost-2">3.2. Permissions</a>
+    <li><a href="#ref-for-background-operation-cost-3">4.2. The BudgetService interface</a> <a href="#ref-for-background-operation-cost-4">(2)</a> <a href="#ref-for-background-operation-cost-5">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="budget">

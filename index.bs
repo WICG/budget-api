@@ -192,22 +192,54 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 </section>
 
 <section>
-  <h2 id="privacy-considerations">Privacy Considerations</h2>
+  <h2 id="security-and-privacy-considerations">Security and Privacy Considerations</h2>
 
   <section>
     <h3 id="applicability">Applicability</h3>
-    <p class="issue">
-      Define that the intention is for this to be used for resource-sensitive operations (e.g.
-      the Push API), not privacy-sensitive operations (e.g. Geolocation).
+    <p>
+      Applicability of the Budget API is limited to potentially resource consuming
+      <a>background operations</a>— operations that are not sufficiently privacy sensitive to need
+      express user permission for basic usage.
     </p>
+    <p>
+      User agents MUST NOT use the Budget API as an alternative to obtaining express user permission
+      for privacy-sensitive operations such as accurate location access [[GEOLOCATION-API]] and
+      access to the user's camera and/or microphone [[WEBRTC]].
+    </p>
+    <p class="note">
+      Examples include Web Background Sync [[WEB-BACKGROUND-SYNC]], which may have execution time
+      and retry limitations applied by the user agent, and the Push API [[PUSH-API]] in situations
+      where the effects of a push message are not immediately visible to the user.
+    </p>
+
+    <section>
+      <h4 id="location-tracking">Location Tracking</h4>
+      <!-- Paraphrased from Web Background Sync -->
+      <!-- https://wicg.github.io/BackgroundSync/spec/#permission -->
+      <p>
+        Fetch requests within <a>background operations</a> may reveal the client’s IP address to the
+        server after the user left the page. The user agent SHOULD limit tracking by capping the
+        duration of <a>background operations</a>.
+      </p>
+    </section>
   </section>
 
   <section>
     <h3 id="permissions">Permissions</h3>
-    <p class="issue">
-      Define that user agents may <em>(1)</em> offer the user means to override the budget available
-      to a Web Application, and <em>(2)</em> the background operations themselves may be guarded
-      behind additional permissions.
+    <p>
+      The Budget API provides an alternative to obtaining express user permission where the user
+      agent believes it can appropriately protect the user for strictly resource consuming
+      <a>background operations</a>.
+    </p>
+    <p>
+      Both the APIs described in this document, as well as the specifications that depend on this
+      document, MUST NOT limit the user agent's ability to require express user permission in
+      addition to budget requirements.
+    </p>
+    <p class="note">
+      User agents that require express user permission for certain <a>background operations</a> MAY
+      lower or eliminate the <a>background operation cost</a> of such an operation, because the user
+      has explicitly allowed the Web Application to engage on their behalf.
     </p>
   </section>
 </section>
