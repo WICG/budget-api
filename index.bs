@@ -136,8 +136,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         Deciding on the frequency of server-initiated cache updates of synchronized data.
       </li>
       <li>
-        Deciding whether there is sufficient <a>budget</a> available to hide previously shown
-        notifications when the user dismissed them on other devices.
+        Deciding on the server whether there is sufficient <a>budget</a> available to hide
+        previously shown notifications when the user dismissed them on other devices.
       </li>
       <li>
         Deciding to temporarily limit <a>background operations</a> if the <a>budget</a> could be
@@ -162,12 +162,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     resource consuming code <a>in the background</a>.
   </p>
   <p>
-    The <dfn>background operation cost</dfn> is a positive number that describes the cost of
+    The <dfn>background operation cost</dfn> is a non-negative number that describes the cost of
     executing a <a>background operation</a> on the user's device.
   </p>
   <p>
-    An <a>origin</a> has an associated <dfn>budget</dfn>, which is a positive number derived from
-    the <a>user engagement</a> that describes how many <a>background operations</a> the
+    An <a>origin</a> has an associated <dfn>budget</dfn>, which is a non-negative number derived
+    from the <a>user engagement</a> that describes how many <a>background operations</a> the
     <a>origin</a> is able to do, depending on the associated <a>background operation costs</a>.
   </p>
   <p>
@@ -185,7 +185,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     by the given <var>cost</var>.
   </p>
   <p class="note">
-    The reserved cost of a certain <a>background operations</a> could be less than the cost
+    The reserved cost of certain <a>background operations</a> could be less than the cost
     indicated by <code>{{BudgetService/getCost()}}</code> when the user's device is in favorable
     conditions, for example because it's not on battery power.
   </p>
@@ -464,8 +464,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
 
     <p class="note">
       Specifications are encouraged to extend the <code>{{OperationType}}</code> enumeration with
-      their own values. Naming consistency with the Permission API [[PERMISSIONS]], when applicable,
-      is recommended.
+      their own values. Naming consistency with the Permission API [[PERMISSIONS]], where
+      applicable, is recommended.
     </p>
   </section>
   
