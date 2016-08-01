@@ -72,7 +72,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
   <p>
     This specification describes an API that exposes a budget that can be used by authors to
-    determine their available budget for resource consuming <a>background operations</a>, as well as
+    determine their current budget for resource consuming <a>background operations</a>, as well as
     the cost associated with doing a certain <a>background operation</a>.
   </p>
   <p>
@@ -81,14 +81,14 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
 
   <p class="note">
-    This specification does not define how user agents establish or store the amount of available
+    This specification does not define how user agents establish or store the amount of current
     <a>budget</a>. It aims to define an API that exposes sufficient information to make the
     <a>budget</a> useful for authors, while not restricting the implementation details and
     heuristics specific to a user agent.
   </p>
 
   <section>
-    <h3 id="available-budget">Available budget</h3>
+    <h3 id="current-budget">Current budget</h3>
     <p>
       There are various use-cases for needing to know the currently available <a>budget</a>:
     </p>
@@ -181,8 +181,8 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </p>
   <p>
     Part of an <a>origin</a>'s available <a>budget</a> can be
-    <dfn lt="reserve budget">reserved</dfn>. This reduces the <a>origin</a>'s available
-    <a>budget</a> by the given <var>cost</var>.
+    <dfn lt="reserve budget">reserved</dfn>. This reduces the <a>origin</a>'s current <a>budget</a>
+    by the given <var>cost</var>.
   </p>
   <p class="note">
     The reserved cost of a certain <a>background operations</a> could be less than the cost
