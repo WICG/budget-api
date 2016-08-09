@@ -35,3 +35,9 @@ Edge has publicly stated that service workers will be supported in the browser i
  - [Safari Extension Background operation](https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/ExtensionsOverview/ExtensionsOverview.html#//apple_ref/doc/uid/TP40009977-CH15-SW1)
  - [Android Background Sync](https://developers.google.com/web/updates/2015/12/background-sync?hl=en)
  - [Mozilla Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+
+**Conclusion**
+
+Both native apps and browser extensionsi are allowed to execute on the user's behalf because the user cared enough about the functionality to install it. In the terms of the Budget API, we're defining that as a level of engagement with the app/extension. Service workers can be installed without a similar up front engagement check to the user, but they do require a permission grant to perform any background processing.
+
+The threshold of accepting a permission is lower than that of installing an app or extension, and so it's important to limit the power of the service worker, but that should be done in a way that allows developers to provide services to the user. This API is an attempt to provide limits based on user engagement, and give information about those limits to the develoeprs.
