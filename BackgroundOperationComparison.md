@@ -11,12 +11,10 @@ Android has historically had a very open policy for background work, allowing an
 While Android was historically permissive and is now becoming more restrictive, iOS has followed the opposite path. iOS has always limited the types of apps that can do background processing, although it has expanded those types over time using the Background Execution framework. Particularly interesting is that in iOS7, the ability to respond to push messages and run for 30 seconds was added. Since then, more types of apps have been allowed to run background tasks, and more system services have been developed to allow apps to hand off tasks such as large downloads to the system.
 
 **References**
-Android Doze Mode: 
-https://developer.android.com/training/monitoring-device-state/doze-standby.html
-Android Job Scheduler: 
-https://developer.android.com/preview/features/background-optimization.html
-iOS Background Execution:
-https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html
+
+ - [Android Doze Mode](https://developer.android.com/training/monitoring-device-state/doze-standby.html)
+ - [Android Job Scheduler](https://developer.android.com/preview/features/background-optimization.html)
+ - [iOS Background Execution](https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html)
 
 **Browsers**
 
@@ -30,15 +28,10 @@ Firefox allows background service worker activity when triggered by a push messa
 Edge has publicly stated that service workers will be supported in the browser in the future, but has not released details of their implementation. Safari has released no information. 
 
 **References**
-Mozilla Add-On Background Pages: 
-https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Background_scripts
-Chromium Extension Background Pages:
-https://developer.chrome.com/extensions/background_pages
-Opera Background Process:
-https://dev.opera.com/extensions/architecture-overview/
-Safari Extension Background operation:
-https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/ExtensionsOverview/ExtensionsOverview.html#//apple_ref/doc/uid/TP40009977-CH15-SW1
-Android Background Sync:
-https://developers.google.com/web/updates/2015/12/background-sync?hl=en
-Mozilla Service Workers:
-https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
+
+ - [Mozilla Add-On Background Pages](https://developer.mozilla.org/en-US/Add-Ons/WebExtensions/Anatomy_of_a_WebExtension#Background_scripts)
+ - [Chromium Extension Background Pages](https://developer.chrome.com/extensions/background_pages)
+ - [Opera Background Process](https://dev.opera.com/extensions/architecture-overview/)
+ - [Safari Extension Background operation](https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/ExtensionsOverview/ExtensionsOverview.html#//apple_ref/doc/uid/TP40009977-CH15-SW1)
+ - [Android Background Sync](https://developers.google.com/web/updates/2015/12/background-sync?hl=en)
+ - [Mozilla Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
