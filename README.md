@@ -9,7 +9,10 @@ their behalf.
 Following the introduction of the [Push API](https://w3c.github.io/push-api/) and
 [Background Synchronization](https://wicg.github.io/BackgroundSync/spec/), this assumption no longer
 stands. Web Applications are now able to both trigger and schedule execution of code in the
-background, outside of the user’s control.
+background, outside of the user’s control. This brings Web Application
+functionality closer to the scope of native applications or browser extensions,
+both of which are able to perform extensive
+[Background Operations](https://github.com/beverloo/budget-api/blob/gh-pages/BackgroundOperationComparison.md).
 
 In order to protect the user, Chrome has historically required developers to
 [display a notification](https://notifications.spec.whatwg.org/) in response a message. Firefox
