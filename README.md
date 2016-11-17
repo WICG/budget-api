@@ -1,5 +1,5 @@
 # Web Budget API
-[Draft specification](https://beverloo.github.io/budget-api/)
+[Draft specification](https://wicg.github.io/budget-api/)
 
 Web applications have been able to execute code, make network requests, and interact
 with the user through a browser tab or standalone browser window. This has allowed
