@@ -248,22 +248,23 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   <h2 id="api">API</h2>
 
   <section>
-    <h3 id="navigator-budget-interface">The {{NavigatorBudget}} interface</h3>
+    <h3 id="navigator-budget-interface">Navigator and WorkerNavigator extensions</h3>
     <pre class="idl">
-      [NoInterfaceObject,
-       Exposed=(Window,Worker)]
-      interface NavigatorBudget {
+      [Exposed=Window]
+      partial interface Navigator {
           [SameObject] readonly attribute BudgetService budget;
       };
-
-      Navigator implements NavigatorBudget;
-      WorkerNavigator implements NavigatorBudget;
+    </pre>
+    <pre class="idl">
+      [Exposed=Worker]
+      partial interface WorkerNavigator {
+          [SameObject] readonly attribute BudgetService budget;
+      };
     </pre>
 
     <p>
-      The <dfn attribute dfn-for="NavigatorBudget"><code>budget</code></dfn> attribute's getter must
-      return a <code>{{BudgetService}}</code> scoped to the <a>entry settings object</a>'s
-      <var>origin</var>.
+      The <code>budget</code> attribute's getter must return a <code>{{BudgetService}}</code>
+      scoped to the <a>entry settings object</a>'s <var>origin</var>.
     </p>
   </section>
 
