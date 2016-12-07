@@ -253,7 +253,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       [NoInterfaceObject,
        Exposed=(Window,Worker)]
       interface NavigatorBudget {
-          readonly attribute BudgetService budget;
+          [SameObject] readonly attribute BudgetService budget;
       };
 
       Navigator implements NavigatorBudget;

@@ -1623,7 +1623,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#NoInterfaceObject">NoInterfaceObject</a>,
  <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="navigatorbudget">NavigatorBudget</dfn> {
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice-1">BudgetService</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="BudgetService" href="#dom-navigatorbudget-budget" id="ref-for-dom-navigatorbudget-budget-1">budget</a>;
+    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice-1">BudgetService</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="BudgetService" href="#dom-navigatorbudget-budget" id="ref-for-dom-navigatorbudget-budget-1">budget</a>;
 };
 
 <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> <span class="kt">implements</span> <a class="n" data-link-type="idl-name" href="#navigatorbudget" id="ref-for-navigatorbudget-2">NavigatorBudget</a>;
@@ -1949,6 +1949,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <li><a href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a>
      <li><a href="https://heycam.github.io/webidl/#Exposed">Exposed</a>
      <li><a href="https://heycam.github.io/webidl/#NoInterfaceObject">NoInterfaceObject</a>
+     <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
      <li><a href="https://heycam.github.io/webidl/#securityerror">SecurityError</a>
      <li><a href="https://heycam.github.io/webidl/#idl-sequence">sequence</a>
     </ul>
@@ -1986,7 +1987,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 <pre class="idl def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#NoInterfaceObject">NoInterfaceObject</a>,
  <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
 <span class="kt">interface</span> <a class="nv" href="#navigatorbudget">NavigatorBudget</a> {
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice">BudgetService</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="BudgetService" href="#dom-navigatorbudget-budget">budget</a>;
+    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice">BudgetService</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="BudgetService" href="#dom-navigatorbudget-budget">budget</a>;
 };
 
 <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> <span class="kt">implements</span> <a class="n" data-link-type="idl-name" href="#navigatorbudget">NavigatorBudget</a>;
