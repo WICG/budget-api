@@ -12,7 +12,7 @@ holds: web applications are now able to both trigger and schedule execution of c
 background, outside of the user’s control. This brings web application
 functionality closer to native applications or browser extensions,
 both of which are able to perform extensive
-[Background Operations](https://github.com/beverloo/budget-api/blob/gh-pages/BackgroundOperationComparison.md).
+[Background Operations](https://github.com/WICG/budget-api/blob/gh-pages/BackgroundOperationComparison.md).
 
 In order to protect the user, Chrome has historically required developers to
 [display a notification](https://notifications.spec.whatwg.org/) in response to a message. Firefox
@@ -22,7 +22,7 @@ release of Chrome 52, has moved to as well.
 
 In both cases, it's an unknown to the developer whether they _have_ to show a notification. This
 eliminates a lot of potential use-cases for the Push API. The
-[Budget API](https://beverloo.github.io/budget-api/) aims to standardize this concept of budget in
+[Budget API](https://wicg.github.io/budget-api/) aims to standardize this concept of budget in
 a way that provides value for developers, while not locking user agents into any particular
 implementation.
 
