@@ -1423,7 +1423,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-12-07">7 December 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-12-08">8 December 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1479,7 +1479,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li>
      <a href="#api"><span class="secno">4</span> <span class="content">API</span></a>
      <ol class="toc">
-      <li><a href="#navigator-budget-interface"><span class="secno">4.1</span> <span class="content">Navigator and WorkerNavigator extensions</span></a>
+      <li><a href="#navigator-workernavigator-extensions"><span class="secno">4.1</span> <span class="content">Navigator and WorkerNavigator extensions</span></a>
       <li><a href="#budget-service-interface"><span class="secno">4.2</span> <span class="content">The <code class="idl"><span>BudgetService</span></code> interface</span></a>
       <li><a href="#budget-state-interface"><span class="secno">4.3</span> <span class="content">The <code class="idl"><span>BudgetState</span></code> interface</span></a>
       <li><a href="#oepration-type-enum"><span class="secno">4.4</span> <span class="content">The <code class="idl"><span>OperationType</span></code> enum</span></a>
@@ -1619,7 +1619,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <section>
     <h2 class="heading settled" data-level="4" id="api"><span class="secno">4. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
     <section>
-     <h3 class="heading settled" data-level="4.1" id="navigator-budget-interface"><span class="secno">4.1. </span><span class="content">Navigator and WorkerNavigator extensions</span><a class="self-link" href="#navigator-budget-interface"></a></h3>
+     <h3 class="heading settled" data-level="4.1" id="navigator-workernavigator-extensions"><span class="secno">4.1. </span><span class="content">Navigator and WorkerNavigator extensions</span><a class="self-link" href="#navigator-workernavigator-extensions"></a></h3>
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>]
 <span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
     [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice-1">BudgetService</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="BudgetService" id="dom-navigator-budget">budget<a class="self-link" href="#dom-navigator-budget"></a></dfn>;
