@@ -248,7 +248,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   <h2 id="api">API</h2>
 
   <section>
-    <h3 id="navigator-budget-interface">Navigator and WorkerNavigator extensions</h3>
+    <h3 id="navigator-workernavigator-extensions">Navigator and WorkerNavigator extensions</h3>
     <pre class="idl">
       [Exposed=Window]
       partial interface Navigator {
