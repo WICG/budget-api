@@ -141,7 +141,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       </li>
       <li>
         Deciding to temporarily limit <a>background operations</a> if the <a>budget</a> could be
-        used during an upcoming sporting event instead. 
+        used during an upcoming sporting event instead.
       </li>
     </ul>
 
@@ -292,10 +292,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       of the indicated <a>background operation</a>.
     </p>
     <p>
-      When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
-      steps <a>in parallel</a>:
+      When invoked, it MUST run the following steps:
     </p>
     <ol>
+      <li>
+        Let <var>promise</var> be <a>a new promise</a>.
+      </li>
       <li>
         Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
       </li>
@@ -304,8 +306,13 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         <code>{{SecurityError}}</code> and terminate these steps.
       </li>
       <li>
-        Resolve the <var>promise</var> with the worst-case <a>background operation cost</a>
-        associated with the given <var>operation</var>.
+        Return <var>promise</var> and run the following step <a>in parallel</a>:
+        <ol>
+          <li>
+            Resolve the <var>promise</var> with the worst-case <a>background operation cost</a>
+            associated with the given <var>operation</var>.
+          </li>
+        </ol>
       </li>
     </ol>
 
@@ -315,10 +322,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       objects indicating the expected state of the <a>budget</a> at given times in the future.
     </p>
     <p>
-      When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
-      steps <a>in parallel</a>:
+      When invoked, it MUST run the following steps:
     </p>
     <ol>
+      <li>
+        Let <var>promise</var> be <a>a new promise</a>.
+      </li>
       <li>
         Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
       </li>
@@ -327,50 +336,55 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         <code>{{SecurityError}}</code> and terminate these steps.
       </li>
       <li>
-        Let <var>details</var> be a new <code>{{sequence}}</code>.
-      </li>
-      <li>
-        If there are entries in <var>origin</var>'s <a>list of budget expectations</a>, for each
-        <var>entry</var>:
-
+        Return <var>promise</var> and run the following step <a>in parallel</a>:
         <ol>
           <li>
-            Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
+            Let <var>details</var> be a new <code>{{sequence}}</code>.
           </li>
           <li>
-            Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to
-            <var>entry</var>'s <a>budget</a> value.
-          </li>
-          <li>
-            Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
-            <code>{{DOMTimeStamp}}</code> representing the final date of <var>entry</var>'s validity
-            in milliseconds since 00:00:00 UTC on 1 January 1970.
-          </li>
-          <li>
-            Add <var>state</var> to <var>details</var>.
-          </li>
-        </ol>
+            If there are entries in <var>origin</var>'s <a>list of budget expectations</a>, for each
+            <var>entry</var>:
 
-        Otherwise:
-        <ol>
-          <li>
-            Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
+            <ol>
+              <li>
+                Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
+              </li>
+              <li>
+                Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to
+                <var>entry</var>'s <a>budget</a> value.
+              </li>
+              <li>
+                Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
+                <code>{{DOMTimeStamp}}</code> representing the final date of <var>entry</var>'s validity
+                in milliseconds since 00:00:00 UTC on 1 January 1970.
+              </li>
+              <li>
+                Add <var>state</var> to <var>details</var>.
+              </li>
+            </ol>
+
+            Otherwise:
+            <ol>
+              <li>
+                Let <var>state</var> be a new <code>{{BudgetState}}</code> instance.
+              </li>
+              <li>
+                Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to <em>0</em>.
+              </li>
+              <li>
+                Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
+                <code>{{DOMTimeStamp}}</code> representing the current time in milliseconds since
+                00:00:00 UTC on 1 January 1970.
+              </li>
+              <li>
+                Add <var>state</var> to <var>details</var>.
+              </li>
+            </ol>
           </li>
           <li>
-            Set <var>state</var>'s <code>{{BudgetState/budgetAt}}</code> attribute to <em>0</em>.
-          </li>
-          <li>
-            Set <var>state</var>'s <code>{{BudgetState/time}}</code> attribute to the
-            <code>{{DOMTimeStamp}}</code> representing the current time in milliseconds since
-            00:00:00 UTC on 1 January 1970.
-          </li>
-          <li>
-            Add <var>state</var> to <var>details</var>.
+            Resolve the <var>promise</var> with <var>details</var>.
           </li>
         </ol>
-      </li>
-      <li>
-        Resolve the <var>promise</var> with <var>details</var>.
       </li>
     </ol>
 
@@ -380,10 +394,12 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       budget for <var>operation</var> could be <a lt="reserve budget">reserved</a>.
     </p>
     <p>
-      When invoked, it MUST return <a>a new promise</a> <var>promise</var> and run the following
-      steps <a>in parallel</a>:
+      When invoked, it MUST run the following steps:
     </p>
     <ol>
+      <li>
+        Let <var>promise</var> be <a>a new promise</a>.
+      </li>
       <li>
         Let <var>origin</var> be the <a>entry settings object</a>'s <a>origin</a>.
       </li>
@@ -392,19 +408,24 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
         <code>{{SecurityError}}</code> and terminate these steps.
       </li>
       <li>
-        Let <var>budget</var> be the amount of budget available to <var>origin</var>.
-      </li>
-      <li>
-        Let <var>cost</var> be the <a>background operation cost</a> associated with
-        <var>operation</var>.
-      </li>
-      <li>
-        If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
-        the boolean <code>false</code> and abort these steps.
-      </li>
-      <li>
-        <a lt="reserve budget">Reserve</a> the <var>cost</var> from <var>origin</var>'s
-        <a>budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>.
+        Return <var>promise</var> and run the following step <a>in parallel</a>:
+        <ol>
+          <li>
+            Let <var>budget</var> be the amount of budget available to <var>origin</var>.
+          </li>
+          <li>
+            Let <var>cost</var> be the <a>background operation cost</a> associated with
+            <var>operation</var>.
+          </li>
+          <li>
+            If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
+            the boolean <code>false</code> and abort these steps.
+          </li>
+          <li>
+            <a lt="reserve budget">Reserve</a> the <var>cost</var> from <var>origin</var>'s
+            <a>budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>.
+          </li>
+        </ol>
       </li>
     </ol>
   </section>
@@ -469,5 +490,5 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
       applicable, is recommended.
     </p>
   </section>
-  
+
 </section>
