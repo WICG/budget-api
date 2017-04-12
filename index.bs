@@ -438,7 +438,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </section>
 
   <section>
-    <h3 id="oepration-type-enum">The {{OperationType}} enum</h3>
+    <h3 id="operation-type-enum">The {{OperationType}} enum</h3>
     <p>
       The <code>{{OperationType}}</code> enumeration describes the known set of <a>background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with
