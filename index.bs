@@ -198,7 +198,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     <h3 id="applicability">Applicability</h3>
     <p>
       Applicability of the Budget API is limited to potentially resource consuming
-      <a>background operations</a>— operations that are not sufficiently privacy sensitive to need
+      <a>background operations</a>—operations that are not sufficiently privacy sensitive to need
       express user permission for basic usage.
     </p>
     <p>
