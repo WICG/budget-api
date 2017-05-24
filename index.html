@@ -1423,7 +1423,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-04-11">11 April 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-24">24 May 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1482,7 +1482,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       <li><a href="#navigator-workernavigator-extensions"><span class="secno">4.1</span> <span class="content">Navigator and WorkerNavigator extensions</span></a>
       <li><a href="#budget-service-interface"><span class="secno">4.2</span> <span class="content">The <code class="idl"><span>BudgetService</span></code> interface</span></a>
       <li><a href="#budget-state-interface"><span class="secno">4.3</span> <span class="content">The <code class="idl"><span>BudgetState</span></code> interface</span></a>
-      <li><a href="#oepration-type-enum"><span class="secno">4.4</span> <span class="content">The <code class="idl"><span>OperationType</span></code> enum</span></a>
+      <li><a href="#operation-type-enum"><span class="secno">4.4</span> <span class="content">The <code class="idl"><span>OperationType</span></code> enum</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1522,6 +1522,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     the cost associated with doing a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operation</a>. </p>
     <p> Because this API relates to the ability to do work <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, which is considered
     a privilege, functionality provided by this API is only available in a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>. </p>
+    <p> An <a href="https://github.com/WICG/budget-api/blob/gh-pages/README.md">explainer</a> is
+    available in our <a href="https://github.com/WICG/">GitHub repository</a>. </p>
     <p class="note" role="note"> This specification does not define how user agents establish or store the amount of current <a data-link-type="dfn" href="#budget" id="ref-for-budget-1">budget</a>. It aims to define an API that exposes sufficient information to make the <a data-link-type="dfn" href="#budget" id="ref-for-budget-2">budget</a> useful for authors, while not restricting the implementation details and
     heuristics specific to a user agent. </p>
     <section>
@@ -1589,7 +1591,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <h2 class="heading settled" data-level="3" id="security-and-privacy-considerations"><span class="secno">3. </span><span class="content">Security and Privacy Considerations</span><a class="self-link" href="#security-and-privacy-considerations"></a></h2>
     <section>
      <h3 class="heading settled" data-level="3.1" id="applicability"><span class="secno">3.1. </span><span class="content">Applicability</span><a class="self-link" href="#applicability"></a></h3>
-     <p> Applicability of the Budget API is limited to potentially resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operations</a>— operations that are not sufficiently privacy sensitive to need
+     <p> Applicability of the Budget API is limited to potentially resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operations</a>—operations that are not sufficiently privacy sensitive to need
       express user permission for basic usage. </p>
      <p> User agents MUST NOT use the Budget API as an alternative to obtaining express user permission
       for privacy-sensitive operations such as accurate location access <a data-link-type="biblio" href="#biblio-geolocation-api">[GEOLOCATION-API]</a> and
@@ -1725,7 +1727,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       1970, at which the <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat-4">budgetAt</a></code></code> will be valid. </p>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.4" id="oepration-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code> enum</span><a class="self-link" href="#oepration-type-enum"></a></h3>
+     <h3 class="heading settled" data-level="4.4" id="operation-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code> enum</span><a class="self-link" href="#operation-type-enum"></a></h3>
      <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-4">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-13">background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-3">getCost()</a></code></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a
       quantifiable set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-14">background operations</a> it can be used for. </p>

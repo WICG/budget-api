@@ -79,6 +79,10 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
     Because this API relates to the ability to do work <a>in the background</a>, which is considered
     a privilege, functionality provided by this API is only available in a <a>secure context</a>.
   </p>
+  <p>
+    An <a href="https://github.com/WICG/budget-api/blob/gh-pages/README.md">explainer</a> is
+    available in our <a href="https://github.com/WICG/budget-api/">GitHub repository</a>.
+  </p>
 
   <p class="note">
     This specification does not define how user agents establish or store the amount of current
@@ -459,7 +463,7 @@ spec: webidl; urlPrefix: https://heycam.github.io/webidl/
   </section>
 
   <section>
-    <h3 id="oepration-type-enum">The {{OperationType}} enum</h3>
+    <h3 id="operation-type-enum">The {{OperationType}} enum</h3>
     <p>
       The <code>{{OperationType}}</code> enumeration describes the known set of <a>background
       operations</a> that the Web Budget API caters for. Authors can use this in combination with
