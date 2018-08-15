@@ -418,7 +418,7 @@
 	[data-algorithm]:not(.heading) {
 	  padding: .5em;
 	  border: thin solid #ddd; border-radius: .5em;
-	  margin: .5em 0;
+	  margin: .5em calc(-0.5em - 1px);
 	}
 	[data-algorithm]:not(.heading) > :first-child {
 	  margin-top: 0;
@@ -470,7 +470,7 @@
 		font-style: normal;
 	}
 	dt dfn code, code.idl {
-		font-size: normal;
+		font-size: medium;
 	}
 	dfn var {
 		font-style: normal;
@@ -992,57 +992,93 @@ Possible extra rowspan handling
 	.toc > li li          { font-weight: normal; }
 	.toc > li li li       { font-size:   95%;    }
 	.toc > li li li li    { font-size:   90%;    }
+	.toc > li li li li .secno { font-size: 85%; }
 	.toc > li li li li li { font-size:   85%;    }
+	.toc > li li li li li .secno { font-size: 100%; }
 
-	.toc > li             { margin: 1.5rem 0;    }
-	.toc > li li          { margin: 0.3rem 0;    }
-	.toc > li li li       { margin-left: 2rem;   }
+	/* @supports not (display:grid) { */
+		.toc > li             { margin: 1.5rem 0;    }
+		.toc > li li          { margin: 0.3rem 0;    }
+		.toc > li li li       { margin-left: 2rem;   }
 
-	/* Section numbers in a column of their own */
-	.toc .secno {
-		float: left;
-		width: 4rem;
-		white-space: nowrap;
-	}
-	.toc > li li li li .secno {
-		font-size: 85%;
-	}
-	.toc > li li li li li .secno {
-		font-size: 100%;
-	}
+		/* Section numbers in a column of their own */
+		.toc .secno {
+			float: left;
+			width: 4rem;
+			white-space: nowrap;
+		}
 
-	:not(li) > .toc              { margin-left:  5rem; }
-	.toc .secno                  { margin-left: -5rem; }
-	.toc > li li li .secno       { margin-left: -7rem; }
-	.toc > li li li li .secno    { margin-left: -9rem; }
-	.toc > li li li li li .secno { margin-left: -11rem; }
+		.toc li {
+			clear: both;
+		}
 
-	/* Tighten up indentation in narrow ToCs */
-	@media (max-width: 30em) {
-		:not(li) > .toc              { margin-left:  4rem; }
-		.toc .secno                  { margin-left: -4rem; }
-		.toc > li li li              { margin-left:  1rem; }
-		.toc > li li li .secno       { margin-left: -5rem; }
-		.toc > li li li li .secno    { margin-left: -6rem; }
-		.toc > li li li li li .secno { margin-left: -7rem; }
-	}
-	@media screen and (min-width: 78em) {
-		body:not(.toc-inline) :not(li) > .toc              { margin-left:  4rem; }
-		body:not(.toc-inline) .toc .secno                  { margin-left: -4rem; }
-		body:not(.toc-inline) .toc > li li li              { margin-left:  1rem; }
-		body:not(.toc-inline) .toc > li li li .secno       { margin-left: -5rem; }
-		body:not(.toc-inline) .toc > li li li li .secno    { margin-left: -6rem; }
-		body:not(.toc-inline) .toc > li li li li li .secno { margin-left: -7rem; }
-	}
-	body.toc-sidebar #toc :not(li) > .toc              { margin-left:  4rem; }
-	body.toc-sidebar #toc .toc .secno                  { margin-left: -4rem; }
-	body.toc-sidebar #toc .toc > li li li              { margin-left:  1rem; }
-	body.toc-sidebar #toc .toc > li li li .secno       { margin-left: -5rem; }
-	body.toc-sidebar #toc .toc > li li li li .secno    { margin-left: -6rem; }
-	body.toc-sidebar #toc .toc > li li li li li .secno { margin-left: -7rem; }
+		:not(li) > .toc              { margin-left:  5rem; }
+		.toc .secno                  { margin-left: -5rem; }
+		.toc > li li li .secno       { margin-left: -7rem; }
+		.toc > li li li li .secno    { margin-left: -9rem; }
+		.toc > li li li li li .secno { margin-left: -11rem; }
 
-	.toc li {
-		clear: both;
+		/* Tighten up indentation in narrow ToCs */
+		@media (max-width: 30em) {
+			:not(li) > .toc              { margin-left:  4rem; }
+			.toc .secno                  { margin-left: -4rem; }
+			.toc > li li li              { margin-left:  1rem; }
+			.toc > li li li .secno       { margin-left: -5rem; }
+			.toc > li li li li .secno    { margin-left: -6rem; }
+			.toc > li li li li li .secno { margin-left: -7rem; }
+		}
+	/* } */
+
+	@supports (display:grid) {
+		/* Use #toc over .toc to override non-@supports rules. */
+		#toc {
+			display: grid;
+			align-content: start;
+			grid-template-columns: auto 1fr;
+			grid-column-gap: 1rem;
+			column-gap: 1rem;
+			grid-row-gap: .6rem;
+			row-gap: .6rem;
+		}
+		#toc h2 {
+			grid-column: 1 / -1;
+			margin-bottom: 0;
+		}
+		#toc ol,
+		#toc li,
+		#toc a {
+			display: contents;
+			/* Switch <a> to subgrid when supported */
+		}
+		#toc span {
+			margin: 0;
+		}
+		#toc > .toc > li > a > span {
+			/* The spans of the top-level list,
+			   comprising the first items of each top-level section. */
+			margin-top: 1.1rem;
+		}
+		#toc#toc .secno { /* Ugh, need more specificity to override base.css */
+			grid-column: 1;
+			width: auto;
+			margin-left: 0;
+		}
+		#toc .content {
+			grid-column: 2;
+			width: auto;
+			margin-right: 1rem;
+		}
+		#toc .content:hover {
+			background: rgba(75%, 75%, 75%, .25);
+			border-bottom: 3px solid #054572;
+			margin-bottom: -3px;
+		}
+		#toc li li li .content {
+			margin-left: 1rem;
+		}
+		#toc li li li li .content {
+			margin-left: 2rem;
+		}
 	}
 
 
@@ -1176,254 +1212,255 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 0feafaae1a97b66d9da46b325858f9805ac01fb2" name="generator">
+  <meta content="Bikeshed version aab07fa3563472bb567b6a05ef64a9084da53327" name="generator">
+  <link href="https://wicg.github.io/budget-api/" rel="canonical">
 <style>/* style-md-lists */
 
-            /* This is a weird hack for me not yet following the commonmark spec
-               regarding paragraph and lists. */
-            [data-md] > :first-child {
-                margin-top: 0;
-            }
-            [data-md] > :last-child {
-                margin-bottom: 0;
-            }</style>
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
 <style>/* style-selflinks */
 
-            .heading, .issue, .note, .example, li, dt {
-                position: relative;
-            }
-            a.self-link {
-                position: absolute;
-                top: 0;
-                left: calc(-1 * (3.5rem - 26px));
-                width: calc(3.5rem - 26px);
-                height: 2em;
-                text-align: center;
-                border: none;
-                transition: opacity .2s;
-                opacity: .5;
-            }
-            a.self-link:hover {
-                opacity: 1;
-            }
-            .heading > a.self-link {
-                font-size: 83%;
-            }
-            li > a.self-link {
-                left: calc(-1 * (3.5rem - 26px) - 2em);
-            }
-            dfn > a.self-link {
-                top: auto;
-                left: auto;
-                opacity: 0;
-                width: 1.5em;
-                height: 1.5em;
-                background: gray;
-                color: white;
-                font-style: normal;
-                transition: opacity .2s, background-color .2s, color .2s;
-            }
-            dfn:hover > a.self-link {
-                opacity: 1;
-            }
-            dfn > a.self-link:hover {
-                color: black;
-            }
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: gray;
+    color: white;
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: black;
+}
 
-            a.self-link::before            { content: "¶"; }
-            .heading > a.self-link::before { content: "§"; }
-            dfn > a.self-link::before      { content: "#"; }</style>
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
 <style>/* style-counters */
 
-            body {
-                counter-reset: example figure issue;
-            }
-            .issue {
-                counter-increment: issue;
-            }
-            .issue:not(.no-marker)::before {
-                content: "Issue " counter(issue);
-            }
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
 
-            .example {
-                counter-increment: example;
-            }
-            .example:not(.no-marker)::before {
-                content: "Example " counter(example);
-            }
-            .invalid.example:not(.no-marker)::before,
-            .illegal.example:not(.no-marker)::before {
-                content: "Invalid Example" counter(example);
-            }
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
 
-            figcaption {
-                counter-increment: figure;
-            }
-            figcaption:not(.no-marker)::before {
-                content: "Figure " counter(figure) " ";
-            }</style>
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
 <style>/* style-autolinks */
 
-            .css.css, .property.property, .descriptor.descriptor {
-                color: #005a9c;
-                font-size: inherit;
-                font-family: inherit;
-            }
-            .css::before, .property::before, .descriptor::before {
-                content: "‘";
-            }
-            .css::after, .property::after, .descriptor::after {
-                content: "’";
-            }
-            .property, .descriptor {
-                /* Don't wrap property and descriptor names */
-                white-space: nowrap;
-            }
-            .type { /* CSS value <type> */
-                font-style: italic;
-            }
-            pre .property::before, pre .property::after {
-                content: "";
-            }
-            [data-link-type="property"]::before,
-            [data-link-type="propdesc"]::before,
-            [data-link-type="descriptor"]::before,
-            [data-link-type="value"]::before,
-            [data-link-type="function"]::before,
-            [data-link-type="at-rule"]::before,
-            [data-link-type="selector"]::before,
-            [data-link-type="maybe"]::before {
-                content: "‘";
-            }
-            [data-link-type="property"]::after,
-            [data-link-type="propdesc"]::after,
-            [data-link-type="descriptor"]::after,
-            [data-link-type="value"]::after,
-            [data-link-type="function"]::after,
-            [data-link-type="at-rule"]::after,
-            [data-link-type="selector"]::after,
-            [data-link-type="maybe"]::after {
-                content: "’";
-            }
+.css.css, .property.property, .descriptor.descriptor {
+    color: #005a9c;
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
 
-            [data-link-type].production::before,
-            [data-link-type].production::after,
-            .prod [data-link-type]::before,
-            .prod [data-link-type]::after {
-                content: "";
-            }
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
 
-            [data-link-type=element],
-            [data-link-type=element-attr] {
-                font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
-                font-size: .9em;
-            }
-            [data-link-type=element]::before { content: "<" }
-            [data-link-type=element]::after  { content: ">" }
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
 
-            [data-link-type=biblio] {
-                white-space: pre;
-            }</style>
+[data-link-type=biblio] {
+    white-space: pre;
+}</style>
 <style>/* style-dfn-panel */
 
-        .dfn-panel {
-            position: absolute;
-            z-index: 35;
-            height: auto;
-            width: -webkit-fit-content;
-            width: fit-content;
-            max-width: 300px;
-            max-height: 500px;
-            overflow: auto;
-            padding: 0.5em 0.75em;
-            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-            background: #DDDDDD;
-            color: black;
-            border: outset 0.2em;
-        }
-        .dfn-panel:not(.on) { display: none; }
-        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-        .dfn-panel > b { display: block; }
-        .dfn-panel a { color: black; }
-        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-        .dfn-panel > b + b { margin-top: 0.25em; }
-        .dfn-panel ul { padding: 0; }
-        .dfn-panel li { list-style: inside; }
-        .dfn-panel.activated {
-            display: inline-block;
-            position: fixed;
-            left: .5em;
-            bottom: 2em;
-            margin: 0 auto;
-            max-width: calc(100vw - 1.5em - .4em - .5em);
-            max-height: 30vh;
-        }
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: #DDDDDD;
+    color: black;
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: black; }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
 
-        .dfn-paneled { cursor: pointer; }
-        </style>
+.dfn-paneled { cursor: pointer; }
+</style>
 <style>/* style-syntax-highlighting */
 pre.idl.highlight { color: #708090; }
-        .highlight:not(.idl) { background: hsl(24, 20%, 95%); }
-        code.highlight { padding: .1em; border-radius: .3em; }
-        pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
-        .highlight .c { color: #708090 } /* Comment */
-        .highlight .k { color: #990055 } /* Keyword */
-        .highlight .l { color: #000000 } /* Literal */
-        .highlight .n { color: #0077aa } /* Name */
-        .highlight .o { color: #999999 } /* Operator */
-        .highlight .p { color: #999999 } /* Punctuation */
-        .highlight .cm { color: #708090 } /* Comment.Multiline */
-        .highlight .cp { color: #708090 } /* Comment.Preproc */
-        .highlight .c1 { color: #708090 } /* Comment.Single */
-        .highlight .cs { color: #708090 } /* Comment.Special */
-        .highlight .kc { color: #990055 } /* Keyword.Constant */
-        .highlight .kd { color: #990055 } /* Keyword.Declaration */
-        .highlight .kn { color: #990055 } /* Keyword.Namespace */
-        .highlight .kp { color: #990055 } /* Keyword.Pseudo */
-        .highlight .kr { color: #990055 } /* Keyword.Reserved */
-        .highlight .kt { color: #990055 } /* Keyword.Type */
-        .highlight .ld { color: #000000 } /* Literal.Date */
-        .highlight .m { color: #000000 } /* Literal.Number */
-        .highlight .s { color: #a67f59 } /* Literal.String */
-        .highlight .na { color: #0077aa } /* Name.Attribute */
-        .highlight .nc { color: #0077aa } /* Name.Class */
-        .highlight .no { color: #0077aa } /* Name.Constant */
-        .highlight .nd { color: #0077aa } /* Name.Decorator */
-        .highlight .ni { color: #0077aa } /* Name.Entity */
-        .highlight .ne { color: #0077aa } /* Name.Exception */
-        .highlight .nf { color: #0077aa } /* Name.Function */
-        .highlight .nl { color: #0077aa } /* Name.Label */
-        .highlight .nn { color: #0077aa } /* Name.Namespace */
-        .highlight .py { color: #0077aa } /* Name.Property */
-        .highlight .nt { color: #669900 } /* Name.Tag */
-        .highlight .nv { color: #222222 } /* Name.Variable */
-        .highlight .ow { color: #999999 } /* Operator.Word */
-        .highlight .mb { color: #000000 } /* Literal.Number.Bin */
-        .highlight .mf { color: #000000 } /* Literal.Number.Float */
-        .highlight .mh { color: #000000 } /* Literal.Number.Hex */
-        .highlight .mi { color: #000000 } /* Literal.Number.Integer */
-        .highlight .mo { color: #000000 } /* Literal.Number.Oct */
-        .highlight .sb { color: #a67f59 } /* Literal.String.Backtick */
-        .highlight .sc { color: #a67f59 } /* Literal.String.Char */
-        .highlight .sd { color: #a67f59 } /* Literal.String.Doc */
-        .highlight .s2 { color: #a67f59 } /* Literal.String.Double */
-        .highlight .se { color: #a67f59 } /* Literal.String.Escape */
-        .highlight .sh { color: #a67f59 } /* Literal.String.Heredoc */
-        .highlight .si { color: #a67f59 } /* Literal.String.Interpol */
-        .highlight .sx { color: #a67f59 } /* Literal.String.Other */
-        .highlight .sr { color: #a67f59 } /* Literal.String.Regex */
-        .highlight .s1 { color: #a67f59 } /* Literal.String.Single */
-        .highlight .ss { color: #a67f59 } /* Literal.String.Symbol */
-        .highlight .vc { color: #0077aa } /* Name.Variable.Class */
-        .highlight .vg { color: #0077aa } /* Name.Variable.Global */
-        .highlight .vi { color: #0077aa } /* Name.Variable.Instance */
-        .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
-        </style>
+.highlight:not(.idl) { background: hsl(24, 20%, 95%); }
+code.highlight { padding: .1em; border-radius: .3em; }
+pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+c-[a] { color: #990055 } /* Keyword.Declaration */
+c-[b] { color: #990055 } /* Keyword.Type */
+c-[c] { color: #708090 } /* Comment */
+c-[d] { color: #708090 } /* Comment.Multiline */
+c-[e] { color: #0077aa } /* Name.Attribute */
+c-[f] { color: #669900 } /* Name.Tag */
+c-[g] { color: #222222 } /* Name.Variable */
+c-[k] { color: #990055 } /* Keyword */
+c-[l] { color: #000000 } /* Literal */
+c-[m] { color: #000000 } /* Literal.Number */
+c-[n] { color: #0077aa } /* Name */
+c-[o] { color: #999999 } /* Operator */
+c-[p] { color: #999999 } /* Punctuation */
+c-[s] { color: #a67f59 } /* Literal.String */
+c-[t] { color: #a67f59 } /* Literal.String.Single */
+c-[u] { color: #a67f59 } /* Literal.String.Double */
+c-[cp] { color: #708090 } /* Comment.Preproc */
+c-[c1] { color: #708090 } /* Comment.Single */
+c-[cs] { color: #708090 } /* Comment.Special */
+c-[kc] { color: #990055 } /* Keyword.Constant */
+c-[kn] { color: #990055 } /* Keyword.Namespace */
+c-[kp] { color: #990055 } /* Keyword.Pseudo */
+c-[kr] { color: #990055 } /* Keyword.Reserved */
+c-[ld] { color: #000000 } /* Literal.Date */
+c-[nc] { color: #0077aa } /* Name.Class */
+c-[no] { color: #0077aa } /* Name.Constant */
+c-[nd] { color: #0077aa } /* Name.Decorator */
+c-[ni] { color: #0077aa } /* Name.Entity */
+c-[ne] { color: #0077aa } /* Name.Exception */
+c-[nf] { color: #0077aa } /* Name.Function */
+c-[nl] { color: #0077aa } /* Name.Label */
+c-[nn] { color: #0077aa } /* Name.Namespace */
+c-[py] { color: #0077aa } /* Name.Property */
+c-[ow] { color: #999999 } /* Operator.Word */
+c-[mb] { color: #000000 } /* Literal.Number.Bin */
+c-[mf] { color: #000000 } /* Literal.Number.Float */
+c-[mh] { color: #000000 } /* Literal.Number.Hex */
+c-[mi] { color: #000000 } /* Literal.Number.Integer */
+c-[mo] { color: #000000 } /* Literal.Number.Oct */
+c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
+c-[sc] { color: #a67f59 } /* Literal.String.Char */
+c-[sd] { color: #a67f59 } /* Literal.String.Doc */
+c-[se] { color: #a67f59 } /* Literal.String.Escape */
+c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
+c-[si] { color: #a67f59 } /* Literal.String.Interpol */
+c-[sx] { color: #a67f59 } /* Literal.String.Other */
+c-[sr] { color: #a67f59 } /* Literal.String.Regex */
+c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
+c-[vc] { color: #0077aa } /* Name.Variable.Class */
+c-[vg] { color: #0077aa } /* Name.Variable.Global */
+c-[vi] { color: #0077aa } /* Name.Variable.Instance */
+c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web Budget API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-24">24 May 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-08-15">15 August 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1435,13 +1472,23 @@ pre.idl.highlight { color: #708090; }
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:peter@chromium.org">Peter Beverloo</a> (<span class="p-org org">Google</span>)
     </dl>
    </div>
-   <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2015 the Contributors to the Web Budget API Specification, published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+   <div data-fill-with="warning">
+    <details class="annoying-warning" open>
+     <summary>Obsoletion Notice</summary>
+     <p> This specification is not being actively maintained,
+  	and should not be used as a guide for implementations.
+  	It may be revived in the future,
+  	but for now should be considered obsolete. </p>
+     <p> If you have questions or comments on this specification,
+  	please send an email to the editors. </p>
+    </details>
+   </div>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 the Contributors to the Web Budget API Specification, published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
 A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
    <hr title="Separator for header">
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification describes an API that can be used to retrieve the amount of budget an origin has available for resource consuming background operations, as well as the cost associated with doing such an operation.</p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1510,59 +1557,59 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     has allowed users to associate the presence of a browser tab with the Web Application’s ability
     to do work on their behalf. </p>
     <p> Following the introduction of the Push API <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> and Web Background Synchronization <a data-link-type="biblio" href="#biblio-web-background-sync">[WEB-BACKGROUND-SYNC]</a>, this assumption no longer stands. Web Applications are now able to both
-    trigger and schedule execution of code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, outside of the user’s control. </p>
+    trigger and schedule execution of code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background" id="ref-for-in-the-background">in the background</a>, outside of the user’s control. </p>
     <p> In an effort to mitigate risk to the user, user agents have implemented restrictions such as
-    time limits on executing code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, or a requirement for the Web Application
+    time limits on executing code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background" id="ref-for-in-the-background①">in the background</a>, or a requirement for the Web Application
     to use the Web Notification API <a data-link-type="biblio" href="#biblio-notifications">[NOTIFICATIONS]</a> to inform the user of the work they’ve done.
     Those restrictions are often unspecified and left up to the discretion of the user agent. In
     some cases, user agents will choose to not enforce these restrictions depending on the intensity
-    of the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-1">user’s engagement</a> with the Web Application. </p>
+    of the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement">user’s engagement</a> with the Web Application. </p>
     <p> This specification describes an API that exposes a budget that can be used by authors to
-    determine their current budget for resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-1">background operations</a>, as well as
-    the cost associated with doing a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-2">background operation</a>. </p>
-    <p> Because this API relates to the ability to do work <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>, which is considered
-    a privilege, functionality provided by this API is only available in a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>. </p>
+    determine their current budget for resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation">background operations</a>, as well as
+    the cost associated with doing a certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①">background operation</a>. </p>
+    <p> Because this API relates to the ability to do work <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background" id="ref-for-in-the-background②">in the background</a>, which is considered
+    a privilege, functionality provided by this API is only available in a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-contexts" id="ref-for-secure-contexts">secure context</a>. </p>
     <p> An <a href="https://github.com/WICG/budget-api/blob/gh-pages/README.md">explainer</a> is
-    available in our <a href="https://github.com/WICG/">GitHub repository</a>. </p>
-    <p class="note" role="note"> This specification does not define how user agents establish or store the amount of current <a data-link-type="dfn" href="#budget" id="ref-for-budget-1">budget</a>. It aims to define an API that exposes sufficient information to make the <a data-link-type="dfn" href="#budget" id="ref-for-budget-2">budget</a> useful for authors, while not restricting the implementation details and
+    available in our <a href="https://github.com/WICG/budget-api/">GitHub repository</a>. </p>
+    <p class="note" role="note"> This specification does not define how user agents establish or store the amount of current <a data-link-type="dfn" href="#budget" id="ref-for-budget">budget</a>. It aims to define an API that exposes sufficient information to make the <a data-link-type="dfn" href="#budget" id="ref-for-budget①">budget</a> useful for authors, while not restricting the implementation details and
     heuristics specific to a user agent. </p>
     <section>
      <h3 class="heading settled" data-level="1.1" id="current-budget"><span class="secno">1.1. </span><span class="content">Current budget</span><a class="self-link" href="#current-budget"></a></h3>
-     <p> There are various use-cases for needing to know the currently available <a data-link-type="dfn" href="#budget" id="ref-for-budget-3">budget</a>: </p>
+     <p> There are various use-cases for needing to know the currently available <a data-link-type="dfn" href="#budget" id="ref-for-budget②">budget</a>: </p>
      <ul>
       <li> Deciding to <em>not</em> show a notification in response to a low priority push message
         whose primary purpose was to synchronize data. 
-      <li> Deciding whether the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> can schedule a precise timer using a hypothetical Job
+      <li> Deciding whether the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin">origin</a> can schedule a precise timer using a hypothetical Job
         Scheduler API. 
      </ul>
-     <section class="example" id="example-13845911">
-      <a class="self-link" href="#example-13845911"></a> 
-      <p> Determine whether a user visible interaction is required in response to a <a data-link-type="dfn" href="https://w3c.github.io/push-api/#push-message">push message</a>: </p>
-<pre class="lang-js highlight">self<span class="p">.</span>addEventListener<span class="p">(</span><span class="s1">'push'</span><span class="p">,</span> event <span class="o">=></span> <span class="p">{</span>
-    <span class="c1">// Execute the application-specific logic depending on the contents of the
-</span>    <span class="c1">// received push message, for example by caching the latest content.
-</span>
-    event<span class="p">.</span>waitUntil<span class="p">(</span>
-        navigator<span class="p">.</span>budget<span class="p">.</span>reserve<span class="p">(</span><span class="s1">'silent-push'</span><span class="p">)</span><span class="p">.</span>then<span class="p">(</span>reserved <span class="o">=></span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span>reserved<span class="p">)</span>
-                <span class="k">return</span><span class="p">;</span>  <span class="c1">// No need to show a notification.
-</span>
-            <span class="c1">// Not enough budget is available, must show a notification.
-</span>            <span class="k">return</span> registration<span class="p">.</span>showNotification<span class="p">(</span><span class="p">...</span><span class="p">)</span><span class="p">;</span>
-        <span class="p">}</span><span class="p">)</span>
-    <span class="p">)</span><span class="p">;</span>
-<span class="p">}</span><span class="p">)</span><span class="p">;</span>
+     <section class="example" id="example-96b3b91e">
+      <a class="self-link" href="#example-96b3b91e"></a> 
+      <p> Determine whether a user visible interaction is required in response to a <a data-link-type="dfn" href="https://w3c.github.io/push-api/#push-message" id="ref-for-push-message">push message</a>: </p>
+<pre class="lang-js highlight">self<c- p>.</c->addEventListener<c- p>(</c-><c- t>'push'</c-><c- p>,</c-> event <c- p>=></c-> <c- p>{</c->
+    <c- c1>// Execute the application-specific logic depending on the contents of the</c->
+    <c- c1>// received push message, for example by caching the latest content.</c->
+
+    event<c- p>.</c->waitUntil<c- p>(</c->
+        navigator<c- p>.</c->budget<c- p>.</c->reserve<c- p>(</c-><c- t>'silent-push'</c-><c- p>).</c->then<c- p>(</c->reserved <c- p>=></c-> <c- p>{</c->
+            <c- k>if</c-> <c- p>(</c->reserved<c- p>)</c->
+                <c- k>return</c-><c- p>;</c->  <c- c1>// No need to show a notification.</c->
+
+            <c- c1>// Not enough budget is available, must show a notification.</c->
+            <c- k>return</c-> registration<c- p>.</c->showNotification<c- p>(...);</c->
+        <c- p>})</c->
+    <c- p>);</c->
+<c- p>});</c->
 </pre>
      </section>
     </section>
     <section>
      <h3 class="heading settled" data-level="1.2" id="expected-budget"><span class="secno">1.2. </span><span class="content">Expected budget</span><a class="self-link" href="#expected-budget"></a></h3>
-     <p> There are various use-cases for needing to know the <a data-link-type="dfn" href="#budget" id="ref-for-budget-4">budget</a> in advance: </p>
+     <p> There are various use-cases for needing to know the <a data-link-type="dfn" href="#budget" id="ref-for-budget③">budget</a> in advance: </p>
      <ul>
       <li> Deciding on the frequency of server-initiated cache updates of synchronized data. 
-      <li> Deciding on the server whether there is sufficient <a data-link-type="dfn" href="#budget" id="ref-for-budget-5">budget</a> available to hide
+      <li> Deciding on the server whether there is sufficient <a data-link-type="dfn" href="#budget" id="ref-for-budget④">budget</a> available to hide
         previously shown notifications when the user dismissed them on other devices. 
-      <li> Deciding to temporarily limit <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-3">background operations</a> if the <a data-link-type="dfn" href="#budget" id="ref-for-budget-6">budget</a> could be
+      <li> Deciding to temporarily limit <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation②">background operations</a> if the <a data-link-type="dfn" href="#budget" id="ref-for-budget⑤">budget</a> could be
         used during an upcoming sporting event instead. 
      </ul>
      <p class="issue" id="issue-1e981ea2"><a class="self-link" href="#issue-1e981ea2"></a> Add an example that demonstrates a one of these use-cases. </p>
@@ -1570,28 +1617,28 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    </section>
    <section>
     <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
-    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="user-engagement">user engagement</dfn> with an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is defined by the intensity of their
+    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="user-engagement">user engagement</dfn> with an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin①">origin</a> is defined by the intensity of their
     interaction with the application by means of navigation, interaction and retention signals. </p>
-    <p> A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation">background operation</dfn> is the ability for an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> to execute potentially
-    resource consuming code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>. </p>
-    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="background-operation-cost">background operation cost</dfn> is a non-negative number that describes the cost of
-    executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-4">background operation</a> on the user’s device. </p>
-    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="budget">budget</dfn>, which is a non-negative number derived
-    from the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement-2">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-5">background operations</a> the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> is able to do, depending on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-1">background operation costs</a>. </p>
-    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="list-of-budget-expectations">list of budget expectations</dfn>. This starts with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s currently available <a data-link-type="dfn" href="#budget" id="ref-for-budget-7">budget</a>, followed by zero or more entries indicating
-    the lower bound of available <a data-link-type="dfn" href="#budget" id="ref-for-budget-8">budget</a> at known points in the future. </p>
+    <p> A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="background-operation">background operation</dfn> is the ability for an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin②">origin</a> to execute potentially
+    resource consuming code <a data-link-type="dfn" href="https://wicg.github.io/BackgroundSync/spec/#in-the-background" id="ref-for-in-the-background③">in the background</a>. </p>
+    <p> The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="background-operation-cost">background operation cost</dfn> is a non-negative number that describes the cost of
+    executing a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation③">background operation</a> on the user’s device. </p>
+    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin③">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="budget">budget</dfn>, which is a non-negative number derived
+    from the <a data-link-type="dfn" href="#user-engagement" id="ref-for-user-engagement①">user engagement</a> that describes how many <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation④">background operations</a> the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin④">origin</a> is able to do, depending on the associated <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost">background operation costs</a>. </p>
+    <p> An <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin⑤">origin</a> has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="list-of-budget-expectations">list of budget expectations</dfn>. This starts with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin⑥">origin</a>’s currently available <a data-link-type="dfn" href="#budget" id="ref-for-budget⑥">budget</a>, followed by zero or more entries indicating
+    the lower bound of available <a data-link-type="dfn" href="#budget" id="ref-for-budget⑦">budget</a> at known points in the future. </p>
     <p class="note" role="note"> User agents are not required to maintain future-bound budget expectations, but doing so enables
     more <a href="#expected-budget">use-cases</a> for authors. </p>
-    <p> Part of an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget-9">budget</a> can be <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="reserve budget" data-noexport="" id="reserve-budget">reserved</dfn>. This reduces the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>’s current <a data-link-type="dfn" href="#budget" id="ref-for-budget-10">budget</a> by the given <var>cost</var>. </p>
-    <p class="note" role="note"> The reserved cost of certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-6">background operations</a> could be less than the cost
-    indicated by <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-1">getCost()</a></code></code> when the user’s device is in favorable
+    <p> Part of an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin⑦">origin</a>’s available <a data-link-type="dfn" href="#budget" id="ref-for-budget⑧">budget</a> can be <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="reserve budget" data-noexport id="reserve-budget">reserved</dfn>. This reduces the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin⑧">origin</a>’s current <a data-link-type="dfn" href="#budget" id="ref-for-budget⑨">budget</a> by the given <var>cost</var>. </p>
+    <p class="note" role="note"> The reserved cost of certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation⑤">background operations</a> could be less than the cost
+    indicated by <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost">getCost()</a></code></code> when the user’s device is in favorable
     conditions, for example because it’s not on battery power. </p>
    </section>
    <section>
     <h2 class="heading settled" data-level="3" id="security-and-privacy-considerations"><span class="secno">3. </span><span class="content">Security and Privacy Considerations</span><a class="self-link" href="#security-and-privacy-considerations"></a></h2>
     <section>
      <h3 class="heading settled" data-level="3.1" id="applicability"><span class="secno">3.1. </span><span class="content">Applicability</span><a class="self-link" href="#applicability"></a></h3>
-     <p> Applicability of the Budget API is limited to potentially resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-7">background operations</a>—operations that are not sufficiently privacy sensitive to need
+     <p> Applicability of the Budget API is limited to potentially resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation⑥">background operations</a>—operations that are not sufficiently privacy sensitive to need
       express user permission for basic usage. </p>
      <p> User agents MUST NOT use the Budget API as an alternative to obtaining express user permission
       for privacy-sensitive operations such as accurate location access <a data-link-type="biblio" href="#biblio-geolocation-api">[GEOLOCATION-API]</a> and
@@ -1601,20 +1648,20 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
       where the effects of a push message are not immediately visible to the user. </p>
      <section>
       <h4 class="heading settled" data-level="3.1.1" id="location-tracking"><span class="secno">3.1.1. </span><span class="content">Location Tracking</span><a class="self-link" href="#location-tracking"></a></h4>
-      <p> Fetch requests within <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-8">background operations</a> may reveal the client’s IP address to the
+      <p> Fetch requests within <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation⑦">background operations</a> may reveal the client’s IP address to the
         server after the user left the page. The user agent SHOULD limit tracking by capping the
-        duration of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-9">background operations</a>. </p>
+        duration of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation⑧">background operations</a>. </p>
      </section>
     </section>
     <section>
      <h3 class="heading settled" data-level="3.2" id="permissions"><span class="secno">3.2. </span><span class="content">Permissions</span><a class="self-link" href="#permissions"></a></h3>
      <p> The Budget API provides an alternative to obtaining express user permission where the user
-      agent believes it can appropriately protect the user for strictly resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-10">background operations</a>. </p>
+      agent believes it can appropriately protect the user for strictly resource consuming <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation⑨">background operations</a>. </p>
      <p> Both the APIs described in this document, as well as the specifications that depend on this
       document, MUST NOT limit the user agent’s ability to require express user permission in
       addition to budget requirements. </p>
-     <p class="note" role="note"> User agents that require express user permission for certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-11">background operations</a> MAY
-      lower or eliminate the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-2">background operation cost</a> of such an operation, because the user
+     <p class="note" role="note"> User agents that require express user permission for certain <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①⓪">background operations</a> MAY
+      lower or eliminate the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost①">background operation cost</a> of such an operation, because the user
       has explicitly allowed the Web Application to engage on their behalf. </p>
     </section>
    </section>
@@ -1622,126 +1669,126 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <h2 class="heading settled" data-level="4" id="api"><span class="secno">4. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
     <section>
      <h3 class="heading settled" data-level="4.1" id="navigator-workernavigator-extensions"><span class="secno">4.1. </span><span class="content">Navigator and WorkerNavigator extensions</span><a class="self-link" href="#navigator-workernavigator-extensions"></a></h3>
-<pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>]
-<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice-1">BudgetService</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="BudgetService" id="dom-navigator-budget">budget<a class="self-link" href="#dom-navigator-budget"></a></dfn>;
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator" id="ref-for-navigator"><c- g>Navigator</c-></a> {
+    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice"><c- n>BudgetService</c-></a> <dfn class="idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export data-readonly data-type="BudgetService" id="dom-navigator-budget"><code><c- g>budget</c-></code><a class="self-link" href="#dom-navigator-budget"></a></dfn>;
 };
 </pre>
-<pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Worker</span>]
-<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator">WorkerNavigator</a> {
-    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice-2">BudgetService</a> <dfn class="nv idl-code" data-dfn-for="WorkerNavigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="BudgetService" id="dom-workernavigator-budget">budget<a class="self-link" href="#dom-workernavigator-budget"></a></dfn>;
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Worker</c->]
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator" id="ref-for-workernavigator"><c- g>WorkerNavigator</c-></a> {
+    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject①"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice①"><c- n>BudgetService</c-></a> <dfn class="idl-code" data-dfn-for="WorkerNavigator" data-dfn-type="attribute" data-export data-readonly data-type="BudgetService" id="dom-workernavigator-budget"><code><c- g>budget</c-></code><a class="self-link" href="#dom-workernavigator-budget"></a></dfn>;
 };
 </pre>
-     <p> The <code>budget</code> attribute’s getter must return a <code><code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice-3">BudgetService</a></code></code> scoped to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <var>origin</var>. </p>
+     <p> The <code>budget</code> attribute’s getter must return a <code><code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice②">BudgetService</a></code></code> scoped to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object" id="ref-for-entry-settings-object">entry settings object</a>’s <var>origin</var>. </p>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.2" id="budget-service-interface"><span class="secno">4.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice-4">BudgetService</a></code> interface</span><a class="self-link" href="#budget-service-interface"></a></h3>
-     <p> The <code><code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice-5">BudgetService</a></code></code> interface represents the programmatic interface to the user
-      agent’s budget service. It is available in both <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#document-environment">document</a> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment">worker environments</a>. </p>
-<pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="budgetservice">BudgetService</dfn> {
-    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-2">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-1">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/getCost(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-getcost-operation-operation">operation<a class="self-link" href="#dom-budgetservice-getcost-operation-operation"></a></dfn>);
-    <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate-1">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget" id="ref-for-dom-budgetservice-getbudget-1">getBudget</a>();
+     <h3 class="heading settled" data-level="4.2" id="budget-service-interface"><span class="secno">4.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice③">BudgetService</a></code> interface</span><a class="self-link" href="#budget-service-interface"></a></h3>
+     <p> The <code><code class="idl"><a data-link-type="idl" href="#budgetservice" id="ref-for-budgetservice④">BudgetService</a></code></code> interface represents the programmatic interface to the user
+      agent’s budget service. It is available in both <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#document-environment" id="ref-for-document-environment">document</a> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment" id="ref-for-worker-environment">worker environments</a>. </p>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed②"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="budgetservice"><code><c- g>BudgetService</c-></code></dfn> {
+    <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-double" id="ref-for-idl-double"><c- b>double</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export data-lt="getCost(operation)" id="dom-budgetservice-getcost"><code><c- g>getCost</c-></code></dfn>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype"><c- n>OperationType</c-></a> <dfn class="idl-code" data-dfn-for="BudgetService/getCost(operation)" data-dfn-type="argument" data-export id="dom-budgetservice-getcost-operation-operation"><code><c- g>operation</c-></code><a class="self-link" href="#dom-budgetservice-getcost-operation-operation"></a></dfn>);
+    <c- b>Promise</c->&lt;<c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate"><c- n>BudgetState</c-></a>>> <a class="idl-code" data-link-type="method" href="#dom-budgetservice-getbudget" id="ref-for-dom-budgetservice-getbudget"><c- g>getBudget</c-></a>();
 
-    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-reserve" id="ref-for-dom-budgetservice-reserve-1">reserve</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-2">OperationType</a> <dfn class="nv idl-code" data-dfn-for="BudgetService/reserve(operation)" data-dfn-type="argument" data-export="" id="dom-budgetservice-reserve-operation-operation">operation<a class="self-link" href="#dom-budgetservice-reserve-operation-operation"></a></dfn>);
+    <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a>> <dfn class="idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export data-lt="reserve(operation)" id="dom-budgetservice-reserve"><code><c- g>reserve</c-></code><a class="self-link" href="#dom-budgetservice-reserve"></a></dfn>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype①"><c- n>OperationType</c-></a> <dfn class="idl-code" data-dfn-for="BudgetService/reserve(operation)" data-dfn-type="argument" data-export id="dom-budgetservice-reserve-operation-operation"><code><c- g>operation</c-></code><a class="self-link" href="#dom-budgetservice-reserve-operation-operation"></a></dfn>);
 };
 </pre>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="getCost(operation)" id="dom-budgetservice-getcost" title="getCost()">getCost()</dfn></code> method
-      returns a promise that will be resolved with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-3">background operation cost</a> of the indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-12">background operation</a>. </p>
+     <p> The <code><dfn class="idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export id="dom-budgetservice-getcost①" title="getCost()"><code>getCost()</code><a class="self-link" href="#dom-budgetservice-getcost①"></a></dfn></code> method
+      returns a promise that will be resolved with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost②">background operation cost</a> of the indicated <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①①">background operation</a>. </p>
      <p> When invoked, it MUST run the following steps: </p>
      <ol>
-      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a>. 
-      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. 
-      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code></code> and terminate these steps. 
+      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise" id="ref-for-a-new-promise">a new promise</a>. 
+      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object" id="ref-for-entry-settings-object①">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin⑨">origin</a>. 
+      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-contexts" id="ref-for-secure-contexts①">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror" id="ref-for-securityerror">SecurityError</a></code></code> and terminate these steps. 
       <li>
-        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: 
+        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>: 
        <ol>
-        <li> Resolve the <var>promise</var> with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-4">background operation cost</a> associated with the given <var>operation</var>. 
+        <li> Resolve the <var>promise</var> with the worst-case <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost③">background operation cost</a> associated with the given <var>operation</var>. 
        </ol>
      </ol>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" id="dom-budgetservice-getbudget" title="getBudget()">getBudget()</dfn></code> method
-      returns a promise that will be resolved with a sequence of <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-2">BudgetState</a></code></code> objects indicating the expected state of the <a data-link-type="dfn" href="#budget" id="ref-for-budget-11">budget</a> at given times in the future. </p>
+     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export id="dom-budgetservice-getbudget" title="getBudget()"><code>getBudget()</code></dfn></code> method
+      returns a promise that will be resolved with a sequence of <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate①">BudgetState</a></code></code> objects indicating the expected state of the <a data-link-type="dfn" href="#budget" id="ref-for-budget①⓪">budget</a> at given times in the future. </p>
      <p> When invoked, it MUST run the following steps: </p>
      <ol>
-      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a>. 
-      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. 
-      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code></code> and terminate these steps. 
+      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise" id="ref-for-a-new-promise①">a new promise</a>. 
+      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object" id="ref-for-entry-settings-object②">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin①⓪">origin</a>. 
+      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-contexts" id="ref-for-secure-contexts②">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror" id="ref-for-securityerror①">SecurityError</a></code></code> and terminate these steps. 
       <li>
-        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: 
+        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel①">in parallel</a>: 
        <ol>
-        <li> Let <var>details</var> be a new <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence">sequence</a></code></code>. 
+        <li> Let <var>details</var> be a new <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-sequence" id="ref-for-idl-sequence">sequence</a></code></code>. 
         <li>
-          If there are entries in <var>origin</var>’s <a data-link-type="dfn" href="#list-of-budget-expectations" id="ref-for-list-of-budget-expectations-1">list of budget expectations</a>, for each <var>entry</var>: 
+          If there are entries in <var>origin</var>’s <a data-link-type="dfn" href="#list-of-budget-expectations" id="ref-for-list-of-budget-expectations">list of budget expectations</a>, for each <var>entry</var>: 
          <ol>
-          <li> Let <var>state</var> be a new <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-3">BudgetState</a></code></code> instance. 
-          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat-1">budgetAt</a></code></code> attribute to <var>entry</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-12">budget</a> value. 
-          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time-1">time</a></code></code> attribute to the <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a></code></code> representing the final date of <var>entry</var>’s validity
+          <li> Let <var>state</var> be a new <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate②">BudgetState</a></code></code> instance. 
+          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat">budgetAt</a></code></code> attribute to <var>entry</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget①①">budget</a> value. 
+          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time">time</a></code></code> attribute to the <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#DOMTimeStamp" id="ref-for-DOMTimeStamp">DOMTimeStamp</a></code></code> representing the final date of <var>entry</var>’s validity
                 in milliseconds since 00:00:00 UTC on 1 January 1970. 
           <li> Add <var>state</var> to <var>details</var>. 
          </ol>
          <p>Otherwise:</p>
          <ol>
-          <li> Let <var>state</var> be a new <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-4">BudgetState</a></code></code> instance. 
-          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat-2">budgetAt</a></code></code> attribute to <em>0</em>. 
-          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time-2">time</a></code></code> attribute to the <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a></code></code> representing the current time in milliseconds since
+          <li> Let <var>state</var> be a new <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate③">BudgetState</a></code></code> instance. 
+          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat①">budgetAt</a></code></code> attribute to <em>0</em>. 
+          <li> Set <var>state</var>’s <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time①">time</a></code></code> attribute to the <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#DOMTimeStamp" id="ref-for-DOMTimeStamp①">DOMTimeStamp</a></code></code> representing the current time in milliseconds since
                 00:00:00 UTC on 1 January 1970. 
           <li> Add <var>state</var> to <var>details</var>. 
          </ol>
         <li> Resolve the <var>promise</var> with <var>details</var>. 
        </ol>
      </ol>
-     <p> The <code><dfn class="dfn-paneled idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export="" data-lt="reserve(operation)" id="dom-budgetservice-reserve" title="reserve()">reserve()</dfn></code> method
+     <p> The <code><dfn class="idl-code" data-dfn-for="BudgetService" data-dfn-type="method" data-export id="dom-budgetservice-reserve①" title="reserve()"><code>reserve()</code><a class="self-link" href="#dom-budgetservice-reserve①"></a></dfn></code> method
       returns a promise that will be resolved with a boolean indicating whether the requested
-      budget for <var>operation</var> could be <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget-1">reserved</a>. </p>
+      budget for <var>operation</var> could be <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget">reserved</a>. </p>
      <p> When invoked, it MUST run the following steps: </p>
      <ol>
-      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a>. 
-      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. 
-      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror">SecurityError</a></code></code> and terminate these steps. 
+      <li> Let <var>promise</var> be <a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise" id="ref-for-a-new-promise②">a new promise</a>. 
+      <li> Let <var>origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object" id="ref-for-entry-settings-object③">entry settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin①①">origin</a>. 
+      <li> If the <var>origin</var> is not a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#secure-contexts" id="ref-for-secure-contexts③">secure context</a>, reject <var>promise</var> with a <code><code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#securityerror" id="ref-for-securityerror②">SecurityError</a></code></code> and terminate these steps. 
       <li>
-        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>: 
+        Return <var>promise</var> and run the following step <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel②">in parallel</a>: 
        <ol>
         <li> Let <var>budget</var> be the amount of budget available to <var>origin</var>. 
-        <li> Let <var>cost</var> be the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost-5">background operation cost</a> associated with <var>operation</var>. 
+        <li> Let <var>cost</var> be the <a data-link-type="dfn" href="#background-operation-cost" id="ref-for-background-operation-cost④">background operation cost</a> associated with <var>operation</var>. 
         <li> If <var>cost</var> is greater than <var>budget</var>, resolve the <var>promise</var> with
             the boolean <code>false</code> and abort these steps. 
-        <li> <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget-2">Reserve</a> the <var>cost</var> from <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget-13">budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>. 
+        <li> <a data-link-type="dfn" href="#reserve-budget" id="ref-for-reserve-budget①">Reserve</a> the <var>cost</var> from <var>origin</var>’s <a data-link-type="dfn" href="#budget" id="ref-for-budget①②">budget</a> and resolve the <var>promise</var> with the boolean <code>true</code>. 
        </ol>
      </ol>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.3" id="budget-state-interface"><span class="secno">4.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-5">BudgetState</a></code> interface</span><a class="self-link" href="#budget-state-interface"></a></h3>
-     <p> The <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate-6">BudgetState</a></code></code> interface represents the amount of <a data-link-type="dfn" href="#budget" id="ref-for-budget-14">budget</a> available at
+     <h3 class="heading settled" data-level="4.3" id="budget-state-interface"><span class="secno">4.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate④">BudgetState</a></code> interface</span><a class="self-link" href="#budget-state-interface"></a></h3>
+     <p> The <code><code class="idl"><a data-link-type="idl" href="#budgetstate" id="ref-for-budgetstate⑤">BudgetState</a></code></code> interface represents the amount of <a data-link-type="dfn" href="#budget" id="ref-for-budget①③">budget</a> available at
       a specific point in time. This enables authors to make near-term decisions about how to spend
-      their <a data-link-type="dfn" href="#budget" id="ref-for-budget-15">budget</a>. </p>
-<pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="budgetstate">BudgetState</dfn> {
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat-3">budgetAt</a>;
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMTimeStamp" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time-3">time</a>;
+      their <a data-link-type="dfn" href="#budget" id="ref-for-budget①④">budget</a>. </p>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed③"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="budgetstate"><code><c- g>BudgetState</c-></code></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-double" id="ref-for-idl-double①"><c- b>double</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="double" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat②"><c- g>budgetAt</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp" id="ref-for-DOMTimeStamp②"><c- n>DOMTimeStamp</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMTimeStamp" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time②"><c- g>time</c-></a>;
 };
 </pre>
-     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export="" id="dom-budgetstate-budgetat"><code>budgetAt</code></dfn> attribute’s getter must
-      return the <a data-link-type="dfn" href="#budget" id="ref-for-budget-16">budget</a> at the associated <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time-4">time</a></code></code>. </p>
-     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export="" id="dom-budgetstate-time"><code>time</code></dfn> attribute’s getter must
+     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export id="dom-budgetstate-budgetat"><code>budgetAt</code></dfn> attribute’s getter must
+      return the <a data-link-type="dfn" href="#budget" id="ref-for-budget①⑤">budget</a> at the associated <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time③">time</a></code></code>. </p>
+     <p> The <dfn class="dfn-paneled idl-code" data-dfn-for="BudgetState" data-dfn-type="attribute" data-export id="dom-budgetstate-time"><code>time</code></dfn> attribute’s getter must
       return the timestamp representing the time, in milliseconds since 00:00:00 UTC on 1 January
-      1970, at which the <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat-4">budgetAt</a></code></code> will be valid. </p>
+      1970, at which the <code><code class="idl"><a data-link-type="idl" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat③">budgetAt</a></code></code> will be valid. </p>
     </section>
     <section>
-     <h3 class="heading settled" data-level="4.4" id="operation-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-3">OperationType</a></code> enum</span><a class="self-link" href="#operation-type-enum"></a></h3>
-     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-4">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-13">background
-      operations</a> that the Web Budget API caters for. Authors can use this in combination with <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost-3">getCost()</a></code></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget-17">budget</a> as a
-      quantifiable set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-14">background operations</a> it can be used for. </p>
-<pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-operationtype">OperationType</dfn> {
-  <dfn class="s idl-code" data-dfn-for="OperationType" data-dfn-type="enum-value" data-export="" data-lt="&quot;silent-push&quot;|silent-push" id="dom-operationtype-silent-push">"silent-push"<a class="self-link" href="#dom-operationtype-silent-push"></a></dfn>
+     <h3 class="heading settled" data-level="4.4" id="operation-type-enum"><span class="secno">4.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype②">OperationType</a></code> enum</span><a class="self-link" href="#operation-type-enum"></a></h3>
+     <p> The <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype③">OperationType</a></code></code> enumeration describes the known set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①②">background
+      operations</a> that the Web Budget API caters for. Authors can use this in combination with <code><code class="idl"><a data-link-type="idl" href="#dom-budgetservice-getcost" id="ref-for-dom-budgetservice-getcost①">getCost()</a></code></code> to interpret their available <a data-link-type="dfn" href="#budget" id="ref-for-budget①⑥">budget</a> as a
+      quantifiable set of <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①③">background operations</a> it can be used for. </p>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-operationtype"><code><c- g>OperationType</c-></code></dfn> {
+  <dfn class="idl-code" data-dfn-for="OperationType" data-dfn-type="enum-value" data-export id="dom-operationtype-silent-push"><code><c- s>"silent-push"</c-></code><a class="self-link" href="#dom-operationtype-silent-push"></a></dfn>
 };
 </pre>
-     <p> The following <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-5">OperationType</a></code></code> values are defined: </p>
+     <p> The following <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype④">OperationType</a></code></code> values are defined: </p>
      <ul>
-      <li> The <code><dfn data-dfn-for="OperationType" data-dfn-type="dfn" data-noexport="" id="operationtype-silent-push">silent-push<a class="self-link" href="#operationtype-silent-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation-15">background
+      <li> The <code><dfn data-dfn-for="OperationType" data-dfn-type="dfn" data-noexport id="operationtype-silent-push">silent-push<a class="self-link" href="#operationtype-silent-push"></a></dfn></code> value represents a <a data-link-type="dfn" href="#background-operation" id="ref-for-background-operation①④">background
         operation</a> in response to an incoming push message through the Push API that does not
         result in a user visible action. <a data-link-type="biblio" href="#biblio-push-api">[PUSH-API]</a> 
      </ul>
-     <p class="note" role="note"> Specifications are encouraged to extend the <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype-6">OperationType</a></code></code> enumeration with
+     <p class="note" role="note"> Specifications are encouraged to extend the <code><code class="idl"><a data-link-type="idl" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype⑤">OperationType</a></code></code> enumeration with
       their own values. Naming consistency with the Permission API <a data-link-type="biblio" href="#biblio-permissions">[PERMISSIONS]</a>, where
       applicable, is recommended. </p>
     </section>
@@ -1759,7 +1806,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
             except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
    <p> Examples in this specification are introduced with the words “for example”
             or are set apart from the normative text with <code>class="example"</code>, like this: </p>
-   <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div>
+   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
    <p> Informative notes begin with the word “Note”
             and are set apart from the normative text with <code>class="note"</code>, like this: </p>
    <p class="note" role="note"> Note, this is an informative note. </p>
@@ -1901,70 +1948,186 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <li>
     budget
     <ul>
-     <li><a href="#budget">definition of</a><span>, in §2</span>
      <li><a href="#dom-navigator-budget">attribute for Navigator</a><span>, in §4.1</span>
      <li><a href="#dom-workernavigator-budget">attribute for WorkerNavigator</a><span>, in §4.1</span>
+     <li><a href="#budget">definition of</a><span>, in §2</span>
     </ul>
    <li><a href="#dom-budgetstate-budgetat">budgetAt</a><span>, in §4.3</span>
    <li><a href="#budgetservice">BudgetService</a><span>, in §4.2</span>
    <li><a href="#budgetstate">BudgetState</a><span>, in §4.3</span>
    <li><a href="#dom-budgetservice-getbudget">getBudget()</a><span>, in §4.2</span>
+   <li><a href="#dom-budgetservice-getcost①">getCost()</a><span>, in §4.2</span>
    <li><a href="#dom-budgetservice-getcost">getCost(operation)</a><span>, in §4.2</span>
    <li><a href="#list-of-budget-expectations">list of budget expectations</a><span>, in §2</span>
    <li><a href="#enumdef-operationtype">OperationType</a><span>, in §4.4</span>
+   <li><a href="#dom-budgetservice-reserve①">reserve()</a><span>, in §4.2</span>
    <li><a href="#reserve-budget">reserve budget</a><span>, in §2</span>
    <li><a href="#dom-budgetservice-reserve">reserve(operation)</a><span>, in §4.2</span>
-   <li>
-    silent-push
-    <ul>
-     <li><a href="#dom-operationtype-silent-push">enum-value for OperationType</a><span>, in §4.4</span>
-     <li><a href="#operationtype-silent-push">dfn for OperationType</a><span>, in §4.4</span>
-    </ul>
+   <li><a href="#operationtype-silent-push">silent-push</a><span>, in §4.4</span>
    <li><a href="#dom-operationtype-silent-push">"silent-push"</a><span>, in §4.4</span>
    <li><a href="#dom-budgetstate-time">time</a><span>, in §4.3</span>
    <li><a href="#user-engagement">user engagement</a><span>, in §2</span>
   </ul>
+  <aside class="dfn-panel" data-for="term-for-navigator">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">https://html.spec.whatwg.org/multipage/webappapis.html#navigator</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-navigator">4.1. Navigator and WorkerNavigator extensions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-workernavigator">
+   <a href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator">https://html.spec.whatwg.org/multipage/workers.html#workernavigator</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-workernavigator">4.1. Navigator and WorkerNavigator extensions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-document-environment">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#document-environment">https://html.spec.whatwg.org/multipage/webappapis.html#document-environment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-document-environment">4.2. The BudgetService interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-entry-settings-object">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-entry-settings-object">4.1. Navigator and WorkerNavigator extensions</a>
+    <li><a href="#ref-for-entry-settings-object①">4.2. The BudgetService interface</a> <a href="#ref-for-entry-settings-object②">(2)</a> <a href="#ref-for-entry-settings-object③">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-in-parallel">
+   <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-in-parallel">4.2. The BudgetService interface</a> <a href="#ref-for-in-parallel①">(2)</a> <a href="#ref-for-in-parallel②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-origin">
+   <a href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">https://html.spec.whatwg.org/multipage/browsers.html#concept-origin</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-origin">1.1. Current budget</a>
+    <li><a href="#ref-for-concept-origin①">2. Concepts</a> <a href="#ref-for-concept-origin②">(2)</a> <a href="#ref-for-concept-origin③">(3)</a> <a href="#ref-for-concept-origin④">(4)</a> <a href="#ref-for-concept-origin⑤">(5)</a> <a href="#ref-for-concept-origin⑥">(6)</a> <a href="#ref-for-concept-origin⑦">(7)</a> <a href="#ref-for-concept-origin⑧">(8)</a>
+    <li><a href="#ref-for-concept-origin⑨">4.2. The BudgetService interface</a> <a href="#ref-for-concept-origin①⓪">(2)</a> <a href="#ref-for-concept-origin①①">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-worker-environment">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment">https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-worker-environment">4.2. The BudgetService interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-a-new-promise">
+   <a href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-a-new-promise">4.2. The BudgetService interface</a> <a href="#ref-for-a-new-promise①">(2)</a> <a href="#ref-for-a-new-promise②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-push-message">
+   <a href="https://w3c.github.io/push-api/#push-message">https://w3c.github.io/push-api/#push-message</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-push-message">1.1. Current budget</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-secure-contexts">
+   <a href="https://w3c.github.io/webappsec-secure-contexts/#secure-contexts">https://w3c.github.io/webappsec-secure-contexts/#secure-contexts</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-secure-contexts">1. Introduction</a>
+    <li><a href="#ref-for-secure-contexts①">4.2. The BudgetService interface</a> <a href="#ref-for-secure-contexts②">(2)</a> <a href="#ref-for-secure-contexts③">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-in-the-background">
+   <a href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">https://wicg.github.io/BackgroundSync/spec/#in-the-background</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-in-the-background">1. Introduction</a> <a href="#ref-for-in-the-background①">(2)</a> <a href="#ref-for-in-the-background②">(3)</a>
+    <li><a href="#ref-for-in-the-background③">2. Concepts</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-DOMTimeStamp">
+   <a href="https://heycam.github.io/webidl/#DOMTimeStamp">https://heycam.github.io/webidl/#DOMTimeStamp</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-DOMTimeStamp">4.2. The BudgetService interface</a> <a href="#ref-for-DOMTimeStamp①">(2)</a>
+    <li><a href="#ref-for-DOMTimeStamp②">4.3. The BudgetState interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-Exposed">
+   <a href="https://heycam.github.io/webidl/#Exposed">https://heycam.github.io/webidl/#Exposed</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-Exposed">4.1. Navigator and WorkerNavigator extensions</a> <a href="#ref-for-Exposed①">(2)</a>
+    <li><a href="#ref-for-Exposed②">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-Exposed③">4.3. The BudgetState interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-SameObject">
+   <a href="https://heycam.github.io/webidl/#SameObject">https://heycam.github.io/webidl/#SameObject</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-SameObject">4.1. Navigator and WorkerNavigator extensions</a> <a href="#ref-for-SameObject①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-securityerror">
+   <a href="https://heycam.github.io/webidl/#securityerror">https://heycam.github.io/webidl/#securityerror</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-securityerror">4.2. The BudgetService interface</a> <a href="#ref-for-securityerror①">(2)</a> <a href="#ref-for-securityerror②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-boolean">
+   <a href="https://heycam.github.io/webidl/#idl-boolean">https://heycam.github.io/webidl/#idl-boolean</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-boolean">4.2. The BudgetService interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-double">
+   <a href="https://heycam.github.io/webidl/#idl-double">https://heycam.github.io/webidl/#idl-double</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-double">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-idl-double①">4.3. The BudgetState interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-sequence">
+   <a href="https://heycam.github.io/webidl/#idl-sequence">https://heycam.github.io/webidl/#idl-sequence</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-sequence">4.2. The BudgetService interface</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator">WorkerNavigator</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#document-environment">document environment</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object">entry settings object</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#worker-environment">worker environment</a>
+     <li><span class="dfn-paneled" id="term-for-navigator" style="color:initial">Navigator</span>
+     <li><span class="dfn-paneled" id="term-for-workernavigator" style="color:initial">WorkerNavigator</span>
+     <li><span class="dfn-paneled" id="term-for-document-environment" style="color:initial">document environment</span>
+     <li><span class="dfn-paneled" id="term-for-entry-settings-object" style="color:initial">entry settings object</span>
+     <li><span class="dfn-paneled" id="term-for-in-parallel" style="color:initial">in parallel</span>
+     <li><span class="dfn-paneled" id="term-for-concept-origin" style="color:initial">origin</span>
+     <li><span class="dfn-paneled" id="term-for-worker-environment" style="color:initial">worker environment</span>
     </ul>
    <li>
     <a data-link-type="biblio">[promises-guide]</a> defines the following terms:
     <ul>
-     <li><a href="https://www.w3.org/2001/tag/doc/promises-guide#a-new-promise">a new promise</a>
+     <li><span class="dfn-paneled" id="term-for-a-new-promise" style="color:initial">a new promise</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PUSH-API]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/push-api/#push-message">push message</a>
+     <li><span class="dfn-paneled" id="term-for-push-message" style="color:initial">push message</span>
     </ul>
    <li>
     <a data-link-type="biblio">[secure-contexts]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a>
+     <li><span class="dfn-paneled" id="term-for-secure-contexts" style="color:initial">secure contexts</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEB-BACKGROUND-SYNC]</a> defines the following terms:
     <ul>
-     <li><a href="https://wicg.github.io/BackgroundSync/spec/#in-the-background">in the background</a>
+     <li><span class="dfn-paneled" id="term-for-in-the-background" style="color:initial">in the background</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
-     <li><a href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a>
-     <li><a href="https://heycam.github.io/webidl/#Exposed">Exposed</a>
-     <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
-     <li><a href="https://heycam.github.io/webidl/#securityerror">SecurityError</a>
-     <li><a href="https://heycam.github.io/webidl/#idl-sequence">sequence</a>
+     <li><span class="dfn-paneled" id="term-for-DOMTimeStamp" style="color:initial">DOMTimeStamp</span>
+     <li><span class="dfn-paneled" id="term-for-Exposed" style="color:initial">Exposed</span>
+     <li><span class="dfn-paneled" id="term-for-SameObject" style="color:initial">SameObject</span>
+     <li><span class="dfn-paneled" id="term-for-securityerror" style="color:initial">SecurityError</span>
+     <li><span class="dfn-paneled" id="term-for-idl-boolean" style="color:initial">boolean</span>
+     <li><span class="dfn-paneled" id="term-for-idl-double" style="color:initial">double</span>
+     <li><span class="dfn-paneled" id="term-for-idl-sequence" style="color:initial">sequence</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -1975,54 +2138,54 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dt id="biblio-promises-guide">[PROMISES-GUIDE]
    <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 16 February 2016. Finding of the W3C TAG. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
    <dt id="biblio-push-api">[PUSH-API]
-   <dd>Michael van Ouwerkerk; et al. <a href="https://w3c.github.io/push-api/">Push API</a>. URL: <a href="https://w3c.github.io/push-api/">https://w3c.github.io/push-api/</a>
+   <dd>Peter Beverloo; et al. <a href="https://www.w3.org/TR/push-api/">Push API</a>. 15 December 2017. WD. URL: <a href="https://www.w3.org/TR/push-api/">https://www.w3.org/TR/push-api/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-secure-contexts">[SECURE-CONTEXTS]
-   <dd>Mike West. <a href="https://w3c.github.io/webappsec-secure-contexts/">Secure Contexts</a>. URL: <a href="https://w3c.github.io/webappsec-secure-contexts/">https://w3c.github.io/webappsec-secure-contexts/</a>
+   <dd>Mike West. <a href="https://www.w3.org/TR/secure-contexts/">Secure Contexts</a>. 15 September 2016. CR. URL: <a href="https://www.w3.org/TR/secure-contexts/">https://www.w3.org/TR/secure-contexts/</a>
    <dt id="biblio-web-background-sync">[WEB-BACKGROUND-SYNC]
-   <dd><a href="https://wicg.github.io/BackgroundSync/spec/">Web Background Synchronization specification draft</a>. Living Standard. URL: <a href="https://wicg.github.io/BackgroundSync/spec/">https://wicg.github.io/BackgroundSync/spec/</a>
+   <dd><a href="https://wicg.github.io/BackgroundSync/spec/">Web Background Synchronization</a>. Living Standard. URL: <a href="https://wicg.github.io/BackgroundSync/spec/">https://wicg.github.io/BackgroundSync/spec/</a>
    <dt id="biblio-webidl">[WebIDL]
-   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
+   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-geolocation-api">[GEOLOCATION-API]
-   <dd>Andrei Popescu. <a href="http://dev.w3.org/geo/api/spec-source.html">Geolocation API Specification 2nd Edition</a>. URL: <a href="http://dev.w3.org/geo/api/spec-source.html">http://dev.w3.org/geo/api/spec-source.html</a>
+   <dd>Andrei Popescu. <a href="https://www.w3.org/TR/geolocation-API/">Geolocation API Specification 2nd Edition</a>. 8 November 2016. REC. URL: <a href="https://www.w3.org/TR/geolocation-API/">https://www.w3.org/TR/geolocation-API/</a>
    <dt id="biblio-notifications">[NOTIFICATIONS]
    <dd>Anne van Kesteren. <a href="https://notifications.spec.whatwg.org/">Notifications API Standard</a>. Living Standard. URL: <a href="https://notifications.spec.whatwg.org/">https://notifications.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres. <a href="https://w3c.github.io/permissions/">The Permissions API</a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
+   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 25 September 2017. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-webrtc">[WEBRTC]
-   <dd>Adam Bergkvist; et al. <a href="https://w3c.github.io/webrtc-pc/">WebRTC 1.0: Real-time Communication Between Browsers</a>. URL: <a href="https://w3c.github.io/webrtc-pc/">https://w3c.github.io/webrtc-pc/</a>
+   <dd>Adam Bergkvist; et al. <a href="https://www.w3.org/TR/webrtc/">WebRTC 1.0: Real-time Communication Between Browsers</a>. 21 June 2018. CR. URL: <a href="https://www.w3.org/TR/webrtc/">https://www.w3.org/TR/webrtc/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>]
-<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice">BudgetService</a> <a class="nv" data-readonly="" data-type="BudgetService" href="#dom-navigator-budget">budget</a>;
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed④"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator" id="ref-for-navigator①"><c- g>Navigator</c-></a> {
+    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject②"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice⑤"><c- n>BudgetService</c-></a> <a data-readonly data-type="BudgetService" href="#dom-navigator-budget"><code><c- g>budget</c-></code></a>;
 };
 
-[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Worker</span>]
-<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator">WorkerNavigator</a> {
-    [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#budgetservice">BudgetService</a> <a class="nv" data-readonly="" data-type="BudgetService" href="#dom-workernavigator-budget">budget</a>;
+[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①①"><c- g>Exposed</c-></a>=<c- n>Worker</c->]
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#workernavigator" id="ref-for-workernavigator①"><c- g>WorkerNavigator</c-></a> {
+    [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject①①"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#budgetservice" id="ref-for-budgetservice①①"><c- n>BudgetService</c-></a> <a data-readonly data-type="BudgetService" href="#dom-workernavigator-budget"><code><c- g>budget</c-></code></a>;
 };
 
-[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <a class="nv" href="#budgetservice">BudgetService</a> {
-    <span class="kt">Promise</span>&lt;<span class="kt">double</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getcost">getCost</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-getcost-operation-operation">operation</a>);
-    <span class="kt">Promise</span>&lt;<span class="kt">sequence</span>&lt;<a class="n" data-link-type="idl-name" href="#budgetstate">BudgetState</a>>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-getbudget">getBudget</a>();
+[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed②①"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <a href="#budgetservice"><code><c- g>BudgetService</c-></code></a> {
+    <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-double" id="ref-for-idl-double②"><c- b>double</c-></a>> <a href="#dom-budgetservice-getcost"><code><c- g>getCost</c-></code></a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype⑥"><c- n>OperationType</c-></a> <a href="#dom-budgetservice-getcost-operation-operation"><code><c- g>operation</c-></code></a>);
+    <c- b>Promise</c->&lt;<c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#budgetstate" id="ref-for-budgetstate⑥"><c- n>BudgetState</c-></a>>> <a class="idl-code" data-link-type="method" href="#dom-budgetservice-getbudget" id="ref-for-dom-budgetservice-getbudget①"><c- g>getBudget</c-></a>();
 
-    <span class="kt">Promise</span>&lt;<span class="kt">boolean</span>> <a class="nv idl-code" data-link-type="method" href="#dom-budgetservice-reserve">reserve</a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype">OperationType</a> <a class="nv" href="#dom-budgetservice-reserve-operation-operation">operation</a>);
+    <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a>> <a href="#dom-budgetservice-reserve"><code><c- g>reserve</c-></code></a>(<a class="n" data-link-type="idl-name" href="#enumdef-operationtype" id="ref-for-enumdef-operationtype①①"><c- n>OperationType</c-></a> <a href="#dom-budgetservice-reserve-operation-operation"><code><c- g>operation</c-></code></a>);
 };
 
-[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=(<span class="n">Window</span>,<span class="n">Worker</span>)]
-<span class="kt">interface</span> <a class="nv" href="#budgetstate">BudgetState</a> {
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">double</span> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="double" href="#dom-budgetstate-budgetat">budgetAt</a>;
-  <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp">DOMTimeStamp</a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMTimeStamp" href="#dom-budgetstate-time">time</a>;
+[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed③①"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <a href="#budgetstate"><code><c- g>BudgetState</c-></code></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-double" id="ref-for-idl-double①①"><c- b>double</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="double" href="#dom-budgetstate-budgetat" id="ref-for-dom-budgetstate-budgetat②①"><c- g>budgetAt</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="https://heycam.github.io/webidl/#DOMTimeStamp" id="ref-for-DOMTimeStamp②①"><c- n>DOMTimeStamp</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMTimeStamp" href="#dom-budgetstate-time" id="ref-for-dom-budgetstate-time②①"><c- g>time</c-></a>;
 };
 
-<span class="kt">enum</span> <a class="nv" href="#enumdef-operationtype">OperationType</a> {
-  <a class="s" href="#dom-operationtype-silent-push">"silent-push"</a>
+<c- b>enum</c-> <a href="#enumdef-operationtype"><code><c- g>OperationType</c-></code></a> {
+  <a href="#dom-operationtype-silent-push"><code><c- s>"silent-push"</c-></code></a>
 };
 
 </pre>
@@ -2033,164 +2196,156 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <aside class="dfn-panel" data-for="user-engagement">
    <b><a href="#user-engagement">#user-engagement</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-user-engagement-1">1. Introduction</a>
-    <li><a href="#ref-for-user-engagement-2">2. Concepts</a>
+    <li><a href="#ref-for-user-engagement">1. Introduction</a>
+    <li><a href="#ref-for-user-engagement①">2. Concepts</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="background-operation">
    <b><a href="#background-operation">#background-operation</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-background-operation-1">1. Introduction</a> <a href="#ref-for-background-operation-2">(2)</a>
-    <li><a href="#ref-for-background-operation-3">1.2. Expected budget</a>
-    <li><a href="#ref-for-background-operation-4">2. Concepts</a> <a href="#ref-for-background-operation-5">(2)</a> <a href="#ref-for-background-operation-6">(3)</a>
-    <li><a href="#ref-for-background-operation-7">3.1. Applicability</a>
-    <li><a href="#ref-for-background-operation-8">3.1.1. Location Tracking</a> <a href="#ref-for-background-operation-9">(2)</a>
-    <li><a href="#ref-for-background-operation-10">3.2. Permissions</a> <a href="#ref-for-background-operation-11">(2)</a>
-    <li><a href="#ref-for-background-operation-12">4.2. The BudgetService interface</a>
-    <li><a href="#ref-for-background-operation-13">4.4. The OperationType enum</a> <a href="#ref-for-background-operation-14">(2)</a> <a href="#ref-for-background-operation-15">(3)</a>
+    <li><a href="#ref-for-background-operation">1. Introduction</a> <a href="#ref-for-background-operation①">(2)</a>
+    <li><a href="#ref-for-background-operation②">1.2. Expected budget</a>
+    <li><a href="#ref-for-background-operation③">2. Concepts</a> <a href="#ref-for-background-operation④">(2)</a> <a href="#ref-for-background-operation⑤">(3)</a>
+    <li><a href="#ref-for-background-operation⑥">3.1. Applicability</a>
+    <li><a href="#ref-for-background-operation⑦">3.1.1. Location Tracking</a> <a href="#ref-for-background-operation⑧">(2)</a>
+    <li><a href="#ref-for-background-operation⑨">3.2. Permissions</a> <a href="#ref-for-background-operation①⓪">(2)</a>
+    <li><a href="#ref-for-background-operation①①">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-background-operation①②">4.4. The OperationType enum</a> <a href="#ref-for-background-operation①③">(2)</a> <a href="#ref-for-background-operation①④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="background-operation-cost">
    <b><a href="#background-operation-cost">#background-operation-cost</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-background-operation-cost-1">2. Concepts</a>
-    <li><a href="#ref-for-background-operation-cost-2">3.2. Permissions</a>
-    <li><a href="#ref-for-background-operation-cost-3">4.2. The BudgetService interface</a> <a href="#ref-for-background-operation-cost-4">(2)</a> <a href="#ref-for-background-operation-cost-5">(3)</a>
+    <li><a href="#ref-for-background-operation-cost">2. Concepts</a>
+    <li><a href="#ref-for-background-operation-cost①">3.2. Permissions</a>
+    <li><a href="#ref-for-background-operation-cost②">4.2. The BudgetService interface</a> <a href="#ref-for-background-operation-cost③">(2)</a> <a href="#ref-for-background-operation-cost④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="budget">
    <b><a href="#budget">#budget</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-budget-1">1. Introduction</a> <a href="#ref-for-budget-2">(2)</a>
-    <li><a href="#ref-for-budget-3">1.1. Current budget</a>
-    <li><a href="#ref-for-budget-4">1.2. Expected budget</a> <a href="#ref-for-budget-5">(2)</a> <a href="#ref-for-budget-6">(3)</a>
-    <li><a href="#ref-for-budget-7">2. Concepts</a> <a href="#ref-for-budget-8">(2)</a> <a href="#ref-for-budget-9">(3)</a> <a href="#ref-for-budget-10">(4)</a>
-    <li><a href="#ref-for-budget-11">4.2. The BudgetService interface</a> <a href="#ref-for-budget-12">(2)</a> <a href="#ref-for-budget-13">(3)</a>
-    <li><a href="#ref-for-budget-14">4.3. The BudgetState interface</a> <a href="#ref-for-budget-15">(2)</a> <a href="#ref-for-budget-16">(3)</a>
-    <li><a href="#ref-for-budget-17">4.4. The OperationType enum</a>
+    <li><a href="#ref-for-budget">1. Introduction</a> <a href="#ref-for-budget①">(2)</a>
+    <li><a href="#ref-for-budget②">1.1. Current budget</a>
+    <li><a href="#ref-for-budget③">1.2. Expected budget</a> <a href="#ref-for-budget④">(2)</a> <a href="#ref-for-budget⑤">(3)</a>
+    <li><a href="#ref-for-budget⑥">2. Concepts</a> <a href="#ref-for-budget⑦">(2)</a> <a href="#ref-for-budget⑧">(3)</a> <a href="#ref-for-budget⑨">(4)</a>
+    <li><a href="#ref-for-budget①⓪">4.2. The BudgetService interface</a> <a href="#ref-for-budget①①">(2)</a> <a href="#ref-for-budget①②">(3)</a>
+    <li><a href="#ref-for-budget①③">4.3. The BudgetState interface</a> <a href="#ref-for-budget①④">(2)</a> <a href="#ref-for-budget①⑤">(3)</a>
+    <li><a href="#ref-for-budget①⑥">4.4. The OperationType enum</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="list-of-budget-expectations">
    <b><a href="#list-of-budget-expectations">#list-of-budget-expectations</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-of-budget-expectations-1">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-list-of-budget-expectations">4.2. The BudgetService interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="reserve-budget">
    <b><a href="#reserve-budget">#reserve-budget</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-reserve-budget-1">4.2. The BudgetService interface</a> <a href="#ref-for-reserve-budget-2">(2)</a>
+    <li><a href="#ref-for-reserve-budget">4.2. The BudgetService interface</a> <a href="#ref-for-reserve-budget①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="budgetservice">
    <b><a href="#budgetservice">#budgetservice</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-budgetservice-1">4.1. Navigator and WorkerNavigator extensions</a> <a href="#ref-for-budgetservice-2">(2)</a> <a href="#ref-for-budgetservice-3">(3)</a>
-    <li><a href="#ref-for-budgetservice-4">4.2. The BudgetService interface</a> <a href="#ref-for-budgetservice-5">(2)</a>
+    <li><a href="#ref-for-budgetservice">4.1. Navigator and WorkerNavigator extensions</a> <a href="#ref-for-budgetservice①">(2)</a> <a href="#ref-for-budgetservice②">(3)</a>
+    <li><a href="#ref-for-budgetservice③">4.2. The BudgetService interface</a> <a href="#ref-for-budgetservice④">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-budgetservice-getcost">
    <b><a href="#dom-budgetservice-getcost">#dom-budgetservice-getcost</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetservice-getcost-1">2. Concepts</a>
-    <li><a href="#ref-for-dom-budgetservice-getcost-2">4.2. The BudgetService interface</a>
-    <li><a href="#ref-for-dom-budgetservice-getcost-3">4.4. The OperationType enum</a>
+    <li><a href="#ref-for-dom-budgetservice-getcost">2. Concepts</a>
+    <li><a href="#ref-for-dom-budgetservice-getcost①">4.4. The OperationType enum</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-budgetservice-getbudget">
    <b><a href="#dom-budgetservice-getbudget">#dom-budgetservice-getbudget</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetservice-getbudget-1">4.2. The BudgetService interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-budgetservice-reserve">
-   <b><a href="#dom-budgetservice-reserve">#dom-budgetservice-reserve</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-budgetservice-reserve-1">4.2. The BudgetService interface</a>
+    <li><a href="#ref-for-dom-budgetservice-getbudget">4.2. The BudgetService interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="budgetstate">
    <b><a href="#budgetstate">#budgetstate</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-budgetstate-1">4.2. The BudgetService interface</a> <a href="#ref-for-budgetstate-2">(2)</a> <a href="#ref-for-budgetstate-3">(3)</a> <a href="#ref-for-budgetstate-4">(4)</a>
-    <li><a href="#ref-for-budgetstate-5">4.3. The BudgetState interface</a> <a href="#ref-for-budgetstate-6">(2)</a>
+    <li><a href="#ref-for-budgetstate">4.2. The BudgetService interface</a> <a href="#ref-for-budgetstate①">(2)</a> <a href="#ref-for-budgetstate②">(3)</a> <a href="#ref-for-budgetstate③">(4)</a>
+    <li><a href="#ref-for-budgetstate④">4.3. The BudgetState interface</a> <a href="#ref-for-budgetstate⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-budgetstate-budgetat">
    <b><a href="#dom-budgetstate-budgetat">#dom-budgetstate-budgetat</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetstate-budgetat-1">4.2. The BudgetService interface</a> <a href="#ref-for-dom-budgetstate-budgetat-2">(2)</a>
-    <li><a href="#ref-for-dom-budgetstate-budgetat-3">4.3. The BudgetState interface</a> <a href="#ref-for-dom-budgetstate-budgetat-4">(2)</a>
+    <li><a href="#ref-for-dom-budgetstate-budgetat">4.2. The BudgetService interface</a> <a href="#ref-for-dom-budgetstate-budgetat①">(2)</a>
+    <li><a href="#ref-for-dom-budgetstate-budgetat②">4.3. The BudgetState interface</a> <a href="#ref-for-dom-budgetstate-budgetat③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-budgetstate-time">
    <b><a href="#dom-budgetstate-time">#dom-budgetstate-time</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-budgetstate-time-1">4.2. The BudgetService interface</a> <a href="#ref-for-dom-budgetstate-time-2">(2)</a>
-    <li><a href="#ref-for-dom-budgetstate-time-3">4.3. The BudgetState interface</a> <a href="#ref-for-dom-budgetstate-time-4">(2)</a>
+    <li><a href="#ref-for-dom-budgetstate-time">4.2. The BudgetService interface</a> <a href="#ref-for-dom-budgetstate-time①">(2)</a>
+    <li><a href="#ref-for-dom-budgetstate-time②">4.3. The BudgetState interface</a> <a href="#ref-for-dom-budgetstate-time③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="enumdef-operationtype">
    <b><a href="#enumdef-operationtype">#enumdef-operationtype</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-enumdef-operationtype-1">4.2. The BudgetService interface</a> <a href="#ref-for-enumdef-operationtype-2">(2)</a>
-    <li><a href="#ref-for-enumdef-operationtype-3">4.4. The OperationType enum</a> <a href="#ref-for-enumdef-operationtype-4">(2)</a> <a href="#ref-for-enumdef-operationtype-5">(3)</a> <a href="#ref-for-enumdef-operationtype-6">(4)</a>
+    <li><a href="#ref-for-enumdef-operationtype">4.2. The BudgetService interface</a> <a href="#ref-for-enumdef-operationtype①">(2)</a>
+    <li><a href="#ref-for-enumdef-operationtype②">4.4. The OperationType enum</a> <a href="#ref-for-enumdef-operationtype③">(2)</a> <a href="#ref-for-enumdef-operationtype④">(3)</a> <a href="#ref-for-enumdef-operationtype⑤">(4)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
 
-        document.body.addEventListener("click", function(e) {
-            var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
-            // Find the dfn element or panel, if any, that was clicked on.
-            var el = e.target;
-            var target;
-            var hitALink = false;
-            while(el.parentElement) {
-                if(el.tagName == "A") {
-                    // Clicking on a link in a <dfn> shouldn't summon the panel
-                    hitALink = true;
-                }
-                if(el.classList.contains("dfn-paneled")) {
-                    target = "dfn";
-                    break;
-                }
-                if(el.classList.contains("dfn-panel")) {
-                    target = "dfn-panel";
-                    break;
-                }
-                el = el.parentElement;
-            }
-            if(target != "dfn-panel") {
-                // Turn off any currently "on" or "activated" panels.
-                queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
-                    el.classList.remove("on");
-                    el.classList.remove("activated");
-                });
-            }
-            if(target == "dfn" && !hitALink) {
-                // open the panel
-                var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
-                if(dfnPanel) {
-                    console.log(dfnPanel);
-                    dfnPanel.classList.add("on");
-                    var rect = el.getBoundingClientRect();
-                    dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
-                    dfnPanel.style.top = window.scrollY + rect.top + "px";
-                    var panelRect = dfnPanel.getBoundingClientRect();
-                    var panelWidth = panelRect.right - panelRect.left;
-                    if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
-                        // Reposition, because the panel is overflowing
-                        dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
-                    }
-                } else {
-                    console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
-                }
-            } else if(target == "dfn-panel") {
-                // Switch it to "activated" state, which pins it.
-                el.classList.add("activated");
-                el.style.left = null;
-                el.style.top = null;
-            }
-
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
         });
-        </script>
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
+
+});
+</script>
